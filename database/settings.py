@@ -23,9 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '4$5$p&vo82t)@e1_=l8elh%*e#ovvqo5f*xm*136!x*fdft(zu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pieraksts.vfabrika.lv']
 
 
 # Application definition
@@ -55,7 +56,9 @@ ROOT_URLCONF = 'database.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+                 '/home/svabis/database/templates',
+                ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,7 +90,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EET'
 
 USE_I18N = True
 
@@ -98,5 +101,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
+
+
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+#    '/pieraksts_web/static/',
+)
+
+STATIC_ROOT = '/pieraksts/static/'
 
 STATIC_URL = '/static/'

@@ -1,0 +1,81 @@
+{% load staticfiles %}{% load tz %}
+<!DOCTYPE html>
+<html lang="LV-LV">
+ <head>
+  <title>{{ title }}</title>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" type="image/png" href="{% static 'vf-logo.png' %}"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+  {% block javascript %}{% endblock %}
+  <style>
+  .navbar-xs .navbar-default .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu { background-color: #FF8080; }
+  .navbar-default { background-color: #eee; border-bottom: 1px solid #ddd !important; }
+  .divider-vertical { height: 50px; border-right: 2px solid #ccc; }
+  {% block style %}{% endblock %}
+</style>
+</head>
+<body>
+
+
+<div class="modal fade" id="Help" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog" style="margin-top:100px;"><div class="modal-content" data-dismiss="modal">
+<div class="modal-body">
+ <center><h4 style="margin-top:5px;"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+ Jautājumi par sistēmu - Aleksandrs &nbsp;<span class="glyphicon glyphicon-phone-alt"></span> &nbsp;22458469</h4></center>
+</div></div></div></div>
+
+
+
+<nav class="navbar-xs navbar-default">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topNavbar" aria-expanded="false">
+ <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+</div>
+<div class="collapse navbar-collapse" id="topNavbar">
+
+ <ul class="nav navbar-nav navbar-xs">
+  <li><a href="#"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> &nbsp;</a></li>
+<li class="divider-vertical"></li>
+
+  <li><a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp;Jauns Klients</a></li>
+<li class="divider-vertical"></li>
+  <li><a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp;Rediģēt</a></li>
+<li class="divider-vertical"></li>
+
+  <li><a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> &nbsp;Atskaites</a></li>
+<li class="divider-vertical"></li>
+  <li><a href="#"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> &nbsp;Plānotājs</a></li>
+<li class="divider-vertical"></li>
+  <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> &nbsp;Uzstādījumi</a></li>
+{% if admin %}{% endif%}
+ </ul>
+
+ <ul class="nav navbar-nav navbar-right">
+{% if django %}
+<!--  <li class="divider-vertical"></li> -->
+  <li><a href="/admin/" target="_blank" style="color: #CC0000;"><span class="glyphicon glyphicon-cog" aria-hidden="true" style="color: #CC0000;"></span> &nbsp;Django</a></li>
+{% endif %}
+
+{% if help %}
+  <li><a href="#" style="color: #CC0000;" data-toggle="modal" data-target="#Help">
+    <span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="color: #CC0000;"></span> &nbsp;Palīdzība</a>
+  </li>
+{% endif %}
+<li class="divider-vertical"></li>
+  <li><a href="/logout/"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> &nbsp;Beigt darbu</a></li>
+ </ul>
+</div></nav>
+
+<div class="container-fluid">
+{% block new_client %}{% endblock %}
+{% block edit_client %}{% endblock %}
+{% block reports %}{% endblock %}
+{% block settings %}{% endblock %}
+{% block logsys %}{% endblock %}
+</div>
+
+</body>
+</html>
+
