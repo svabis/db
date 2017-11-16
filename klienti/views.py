@@ -7,11 +7,10 @@ from django.contrib.auth.models import User, Group
 from django.core.context_processors import csrf
 
 
-def main(request):
+def new_client(request):
     args = {}
     args['help'] = False
     args['django'] = True
 
-    args['active_tab_1'] = True
-
-    return render_to_response ( 'main_head.html', args )
+    args['active_tab_2'] = True
+    return render_to_response ( 'kli_new_client.html', args )

@@ -1,0 +1,100 @@
+{% extends 'main_head.html' %}
+{% block new_client %}
+<script>
+jQuery(document).ready(function($) {
+ // IMAGE ADD BUTTON
+ $("#avatar").click(function (){
+   $(this).parent().find("input").click();
+ });
+});
+
+// IMAGE PREVIEW
+function readURL(input, display) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $("#" + display)
+        .attr("src", e.target.result);
+//        .width(320)
+//        .height(240);
+      };
+//    $("#" + display).css("display", "block");
+    reader.readAsDataURL(input.files[0]);
+  }
+};
+</script>
+
+
+<form action="/new_client" method=POST enctype="multipart/form-data">{% csrf_token %}
+ <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-2">
+  <div class="col-sm-3 col-md-3 col-lg-3" style="border: solid black 1px;">
+<!-- AVATAR -->
+    <img id="avatar" src="http://pieraksts.vfabrika.lv/media/treneri/Rebeka_b8QX9h1.JPG" style="width: 160px; height: 120px; border: solid black 1px;"/>
+    <input id="id_avatar" type="file" name="avatar" style="display: none" onchange="readURL(this, 'avatar');"/>
+
+  </div>
+  <div class="col-sm-4 col-md-4 col-lg-4" style="border: solid black 1px;">
+<!-- KOLONA 1 -->
+   <div class="form-group">
+    <label id="id_name" for="{{ form.name.id_for_label }}">Vārds:</label>
+     {{ form.name }}
+     {{ form.name.errors }}
+   </div>
+   <div class="form-group">
+    <label id="id_surname" for="{{ form.surname.id_for_label }}">Uzvārds:</label>
+     {{ form.surname }}
+     {{ form.surname.errors }}
+   </div>
+   <div class="form-group">
+    <label id="id_birthday" for="{{ form.birthday.id_for_label }}">Dzimšanas datums:</label>
+     {{ form.birthday }}
+     {{ form.birthday.errors }}
+   </div>
+   <div class="form-group">
+    <label id="id_phone" for="{{ form.phone.id_for_label }}">Tālruņa nummurs:</label>
+     {{ form.phone }}
+     {{ form.phone.errors }}
+   </div>
+   <div class="form-group">
+     <label id="id_e_mail" for="{{ form.e_mail.id_for_label }}">e-pasts:</label>
+     {{ form.e_mail }}
+     {{ form.e_mail.errors }}
+  </div>
+
+  </div>
+  <div class="col-sm-4 col-md-4 col-lg-4" style="border: solid black 1px;">
+<!-- KOLONA 1 -->
+   <div class="form-group">
+    <label id="id_card_nr" for="{{ form.card_nr.id_for_label }}">Klienta kartes numurs:</label>
+     {{ form.card_nr }}
+     {{ form.card_nr.errors }}
+   </div>
+   <div class="form-group">
+    <label id="id_status" for="{{ form.status.id_for_label }}">Statuss:</label>
+    {{ form.status }}
+    {{ form.status.errors }}
+   </div>
+   <div class="form-group">
+    <label id="id_sex" for="{{ form.sex.id_for_label }}">Dzimums:</label>
+    {{ form.sex }}
+    {{ form.sex.errors }}
+   </div>
+   <div class="form-group">
+    <label id="id_reg_date" for="{{ form.reg_date.id_for_label }}">Reģistrācijas datums:</label>
+    {{ form.reg_date }}
+    {{ form.reg_date.errors }}
+   </div>
+  </div>
+ </div>
+
+ <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-2">
+  <div class="col-sm-11 col-md-11 col-lg-11" style="border: solid black 1px; margin-top: 10px;">
+    <div class="form-group">
+     <label id="id_notes" for="{{ form.notes.id_for_label }}">Piezīmes:</label>
+     {{ form.notes }}
+     {{ form.notes.errors }}
+   </div>
+  </div>
+ </div>
+</form>
+{% endblock %}

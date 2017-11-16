@@ -23,8 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '4$5$p&vo82t)@e1_=l8elh%*e#ovvqo5f*xm*136!x*fdft(zu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
-DEBUG = False
+DEBUG = True
+#DEBUG = False
 
 ALLOWED_HOSTS = ['pieraksts.vfabrika.lv']
 
@@ -38,6 +38,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'klienti',
+    'log',
+    'django_cleanup'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -79,8 +82,9 @@ WSGI_APPLICATION = 'database.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'vf_database', 'USER': 'root', 'PASSWORD': 'hlu8Jmhq', 'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
