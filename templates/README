@@ -1,0 +1,23 @@
+main_head.html
+
+  active_tab_1  "home"
+  active_tab_2  Jauns klients
+  active_tab_3  Rediģēt
+  active_tab_4  Atskaites
+  active_tab_5  Plānotājs
+  active_tab_6  Uzstādījumi
+
+  admin - 
+
+  django - ieeja Django admin tabs
+
+  help - palīdzības tabs
+
+
+  {% block main %}
+  {% block new_client %}
+  {% block edit_client %}
+  {% block reports %}
+  {% block settings %}
+  {% block logsys %}
+
