@@ -16,6 +16,7 @@ def main(request):
     return redirect('/')
 
 
+
 # !!!!! NEW CLIENT !!!!!
 def new_client(request):
     args = {}
@@ -25,6 +26,7 @@ def new_client(request):
 
     args['active_tab_2'] = True
     return render_to_response ( 'kli_new_client.html', args )
+
 
 
 # !!!!! EDIT CLIENT !!!!!

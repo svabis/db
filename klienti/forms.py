@@ -28,7 +28,8 @@ class KlientsForm(ModelForm):
          error_message = (u'Ievadiet korektu Tālruņa numuru'),
          widget = forms.TextInput( attrs={'class': 'form-control', 'size': 15, 'title': 'tālrunis'}))
 
-#    birhtday = forms.RegexField( regex=r'^\d\d\/\d\d\/\d\d\d\d$', max_length = 10, required=True,
+#    birhtday = forms.DateField( widget=forms.SelectDateWidget( empty_label=("Choose Year", "Choose Month", "Choose Day"), ), )
+#forms.RegexField( regex=r'^\d\d\/\d\d\/\d\d\d\d$', max_length = 10, required=True,
 #         error_message = (u'Ievadiet korektu datumu.'),
 #         widget = forms.TextInput( attrs={'class': 'form-control', 'size': 15, 'title': 'Dzimšanas datums:'}))
 
@@ -44,10 +45,16 @@ class KlientsForm(ModelForm):
             'card_nr': forms.NumberInput(attrs={'class': 'form-control'}),
             'sex': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
-            'birthday': forms.DateTimeInput(attrs={'class': 'form-control'}),
-            'reg_date': forms.DateTimeInput(attrs={'class': 'form-control'}),
+
+# works            'birthday': forms.DateTimeInput(attrs={'class': 'form-control'}),
+# nope           'birthday': forms.SelectDateWidget(attrs={'class': 'form-control'}),
+            'birthday': forms.DateInput(attrs={'class': 'form-control'}),
+
+            'reg_date': forms.DateInput(attrs={'class': 'form-control', 'readonly':'readonly'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'style':'resize:none;'})
             }
+
+#        myform.fields['status'].widget.attrs['readonly'] = True
 
     def __unicode__(self):
         return u'%s' % (self.name)

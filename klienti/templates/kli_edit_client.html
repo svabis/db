@@ -117,6 +117,7 @@ function submit_changes() {
 function cancel(mod) {
   $("#yes").hide();
   $("#ok").show();
+  $("#exit").show();
   clearInterval(countdown);
 }
 function apply(mod) {
@@ -143,12 +144,13 @@ function startTimer(duration, display) {
 </script>
 
 <div class="row">
-  <div class="col-sm-11 col-md-11 col-lg-11" style="border: solid black 1px; margin-top: 10px;">
-
-     <input class="btn btn-danger pull-left" type="submit" value="Apstiprināt izmaiņas (15) ?" style="display: none;" id="yes" onclick="submit_changes();">
+  <div class="col-sm-6 col-md-6 col-lg-6 text-left" style="border: solid black 1px; margin-top: 10px;">
+     <a href="/"><input class="btn btn-danger" value="Tiešām atcelt ?" style="display: none;" id="exit"></a>
+     <input class="btn btn-danger" type="submit" value="Apstiprināt izmaiņas (15) ?" style="display: none;" id="yes" onclick="submit_changes();">
+  </div>
+  <div class="col-sm-6 col-md-6 col-lg-6 text-right" style="border: solid green 1px; margin-top: 10px;">
      <button type="button" class="btn btn-danger" onclick="apply();" id="ok">Saglabāt</button>
-     <button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancel();">Atcelt</button>
-
+     <button type="button" class="btn btn-info" data-dismiss="modal" onclick="cancel();">Atcelt</button>
   </div>
 </div>
 
