@@ -20,8 +20,8 @@ urlpatterns = [
 # Django Admin
     url(r'^admin/', include(admin.site.urls)),
 
-# NEW CLIENT
-    url(r'^new_client$', 'klienti.views.new_client'),
+# Klienti
+    url(r'^client/', include('klienti.urls')),
 
 # Main --> Shodienas nodarbibas
     url(r'^$', 'database.views.main'),

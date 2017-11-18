@@ -14,6 +14,7 @@
   .navbar-xs .navbar-default .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu { background-color: #ccc; }
   .navbar-default { background-color: #ccc; border-bottom: 1px solid #ddd !important; }
   .divider-vertical { height: 50px; border-right: 2px solid #ccc; }
+  #avatar { width: 256px; height: 192px; border: solid black 2px; }
   {% block style %}{% endblock %}
 </style>
 </head>
@@ -39,10 +40,10 @@
   {% if active_tab_1 %}<li class="active">{% else %}<li>{% endif %}<a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true">
 </span></a></li><li class="divider-vertical"></li>
 
-  {% if active_tab_2 %}<li class="active">{% else %}<li>{% endif %}<a href="new_client"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+  {% if active_tab_2 %}<li class="active">{% else %}<li>{% endif %}<a href="/client/new/"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 <span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp;Jauns Klients</a></li><li class="divider-vertical"></li>
 
-  {% if active_tab_3 %}<li class="active">{% else %}<li>{% endif %}<a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+  {% if active_tab_3 %}<li class="active">{% else %}<li>{% endif %}<a href="/client/edit/"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 <span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp;Rediģēt</a></li><li class="divider-vertical"></li>
 
   {% if active_tab_4 %}<li class="active">{% else %}<li>{% endif %}<a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true">
@@ -79,7 +80,8 @@
 
 <div style="height:20px;"></div>
 
-<div class="container-fluid">
+<div class="container">
+{% block main_view %}{% endblock %}
 {% block new_client %}{% endblock %}
 {% block edit_client %}{% endblock %}
 {% block reports %}{% endblock %}

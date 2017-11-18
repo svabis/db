@@ -1,0 +1,62 @@
+{% extends 'main_head.html' %}
+{% block main_view %}
+<script>
+jQuery(document).ready(function($) {
+ // IMAGE ADD BUTTON
+ $("#avatar").click(function (){
+   $(this).parent().find("input").click();
+ });
+});
+// IMAGE PREVIEW
+function readURL(input, display) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $("#" + display)
+        .attr("src", e.target.result);
+//        .width(320)
+//        .height(240);
+      };
+//    $("#" + display).css("display", "block");
+    reader.readAsDataURL(input.files[0]);
+  }
+};
+</script>
+
+
+<div class="row">
+<!-- KOLONA 1 START -->
+ <div class="col-sm-6 col-md-6 col-lg-6" style="border: solid black 1px;">
+<!-- Search -->
+  <div class="row" style="border: solid red 2px;">
+   <form action="/" method=POST>{% csrf_token %}
+    <table class="table">
+     <tr>
+      <td style="width: 30%;"><label>ID:</label></td>
+      <td style="padding-right: 30px;"><input class="form-control" id="id" name="id" size="30" type="text"></td>
+     </tr>
+     <tr>
+      <td><label>Meklēt:</label></td>
+      <td><input class="form-control" id="search" name="search" size="30" type="text"></td>
+     </tr>
+    </table>
+   </form>
+  </div>
+
+
+<!-- Klienta info -->
+  <div class="row" style="border: solid green 2px;">
+   <img id="avatar" src="http://pieraksts.vfabrika.lv/media/treneri/Rebeka_b8QX9h1.JPG"/>
+  </div>
+ </div>
+<!-- KOLONA 1 END -->
+
+
+
+<!-- KOLONA 2 START -->
+ <div class="col-sm-6 col-md-6 col-lg-6" style="border: solid black 1px;">
+Kolona 2
+ </div>
+</div>
+<!-- KOLONA 2 START -->
+{% endblock %}

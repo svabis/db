@@ -1,5 +1,5 @@
 {% extends 'main_head.html' %}
-{% block new_client %}
+{% block edit_client %}
 <script>
 jQuery(document).ready(function($) {
  // IMAGE ADD BUTTON
@@ -15,8 +15,6 @@ function readURL(input, display) {
     reader.onload = function (e) {
       $("#" + display)
         .attr("src", e.target.result);
-//        .width(320)
-//        .height(240);
       };
 //    $("#" + display).css("display", "block");
     reader.readAsDataURL(input.files[0]);
@@ -25,8 +23,8 @@ function readURL(input, display) {
 </script>
 
 
-<form action="/client/new/" method=POST enctype="multipart/form-data">{% csrf_token %}
-<div class="row" style="border: solid black 1px;">
+<form action="/client/edit/" method=POST enctype="multipart/form-data">{% csrf_token %}
+<div class="row">
   <div class="col-sm-4 col-md-4 col-lg-4" style="border: solid black 1px;">
    <center>
     <img id="avatar" src="http://pieraksts.vfabrika.lv/media/treneri/Rebeka_b8QX9h1.JPG"/>
@@ -85,6 +83,20 @@ function readURL(input, display) {
   </div>
 </div>
 
+
+<div class="row">
+  <div class="col-sm-4 col-md-4 col-lg-4" style="border: solid black 1px; margin-top: 10px;">
+Abonements
+  </div>
+  <div class="col-sm-3 col-md-3 col-lg-3" style="border: solid black 1px; margin-top: 10px;">
+Pirkt
+  </div>
+  <div class="col-sm-5 col-md-5 col-lg-5" style="border: solid black 1px; margin-top: 10px;">
+Vesture
+  </div>
+</div>
+
+
 <div class="row">
   <div class="col-sm-12 col-md-12 col-lg-12" style="border: solid black 1px; margin-top: 10px;">
     <div class="form-group" style="margin-bottom: 5px;">
@@ -94,6 +106,7 @@ function readURL(input, display) {
    </div>
   </div>
 </div>
+
 
 <script>
 var countdown;
@@ -130,7 +143,7 @@ function startTimer(duration, display) {
 </script>
 
 <div class="row">
-  <div class="col-sm-12 col-md-12 col-lg-12" style="border: solid black 1px; margin-top: 10px;">
+  <div class="col-sm-11 col-md-11 col-lg-11" style="border: solid black 1px; margin-top: 10px;">
 
      <input class="btn btn-danger pull-left" type="submit" value="Apstiprināt izmaiņas (15) ?" style="display: none;" id="yes" onclick="submit_changes();">
      <button type="button" class="btn btn-danger" onclick="apply();" id="ok">Saglabāt</button>
