@@ -1,4 +1,6 @@
 {% extends 'main_head.html' %}
+{% load staticfiles %}
+
 {% block edit_client %}
 <script>
 jQuery(document).ready(function($) {
@@ -25,13 +27,18 @@ function readURL(input, display) {
 
 <form action="/client/edit/" method=POST enctype="multipart/form-data">{% csrf_token %}
 <div class="row">
-  <div class="col-sm-4 col-md-4 col-lg-4" style="border: solid black 1px;">
+  <div class="col-sm-4 col-md-4 col-lg-4">
    <center>
-    <img id="avatar" src="http://pieraksts.vfabrika.lv/media/treneri/Rebeka_b8QX9h1.JPG"/>
-    <input id="id_avatar" type="file" name="avatar" style="display: none" onchange="readURL(this, 'avatar');"/>
+    {% if client.avatar != "" %}
+    <img id="avatar" src="http://pieraksts.vfabrika.lv:5880/media/{{ client.avatar }}" style="margin-top: 30px;"/>
+    {% else %}
+    <img id="avatar" src="{% static 'avatar_none.png' %}"/>
+    {% endif %}
+    <input id="id_avatar" type="file" name="avatar" style="display: none" onchange="readURL(this, 'avatar');" style="margin-top: 30px;"/>
    </center>
   </div>
-  <div class="col-sm-4 col-md-4 col-lg-4" style="border: solid black 1px;">
+
+  <div class="col-sm-4 col-md-4 col-lg-4">
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_name" for="{{ form.name.id_for_label }}">Vārds:</label>
      {{ form.name }}
@@ -59,7 +66,11 @@ function readURL(input, display) {
   </div>
 
   </div>
-  <div class="col-sm-4 col-md-4 col-lg-4" style="border: solid black 1px;">
+  <div class="col-sm-4 col-md-4 col-lg-4">
+   <div class="form-group" style="margin-bottom: 5px;">
+    <label id="id_reg_date" for="id_reg_date">Klienta ID:</label>
+    <input class="form-control" id="id_id" name="reg_date" readonly="readonly" type="text" value="{{ client.id }}" />
+   </div>
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_card_nr" for="{{ form.card_nr.id_for_label }}">Klienta kartes numurs:</label>
      {{ form.card_nr }}
@@ -98,7 +109,7 @@ Vesture
 
 
 <div class="row">
-  <div class="col-sm-12 col-md-12 col-lg-12" style="border: solid black 1px; margin-top: 10px;">
+  <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 10px;">
     <div class="form-group" style="margin-bottom: 5px;">
      <label id="id_notes" for="{{ form.notes.id_for_label }}">Piezīmes:</label>
      {{ form.notes }}

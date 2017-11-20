@@ -6,6 +6,8 @@ from django.contrib.auth.models import User, Group
 
 from django.core.context_processors import csrf
 
+from klienti.models import Klienti
+
 from klienti.forms import KlientsForm
 
 from database.args import create_args
@@ -30,11 +32,16 @@ def new_client(request):
 
 
 # !!!!! EDIT CLIENT !!!!!
-def edit_client(request):
+def edit_client(request, c_id):
     args = create_args(request)
 
     args.update(csrf(request)) # ADD CSRF TOKEN
-    args['form'] = KlientsForm
+
+    client = Klienti.objects.get( id = c_id )
+    args['client'] = client
+
+    form = KlientsForm( instance = client )
+    args['form'] = form
 
     args['active_tab_3'] = True
     return render_to_response ( 'kli_edit_client.html', args )

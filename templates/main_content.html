@@ -3,61 +3,101 @@
 {% block main_view %}
 
 <script> // ;778=147050001=014083?
-var card_string = ";778=147050001=";
+$(document).ready(function(){
+
+{% if error %}$("#Error").modal('show');{% endif %}
+
+});
+
+var card_string = ";778=147050001=0";
 var temp_string = ""; var char_count = 0; var card_start = false;
         
 $(document).keypress(function (e) {
   var symb = String.fromCharCode(e.which);
 
   if (card_start == true) {
-    if (char_count != 7) { temp_string += symb; char_count++; event.preventDefault(); }
+    if (char_count != 6) { temp_string += symb; char_count++; event.preventDefault(); }
     else {
       document.getElementById('id').value = temp_string;
       temp_string = ""; char_count = 0; card_start = false; event.preventDefault();
       // some action with id field
-
+      document.getElementById("search_card_id").submit();
     }
   } else {
       if (card_string[char_count] == symb) {
         temp_string += symb;
         if (card_string == temp_string) { temp_string = ""; char_count = 0; card_start = true; }
-        event.preventDefault();
-        char_count++;
+        event.preventDefault(); char_count++;
       } else { char_count = 0; temp_string = ""; } } });
 </script>
+
+<!-- Error Modal START -->
+<div class="modal fade" id="Error" tabindex="-1" role="dialog" aria-hidden="true"><div class="modal-dialog modal-lg"><div class="modal-content">
+<div class="modal-header">
+ <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;Kļūda!</h3>
+</div>
+<div class="modal-body">
+{% if error_code_1 %}<h4>Klienta karte nav reģistrēta, ieraksts nav atrasts!</h4>{% endif %}
+{% if error_code_2 %}<h4>Klienta karte ir BLOĶĒTA!</h4>{% endif %}
+{% if error_code_3 %}<h4>Klients ir bloķēts un atrodas melnajā sarakstā!</h4>{% endif %}
+</div>
+<div class="modal-footer">
+ <button type="button" class="btn btn-default" data-dismiss="modal">Aizvērt</button>
+</form>
+</div></div></div></div>
+<!-- Error Modal END -->
+
 
 <div class="row">
 <!-- KOLONA 1 START -->
  <div class="col-sm-6 col-md-6 col-lg-6">
 <!-- Search -->
   <div class="row">
-   <form action="/" method=POST>{% csrf_token %}
     <table class="table">
+   <form id="search_card_id" action="/" method=POST>{% csrf_token %}
      <tr>
       <td style="width: 30%; text-align: right; vertical-align: bottom; border: none;"><label>ID:</label></td>
-      <td style="padding-right: 30px; border: none;"><input class="form-control" id="id" name="id" size="30" type="text"></td>
+      <td style="padding-right: 30px; border: none;"><input class="form-control" id="id" name="id" size="30" type="text" value="{{ client.id }}"></td>
      </tr>
+   </form>
+   <form id="search" action="/" method=POST>{% csrf_token %}
      <tr>
       <td style="width: 30%; text-align: right; vertical-align: bottom; border: none;"><label>Meklēt:</label></td>
-      <td style="padding-right: 30px; border: none;"><input class="form-control" id="search" name="search" size="30" type="text"></td>
+      <td style="padding-right: 30px; border: none;">
+       <div class="input-group">
+        <input class="form-control" id="search" name="search" size="30" type="text">
+        <span class="input-group-btn">
+         <button class="btn btn-info" type="submit">
+         <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+        </span>
+       </div>
+      </td>
      </tr>
-    </table>
    </form>
+    </table>
   </div>
 
 
 <!-- Klienta info -->
   <div class="row">
    <div class="col-sm-6 col-md-6 col-lg-6">
+     {% if client %}
+       {% if client.avatar != "" %}
+       <img id="avatar" src="http://pieraksts.vfabrika.lv:5880/media/{{ client.avatar }}"/>
+       {% else %}
+       <img id="avatar" src="{% static 'avatar_none.png' %}"/>
+       {% endif %}
+     {% else %}
      <img id="avatar" src="{% static 'avatar_wait.png' %}"/>
+     {% endif %}
    </div>
 
 
    <div class="col-sm-6 col-md-6 col-lg-6" style="padding-right: 30px;">
     <div class="container-fluid" style="background: #d2dff4; border: solid #ccc 1px; margin-bottom: 10px;">
      Informācija par klientu:<br>
-     Vārds, Uzvārds,<br>
-     Status,<br>
+{% if client %}<b>{{ client.name}} {{ client.surname }}</b>,{% else %}Vārds, Uzvārds,{% endif %}<br>
+{% if client %}<b>{{ client.get_status_display }}</b>,{% else %}Status,{% endif %}<br>
      Aktīvais abonements,<br>
      palikušo reižu skaits/derīguma termiņš,<br>
      Pēdējā vizīte<br>

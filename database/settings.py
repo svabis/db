@@ -92,7 +92,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'lv-lv'
 
 TIME_ZONE = 'EET'
 
@@ -110,9 +110,12 @@ USE_TZ = True
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
-#    '/pieraksts_web/static/',
+#    '/vf_database/static/',
 )
 
-STATIC_ROOT = '/pieraksts/static/'
+MEDIA_ROOT = '/vf_database/media/'
+MEDIA_URL = '/media/'
 
+
+STATIC_ROOT = '/vf_database/static/'
 STATIC_URL = '/static/'
