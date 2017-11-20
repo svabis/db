@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^new/$', 'klienti.views.new_client'),
 
 # Rediģēt Klienta kartiņu
-    url(r'^edit/(?P<c_id>\d+)/$', 'klienti.views.edit_client'),
+    url(r'^edit/$', 'klienti.views.edit_client'),
 
 # Main --> Redirect UP
     url(r'^$', 'klienti.views.main'),

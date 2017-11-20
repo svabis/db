@@ -32,16 +32,23 @@ def new_client(request):
 
 
 # !!!!! EDIT CLIENT !!!!!
-def edit_client(request, c_id):
+def edit_client(request):
     args = create_args(request)
-
     args.update(csrf(request)) # ADD CSRF TOKEN
 
-    client = Klienti.objects.get( id = c_id )
-    args['client'] = client
+   # LOAD ACTIVE CLIENT FROM COOKIES
+    if "active_client" in request.COOKIES:
+        try:
+            c_id = int(request.COOKIES.get(str('active_client')))
+            client = Klienti.objects.get( id = c_id )
+            args['client'] = client
 
-    form = KlientsForm( instance = client )
-    args['form'] = form
+            form = KlientsForm( instance = client )
+            args['form'] = form
 
-    args['active_tab_3'] = True
+            args['active_tab_3'] = True
+
+        except:
+            return redirect ("/")
+
     return render_to_response ( 'kli_edit_client.html', args )

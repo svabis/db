@@ -20,27 +20,34 @@ def main(request):
 
     args['active_tab_1'] = True
 
+    if "active_client" in request.COOKIES:
+        try:
+            c_id = int(request.COOKIES.get(str('active_client')))
+            client = Klienti.objects.get( id = c_id )
+        except:
+            pass
+
     if request.POST:
         id = request.POST.get('id', '')
         if id == "14083":
-            args['client'] = Klienti.objects.all()[0]
+            client = Klienti.objects.all()[0]
 
         if id == "1":
-            args['client'] = Klienti.objects.all()[1]
+            client = Klienti.objects.all()[2]
 
         if id == "2":
-            args['client'] = Klienti.objects.all()[2]
+            client = Klienti.objects.all()[3]
 
         if id == "3":
-            args['client'] = Klienti.objects.all()[4]
+            client = Klienti.objects.all()[4]
 
         if id == "klblok":
-            args['client'] = Klienti.objects.all()[2]
+            client = Klienti.objects.all()[2]
             args['error'] = True
             args['error_code_3'] = True
 
         if id == "cblok":
-            args['client'] = Klienti.objects.all()[2]
+            client = Klienti.objects.all()[2]
             args['error'] = True
             args['error_code_2'] = True
 
@@ -48,5 +55,16 @@ def main(request):
             args['error'] = True
             args['error_code_1'] = True
 
+        if id == "svabis":
+            client = Klienti.objects.all()[1]
 
-    return render_to_response ( 'main_content.html', args )
+
+    args['client'] = client
+    response = render_to_response ( 'main_content.html', args )
+    try:
+        response.set_cookie( key='active_client', value=client.id )
+    except:
+        response.delete_cookie('active_client')
+
+    return response
+#    return render_to_response ( 'main_content.html', args )

@@ -24,6 +24,11 @@ function readURL(input, display) {
 };
 </script>
 
+{% if client.client_blocked == True %}
+<div class="alert alert-danger">
+ <center><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"> </span><strong> Klients ir bloķēts un atrodas melnajā sarakstā!</strong></center>
+</div>
+{% endif %}
 
 <form action="/client/edit/" method=POST enctype="multipart/form-data">{% csrf_token %}
 <div class="row">
@@ -32,7 +37,7 @@ function readURL(input, display) {
     {% if client.avatar != "" %}
     <img id="avatar" src="http://pieraksts.vfabrika.lv:5880/media/{{ client.avatar }}" style="margin-top: 30px;"/>
     {% else %}
-    <img id="avatar" src="{% static 'avatar_none.png' %}"/>
+    <img id="avatar" src="{% static 'avatar_none.png' %}" style="margin-top: 30px;"/>
     {% endif %}
     <input id="id_avatar" type="file" name="avatar" style="display: none" onchange="readURL(this, 'avatar');" style="margin-top: 30px;"/>
    </center>
