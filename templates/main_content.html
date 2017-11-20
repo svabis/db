@@ -19,16 +19,27 @@ $(document).keypress(function (e) {
     if (char_count != 6) { temp_string += symb; char_count++; event.preventDefault(); }
     else {
       document.getElementById('id').value = temp_string;
-      temp_string = ""; char_count = 0; card_start = false; event.preventDefault();
+      temp_string = ""; char_count = 0; event.preventDefault();
       // some action with id field
       document.getElementById("search_card_id").submit();
     }
   } else {
-      if (card_string[char_count] == symb) {
-        temp_string += symb;
-        if (card_string == temp_string) { temp_string = ""; char_count = 0; card_start = true; }
-        event.preventDefault(); char_count++;
-      } else { char_count = 0; temp_string = ""; } } });
+
+  // ENTER
+    if ( e.keyCode == 13 ) {
+  {% if client and abon_active %}
+       window.location.href = "/locker/";
+  {% elif client %}
+       window.location.href = "/subscription/";
+  {% endif %}
+
+    }
+    if (card_string[char_count] == symb) {
+      temp_string += symb;
+      if (card_string == temp_string) { temp_string = ""; char_count = 0; card_start = true; }
+      event.preventDefault(); char_count++;
+    } else { char_count = 0; temp_string = ""; } } });
+
 </script>
 
 <!-- Error Modal START -->
@@ -77,6 +88,15 @@ $(document).keypress(function (e) {
     </table>
   </div>
 
+<script>
+$(document).ready(function(){
+{% if client and abon_active %}
+document.getElementById("avatar").style.borderColor = "green";
+{% else %}
+document.getElementById("avatar").style.borderColor = "red";
+{% endif %}
+});
+</script>
 
 <!-- Klienta info -->
   <div class="row">

@@ -28,6 +28,13 @@ urlpatterns = [
 # Klienti
     url(r'^client/', include('klienti.urls')),
 
+# Skapīši
+    url(r'^locker/$', 'database.views.locker'),
+
+# Abonementi
+    url(r'^subscription/$', 'database.views.subscription'),
+
+
 # Main --> Shodienas nodarbibas
     url(r'^$', 'database.views.main'),
 

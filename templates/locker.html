@@ -1,0 +1,31 @@
+{% extends 'main_head.html' %}
+{% load staticfiles %}
+{% block locker %}
+<style>
+.locker_busy { width: 50px; height: 100px; float: left; border: solid black 1px; margin: 0px 3px 3px 0px; text-align: center; vertical-align: middle; background: #888; }
+.locker { width: 50px; height: 100px; float: left; border: solid black 1px; margin: 0px 3px 3px 0px; text-align: center; vertical-align: middle; }
+</style>
+<script>
+jQuery(document).ready(function($) {
+{% if sex == "V" %}  var color = '#b7372d';{% else %}  var color = '#89a5d3';{% endif %}
+  var elements = document.getElementsByClassName("locker");
+  for( var i = 0; i < elements.length; i++ ){
+    elements.item(i).style.backgroundColor = color;};
+});
+</script>
+
+
+{% for l in lockers %}
+{% if forloop.counter == 10 %}
+<div class="locker_busy">
+<h3>{{ l }}</h3>
+</div>
+
+{% else %}
+<div class="locker">
+<h3>{{ l }}</h3>
+</div>
+{% endif %}
+{% endfor %}
+
+{% endblock %}

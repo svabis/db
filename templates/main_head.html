@@ -14,7 +14,7 @@
   .navbar-xs .navbar-default .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu { background-color: #ccc; }
   .navbar-default { background-color: #ccc; border-bottom: 1px solid #ddd !important; }
   .divider-vertical { height: 50px; border-right: 2px solid #ccc; }
-  #avatar { width: 256px; height: 192px; border: solid #aaa 2px; }
+  #avatar { width: 256px; height: 192px; border: solid #aaa 3px; }
   {% block style %}{% endblock %}
 </style>
 </head>
@@ -82,6 +82,8 @@
 
 <div class="container">
 {% block main_view %}{% endblock %}
+{% block locker %}{% endblock %}
+{% block subscription %}{% endblock %}
 {% block new_client %}{% endblock %}
 {% block edit_client %}{% endblock %}
 {% block reports %}{% endblock %}
