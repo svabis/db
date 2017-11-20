@@ -129,6 +129,7 @@ function apply(mod) {
 
 function applyTimer() {
   display = document.querySelector("#yes");
+  display.value ="Apstiprināt izmaiņas ? (15)";
   var timer = duration, seconds = 15;
   countdown = setInterval( function () {
     seconds = parseInt(timer % 60, 10); 
@@ -143,6 +144,7 @@ function applyTimer() {
 }
 function cancelTimer() {
   display = document.querySelector("#exit");
+  display.value ="Tiešām atcelt ? (15)";
   var timer = duration, seconds = 15;
   countdown = setInterval( function () {
     seconds = parseInt(timer % 60, 10); 
@@ -159,11 +161,11 @@ function cancelTimer() {
 
 
 <div class="row">
-  <div class="col-sm-6 col-md-6 col-lg-6 text-left" style="border: solid black 1px; margin-top: 10px;">
+  <div class="col-sm-6 col-md-6 col-lg-6 text-left" style="margin-top: 10px;">
      <a href="/"><input class="btn btn-danger" value="Tiešām atcelt ? (15)" style="display: none;" id="exit"></a>
      <input class="btn btn-danger" type="submit" value="Apstiprināt izmaiņas ? (15)" style="display: none;" id="yes" onclick="submit_changes();">
   </div>
-  <div class="col-sm-6 col-md-6 col-lg-6 text-right" style="border: solid green 1px; margin-top: 10px;">
+  <div class="col-sm-6 col-md-6 col-lg-6 text-right" style="margin-top: 10px;">
      <button type="button" id="ok_btn" class="btn btn-danger" onclick="apply();">Saglabāt</button>
      <button type="button" id="cancel_btn" class="btn btn-info" data-dismiss="modal" onclick="cancel();">Atcelt</button>
   </div>

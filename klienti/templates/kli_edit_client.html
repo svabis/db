@@ -121,32 +121,53 @@ Vesture
 
 <script>
 var countdown;
+var duration = 14;
 function submit_changes() {
   clearInterval(countdown);
   document.querySelector("#yes").value = "Izmaiņas tiek apstiprinātas";
 }
 function cancel(mod) {
+  $("#cancel_btn").prop('disabled', 'disabled');
+  $("#ok_btn").removeAttr('disabled');
   $("#yes").hide();
-  $("#ok").show();
   $("#exit").show();
   clearInterval(countdown);
+  cancelTimer();
 }
 function apply(mod) {
   $("#yes").show();
-  $("#ok").hide();
-  var slidetime = 14,
-  display = document.querySelector("#yes");
-  startTimer(slidetime, display);
+  $("#exit").hide();
+  $("#ok_btn").prop('disabled', 'disabled');
+  $("#cancel_btn").removeAttr('disabled');
+  clearInterval(countdown);
+  applyTimer();
 }
-function startTimer(duration, display) {
+
+function applyTimer() {
+  display = document.querySelector("#yes");
+  display.value ="Apstiprināt izmaiņas ? (15)";
   var timer = duration, seconds = 15;
   countdown = setInterval( function () {
-    seconds = parseInt(timer % 60, 10); 
-    display.value = "Apstiprināt izmaiņas (" + seconds + ") ?";
-    --timer;
+    seconds = parseInt(timer % 60, 10);
+    display.value = "Apstiprināt izmaiņas ? (" + seconds + ")"; --timer;
     if (seconds < 1) {
       $("#yes").hide();
-      $("#ok").show();
+      $("#ok_btn").removeAttr('disabled');
+      clearInterval(countdown);
+    }
+  }
+  , 1000);
+}
+function cancelTimer() {
+  display = document.querySelector("#exit");
+  display.value ="Tiešām atcelt ? (15)";
+  var timer = duration, seconds = 15;
+  countdown = setInterval( function () {
+    seconds = parseInt(timer % 60, 10);
+    display.value = "Tiešām atcelt ? (" + seconds + ")"; --timer;
+    if (seconds < 1) {
+      $("#exit").hide();
+      $("#cancel_btn").removeAttr('disabled');
       clearInterval(countdown);
     }
   }
@@ -154,14 +175,15 @@ function startTimer(duration, display) {
 }
 </script>
 
+
 <div class="row">
-  <div class="col-sm-6 col-md-6 col-lg-6 text-left" style="border: solid black 1px; margin-top: 10px;">
-     <a href="/"><input class="btn btn-danger" value="Tiešām atcelt ?" style="display: none;" id="exit"></a>
-     <input class="btn btn-danger" type="submit" value="Apstiprināt izmaiņas (15) ?" style="display: none;" id="yes" onclick="submit_changes();">
+  <div class="col-sm-6 col-md-6 col-lg-6 text-left" style="margin-top: 10px;">
+     <a href="/"><input class="btn btn-danger" value="Tiešām atcelt ? (15)" style="display: none;" id="exit"></a>
+     <input class="btn btn-danger" type="submit" value="Apstiprināt izmaiņas ? (15)" style="display: none;" id="yes" onclick="submit_changes();">
   </div>
-  <div class="col-sm-6 col-md-6 col-lg-6 text-right" style="border: solid green 1px; margin-top: 10px;">
-     <button type="button" class="btn btn-danger" onclick="apply();" id="ok">Saglabāt</button>
-     <button type="button" class="btn btn-info" data-dismiss="modal" onclick="cancel();">Atcelt</button>
+  <div class="col-sm-6 col-md-6 col-lg-6 text-right" style="margin-top: 10px;">
+     <button type="button" id="ok_btn" class="btn btn-danger" onclick="apply();">Saglabāt</button>
+     <button type="button" id="cancel_btn" class="btn btn-info" data-dismiss="modal" onclick="cancel();">Atcelt</button>
   </div>
 </div>
 
