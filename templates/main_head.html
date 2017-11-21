@@ -14,7 +14,7 @@
   .navbar-xs .navbar-default .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu { background-color: #ccc; }
   .navbar-default { background-color: #ccc; border-bottom: 1px solid #ddd !important; }
   .divider-vertical { height: 50px; border-right: 2px solid #ccc; }
-  #avatar { width: 256px; height: 192px; border: solid #aaa 3px; }
+  #avatar { width: 192px; height: 144px; border: solid #aaa 3px; }
   {% block style %}{% endblock %}
 </style>
 </head>
@@ -72,7 +72,7 @@
   </li>
 {% endif %}
 <li class="divider-vertical"></li>
-  <li><a href="/logout/"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> &nbsp;Beigt darbu</a></li>
+  <li><a href="#"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> &nbsp;Beigt darbu</a></li>
  </ul>
 
  </div>
@@ -84,8 +84,12 @@
 {% block main_view %}{% endblock %}
 {% block locker %}{% endblock %}
 {% block subscription %}{% endblock %}
+
 {% block new_client %}{% endblock %}
 {% block edit_client %}{% endblock %}
+
+{% block search %}{% endblock %}
+
 {% block reports %}{% endblock %}
 {% block settings %}{% endblock %}
 {% block logsys %}{% endblock %}

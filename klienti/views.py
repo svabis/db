@@ -47,8 +47,10 @@ def edit_client(request):
             args['form'] = form
 
             args['active_tab_3'] = True
-
         except:
             return redirect ("/")
+
+    else:
+        return redirect ("/")
 
     return render_to_response ( 'kli_edit_client.html', args )

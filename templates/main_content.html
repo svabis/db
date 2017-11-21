@@ -3,10 +3,12 @@
 {% block main_view %}
 
 <script> // ;778=147050001=014083?
+function clearID() {
+  window.location.href = "/clear_id/";
+}
+
 $(document).ready(function(){
-
 {% if error %}$("#Error").modal('show');{% endif %}
-
 });
 
 var card_string = ";778=147050001=0";
@@ -68,13 +70,22 @@ $(document).keypress(function (e) {
    <form id="search_card_id" action="/" method=POST>{% csrf_token %}
      <tr>
       <td style="width: 30%; text-align: right; vertical-align: bottom; border: none;"><label>ID:</label></td>
-      <td style="padding-right: 30px; border: none;"><input class="form-control" id="id" name="id" size="30" type="text" value="{{ client.id }}"></td>
+      <td style="border: none;">
+       <div class="input-group">
+        <input class="form-control" id="id" name="id" size="30" type="text" value="{{ client.id }}">
+        <span class="input-group-btn">
+<!--         <a href="/clear_id/"> -->
+          <button class="btn btn-danger" type="button" onclick="clearID();">
+          <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+<!--         </a> -->
+        </span>
+      </td>
      </tr>
    </form>
-   <form id="search" action="/" method=POST>{% csrf_token %}
+   <form id="search" action="/search/" method=POST>{% csrf_token %}
      <tr>
       <td style="width: 30%; text-align: right; vertical-align: bottom; border: none;"><label>Meklēt:</label></td>
-      <td style="padding-right: 30px; border: none;">
+      <td style="border: none;">
        <div class="input-group">
         <input class="form-control" id="search" name="search" size="30" type="text">
         <span class="input-group-btn">
@@ -92,7 +103,7 @@ $(document).keypress(function (e) {
 $(document).ready(function(){
 {% if client and abon_active %}
 document.getElementById("avatar").style.borderColor = "green";
-{% else %}
+{% elif client %}
 document.getElementById("avatar").style.borderColor = "red";
 {% endif %}
 });
@@ -113,7 +124,7 @@ document.getElementById("avatar").style.borderColor = "red";
    </div>
 
 
-   <div class="col-sm-6 col-md-6 col-lg-6" style="padding-right: 30px;">
+   <div class="col-sm-6 col-md-6 col-lg-6">
     <div class="container-fluid" style="background: #d2dff4; border: solid #ccc 1px; margin-bottom: 10px;">
      Informācija par klientu:<br>
 {% if client %}<b>{{ client.name}} {{ client.surname }}</b>,{% else %}Vārds, Uzvārds,{% endif %}<br>
@@ -135,8 +146,10 @@ document.getElementById("avatar").style.borderColor = "red";
 
 
 <!-- KOLONA 2 START -->
- <div class="col-sm-6 col-md-6 col-lg-6" style="border: solid black 2px;">
-Kolona 2
+ <div class="col-sm-6 col-md-6 col-lg-6">
+  <a href="/subscription">
+   <button type="button" class="btn btn-info" data-dismiss="modal">Pirkt abonementu</button>
+  </a>
  </div>
 </div>
 <!-- KOLONA 2 START -->
