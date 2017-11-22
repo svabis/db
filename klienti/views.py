@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, redirect
 
-#from django.contrib import auth # autorisation library
-#from django.contrib.auth.models import User, Group
-
 from django.core.context_processors import csrf
 
 from django.db.models import Q # search in multiple columns
@@ -26,9 +23,26 @@ def main(request):
 
 # !!!!! NEW CLIENT !!!!!
 def new_client(request):
-    args = {}
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect ("http://kuvalda.lv/")
 
     args.update(csrf(request)) # ADD CSRF TOKEN
+
+   # Created form POST
+    if request.POST:
+        form = KlientsForm( request.POST, request.FILES )
+
+        if form.is_valid():
+           # INSERT SOME STUFF HERE :D
+            new_client = form.save()
+            response = redirect("/client/new/")
+            response.set_cookie( key='active_client', value=new_client.id )
+            return response
+        else:
+            args['form'] = form
+            return render_to_response ( 'kli_new_client.html', args )
+
     args['form'] = KlientsForm
 
     args['active_tab_2'] = True
@@ -38,6 +52,9 @@ def new_client(request):
 # !!!!! EDIT CLIENT !!!!!
 def edit_client(request):
     args = create_args(request)
+    if args['access'] == False:
+        return redirect ("http://kuvalda.lv/")
+
     args.update(csrf(request)) # ADD CSRF TOKEN
 
    # Edited form POST
@@ -56,17 +73,20 @@ def edit_client(request):
 
    # LOAD ACTIVE CLIENT FROM COOKIES
     if "active_client" in request.COOKIES:
-        c_id = int(request.COOKIES.get(str('active_client')))
-        client = Klienti.objects.get( id = c_id )
-        args['client'] = client
+        try:
+            c_id = int(request.COOKIES.get(str('active_client')))
+            client = Klienti.objects.get( id = c_id )
+            args['client'] = client
 
-        form = KlientsForm( instance = client )
-        args['form'] = form
+            form = KlientsForm( instance = client )
+            args['form'] = form
 
-        args['active_tab_3'] = True
+            args['active_tab_3'] = True
+        except:
+           # COMMENT
+            return redirect ("/")
     else:
         return redirect ("/")
-
 
     return render_to_response ( 'kli_edit_client.html', args )
 
@@ -75,6 +95,11 @@ def edit_client(request):
 # !!!!! Klientu Meklēšana !!!!!
 def search(request, pageid = 1):
     args = create_args(request)
+    if args['access'] == False:
+        return redirect ("http://kuvalda.lv/")
+
+    args.update(csrf(request)) # ADD CSRF TOKEN
+
     args['active_tab_1'] = True
 
     results_per_page = int(Settings.objects.get( key = "search results on page" ).value)
@@ -116,6 +141,7 @@ def search(request, pageid = 1):
     if end_obj > rez_obj.count(): # if end NR exceeds limit set it to end NR
         end_obj = rez_obj.count()
 
+    args['search'] = to_find
     args['paginator'] = Paginator( pagecount, pageid )
     args['results'] = rez_obj.order_by('surname')[start_obj:end_obj] # -argument is for negative sort
 
@@ -131,7 +157,8 @@ def search(request, pageid = 1):
 # !!!!! Klientu Meklēšanas response uz Main !!!!!
 def search_response(request, c_id):
     args = create_args(request)
-    args['active_tab_1'] = True
+    if args['access'] == False:
+        return redirect ("http://kuvalda.lv/")
 
     client = Klienti.objects.get( id = c_id )
 

@@ -32,8 +32,11 @@ urlpatterns = [
 # Skapīši
     url(r'^locker/$', 'database.views.locker'),
 
+
 # Abonementi
     url(r'^subscription/$', 'database.views.subscription'),
+    url(r'^subscription_payment/$', 'database.views.subscription_payment'),
+    url(r'^freeze_subscription/$', 'database.views.freeze_subscription'),
 
 
 # ===============================================================

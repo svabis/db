@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, redirect
 
-#from django.contrib import auth # autorisation library
-#from django.contrib.auth.models import User, Group
-
 from django.core.context_processors import csrf
 
 from database.args import create_args
@@ -22,6 +19,9 @@ def clear_id(request):
 # !!!!! MAIN VIEW !!!!!
 def main(request):
     args = create_args(request)
+    if args['access'] == False:
+        return redirect ("http://kuvalda.lv/")
+
     args.update(csrf(request))      # ADD CSRF TOKEN
 
     args['active_tab_1'] = True
@@ -31,7 +31,9 @@ def main(request):
             c_id = int(request.COOKIES.get(str('active_client')))
             client = Klienti.objects.get( id = c_id )
         except:
-            pass
+           # if client object listed in COOKIE is not available anymore
+            client = False
+   # if no COOKIE
     else:
         client = False
 
@@ -62,9 +64,10 @@ def main(request):
         if id == "er":
             args['error'] = True
             args['error_code_1'] = True
-        if id == "svabis":
+
+        if id == "svabis" or  id == "20002":
+            client = Klienti.objects.get(id=18077)
             args['abon_active'] = True
-            client = Klienti.objects.all()[1]
 
     if client != False:
         args['client'] = client
@@ -82,6 +85,8 @@ def main(request):
 # !!!!! SKAPĪŠI !!!!!
 def locker(request):
     args = create_args(request)
+    if args['access'] == False:
+        return redirect ("http://kuvalda.lv/")
 
     if "active_client" in request.COOKIES:
         c_id = int(request.COOKIES.get(str('active_client')))
@@ -108,4 +113,27 @@ def locker(request):
 # !!!!! ABONEMENTI !!!!!
 def subscription(request):
     args = create_args(request)
+    if args['access'] == False:
+        return redirect ("http://kuvalda.lv/")
+
     return render_to_response ( 'subscription.html', args )
+
+
+# !!!!! ABONEMENTA APMAKSA !!!!!
+def subscription_payment(request):
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect ("http://kuvalda.lv/")
+
+    return render_to_response ( 'subscription_payment.html', args )
+
+
+# !!!!! ABONEMENTA IESLADĒŠANA !!!!!
+def freeze_subscription(request):
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect ("http://kuvalda.lv/")
+
+    return render_to_response ( 'freeze_subscription.html', args )
+
+

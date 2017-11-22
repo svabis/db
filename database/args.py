@@ -4,7 +4,7 @@ from django.contrib import auth			# autorisation library
 
 from setup.models import Settings
 
-# "allowed access from ip"
+
 
 # !!!!! IP GRABBER !!!!!
 def get_client_ip(request):
@@ -16,18 +16,25 @@ def get_client_ip(request):
     return ip
 
 
+
+
 # !!! Apkopots args !!!
 def create_args(request):
     args = {}
     ip = get_client_ip(request)
+    args['ip'] = ip
 
-    ip_list = Settings.objects.filter( key = "allowed access from ip" ) #.value
+   # get allowed IP address list and create True or False
+#    ip_list = Settings.objects.filter( key = "allowed access from ip" ) #.value
+#    alowed_ip = []
+#    for n in ip_list:
+#        alowed_ip.append( n.value )
+#    if ip in alowed_ip:
+#        args['access'] = True
+#    else:
+#        args['access'] = False
+    args['access'] = True
 
-    alowed_ip = []
-    for n in ip_list:
-        alowed_ip.append( n.value )
-
-    args['ip'] = alowed_ip
 
     args['help'] = False
     args['django'] = True

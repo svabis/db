@@ -11,6 +11,13 @@
 
 <script>
 jQuery(document).ready(function($) {
+  $(document).keyup(function (e) {
+    // ESC 27
+    if ( e.keyCode === 27 ) {
+      window.location.href = "/";
+    }
+  });
+
 {% if gender == "V" %}  var color = '#b7372d';{% else %}  var color = '#89a5d3';{% endif %}
   var elements = document.getElementsByClassName("locker");
   for( var i = 0; i < elements.length; i++ ){
@@ -18,15 +25,16 @@ jQuery(document).ready(function($) {
 });
 </script>
 
+<a href="/"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> &nbsp;Atpakaļ</button></a><br><br>
 
 {% for l in lockers %}
 {% if forloop.counter == 10 %}
-<div class="locker_busy">
+<div class="locker_busy" id="locker{{ forloop.counter }}">
 <h3>{{ l }}</h3>
 </div>
 
 {% else %}
-<div class="locker">
+<div class="locker" id="locker{{ forloop.counter }}">
 <h3>{{ l }}</h3>
 </div>
 {% endif %}

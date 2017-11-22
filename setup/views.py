@@ -10,6 +10,10 @@ from setup.models import Settings
 
 def settings(request):
     args = create_args(request)
+    if args['access'] == False:
+        return redirect ("http://kuvalda.lv/")
+
+    args['active_tab_6'] = True
 
     args['settings'] = Settings.objects.all()
 

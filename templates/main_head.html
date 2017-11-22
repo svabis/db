@@ -49,7 +49,7 @@
   {% if active_tab_4 %}<li class="active">{% else %}<li>{% endif %}<a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true">
 </span> &nbsp;Atskaites</a></li><li class="divider-vertical"></li>
 
-  {% if active_tab_5 %}<li class="active">{% else %}<li>{% endif %}<a href="#"><span class="glyphicon glyphicon-calendar" aria-hidden="true">
+  {% if active_tab_5 %}<li class="active">{% else %}<li>{% endif %}<a href="http://pieraksts.vfabrika.lv/reception/" target="_blank"><span class="glyphicon glyphicon-calendar" aria-hidden="true">
 </span> &nbsp;Plānotājs</a></li><li class="divider-vertical"></li>
 
   {% if active_tab_6 %}<li class="active">{% else %}<li>{% endif %}<a href="/settings/"><span class="glyphicon glyphicon-cog" aria-hidden="true">
@@ -89,7 +89,9 @@
 {% block edit_client %}{% endblock %}
 
 {% block locker %}{% endblock %}
+
 {% block subscription %}{% endblock %}
+{% block freeze_subscription %}{% endblock %}
 
 {% block settings %}{% endblock %}
 
@@ -100,10 +102,10 @@
 </div>
 
 
-<nav class="navbar navbar-default navbar-fixed-bottom">
+<nav class="navbar navbar-default navbar-fixed-bottom" style="height:30px;">
  <div class="container">
   <div class="navbar-header">
-   <span class="navbar-brand">ip: {{ ip }}</span>
+   <span class="navbar-brand">ip: {{ ip }} | access: {{ access }}</span>
   </div>
   <p class="navbar-text navbar-right">VF &copy; 2017</p>
  </div>
