@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from settings.models import *
+from setup.models import *
 
 # !!!!! Settings !!!!!
 class SettingsAdmin(admin.ModelAdmin):

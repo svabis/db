@@ -5,7 +5,7 @@ from django.core.context_processors import csrf
 
 from database.args import create_args
 
-from settings.models import Settings
+from setup.models import Settings
 
 
 def settings(request):

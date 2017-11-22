@@ -22,7 +22,7 @@ urlpatterns = [
 
 # ===============================================================
 # Uzstādījumi
-    url(r'^settings/$', 'settings.views.settings'),
+    url(r'^settings/$', 'setup.views.settings'),
 
 # ===============================================================
 # Klienti

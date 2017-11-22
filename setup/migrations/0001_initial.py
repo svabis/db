@@ -14,8 +14,8 @@ class Migration(migrations.Migration):
             name='Settings',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('key', models.CharField(default=b'', max_length=15)),
-                ('value', models.CharField(default=b'', max_length=15)),
+                ('key', models.CharField(default=b'', max_length=40)),
+                ('value', models.CharField(default=b'', max_length=40)),
             ],
             options={
                 'db_table': 'settings',
