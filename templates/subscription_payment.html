@@ -5,37 +5,99 @@
 <h3>Abonementu pirkšana</h3>
 
 
-<div class="row" style="border: solid black 1px;">
-<!-- RINDA 1 KOLONA 1-->
- <div class="col-lg-8 col-md-8 col-sm-8" style="border: solid black 1px;">
-kolona 1
-
+<div class="row">
+<!-- RINDA 1 -->
+ <div class="col-lg-9 col-md-9 col-sm-9">
+  <div class="form-group" style="margin-bottom: 5px;">
+   <label>Izvēlētā abonementa nosaukums:</label>
+   <input type="text" class="form-control" id="id_subscripton" readonly="readonly">
+  </div>
  </div>
 
-<!-- RINDA 1 KOLONA 2-->
- <div class="col-lg-2 col-md-2 col-sm-2" style="border: solid black 1px;">
-kolona 2
-
- </div>
-
-<!-- RINDA 1 KOLONA 3-->
- <div class="col-lg-2 col-md-2 col-sm-2" style="border: solid black 1px;">
-kolona 3
-
+ <div class="col-lg-3 col-md-3 col-sm-3">
+  <div class="form-group" style="margin-bottom: 5px;">
+   <label>Cena:</label>
+   <input type="text" class="form-control" id="id_subscripton_price" readonly="readonly">
+  </div>
  </div>
 </div>
 
-<!-- RINDA 2 -->
-<div class="row" style="border: solid black 1px;">
- <div class="col-lg-12 col-md-12 col-sm-12" style="border: solid black 1px;">
-rinda 2
-
+<!-- RINDA 2-->
+<div class="row">
+ <div class="col-lg-3 col-md-3 col-sm-3">
+  <div class="form-group text-right" style="margin-bottom: 0px; margin-top: 5px;">
+   <label>Iesaldētā summa:</label>
+  </div>
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3">
+   <input type="text" class="form-control" id="id_frozen_subscription" readonly="readonly">
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3">
+  <div class="form-group text-right" style="margin-bottom: 0px; margin-top: 5px;">
+   <label>Summa apmaksai:</label>
+  </div>
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3">
+   <input type="text" class="form-control" id="id_price_to_pay" readonly="readonly">
  </div>
 </div>
 
 <!-- RINDA 3 -->
+<div class="row">
+ <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 25px;">
+  <a href="#"><button type="button" class="btn btn-info">Karte</button></a>
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 25px;">
+  <a href="#"><button type="button" class="btn btn-info">Skaidrā nauda</button></a>
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 25px;">
+  <a href="#"><button type="button" class="btn btn-info">Dāvanu karte</button></a>
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3">
+  <div class="form-group" style="margin-bottom: 5px;">
+   <label>Dāvanu kartes vērtība:</label>
+   <input type="text" class="form-control" id="id_gift_card">
+  </div>
+ </div>
+</div>
+
+<!-- RINDA 4 -->
+<div class="row">
+ <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 25px;">
+  <a href="#"><button type="button" class="btn btn-info">Karte/apdroš.</button></a>
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 25px;">
+  <a href="#"><button type="button" class="btn btn-info">Skaidrā nauda/apdroš.</button></a>
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 25px;">
+  <a href="#"><button type="button" class="btn btn-info">Dāvanu karte/apdroš.</button></a>
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3">
+  <div class="form-group" style="margin-bottom: 5px;">
+   <label>Sedz apdrošinātājs:</label>
+   <input type="text" class="form-control" id="id_insurance">
+  </div>
+ </div>
+</div>
+
+<!-- RINDA 5 -->
+<div class="row" style="margin-top:20px;">
+ <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 5px;">
+  <a href="#"><button type="button" class="btn btn-info">Pārskaitījums</button></a>
+ </div>
+ <div class="col-lg-5 col-md-5 col-sm-5" style=" margin-top: 5px;">
+  <div class="form-group text-right" style="margin-top: 5px;">
+   <label>Summa apmaksai kopā:</label>
+  </div>
+ </div>
+ <div class="col-lg-3 col-md-3 col-sm-3">
+  <input type="text" class="form-control" id="id_total_price" readonly="readonly">
+ </div>
+</div>
+
+<!-- RINDA 6 -->
 <div class="row text-right" style="margin-top: 10px;">
- <a href="/subscription_payment/"><button type="button" class="btn btn-success">Pirkt</button></a>
+ <a href="#"><button type="button" class="btn btn-success">Apmaksāt</button></a>
  <a href="#"><button type="button" class="btn btn-danger">Atcelt</button></a>
 </div>
 

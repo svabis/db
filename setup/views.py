@@ -13,7 +13,7 @@ def settings(request):
     if args['access'] == False:
         return redirect ("http://kuvalda.lv/")
 
-    args['active_tab_6'] = True
+    args['active_tab_7'] = True
 
     args['settings'] = Settings.objects.all()
 
