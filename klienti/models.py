@@ -12,7 +12,7 @@ STATUS_CHOISE = (
     ('D', 'Darbinieks')
 )
 
-SEX_CHOISE = (
+GENDER_CHOISE = (
     ('V', 'Vīrietis'),
     ('S', 'Sieviete'),
 )
@@ -36,7 +36,7 @@ class Klienti(models.Model):
     client_blocked = models.BooleanField( default=False )
 
     status = models.CharField( max_length = 1, choices = STATUS_CHOISE )
-    sex = models.CharField( max_length = 1, choices = SEX_CHOISE )
+    gender = models.CharField( max_length = 1, choices = GENDER_CHOISE )
 
     reg_date = models.DateTimeField( default = timezone.now )
 

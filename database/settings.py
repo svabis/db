@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'klienti',
     'log',
+    'settings',
     'django_cleanup'
 )
 

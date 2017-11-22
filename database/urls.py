@@ -20,11 +20,15 @@ urlpatterns = [
 # Django Admin
     url(r'^admin/', include(admin.site.urls)),
 
+# ===============================================================
+# Uzstādījumi
+    url(r'^settings/$', 'settings.views.settings'),
 
+# ===============================================================
 # Klienti
     url(r'^client/', include('klienti.urls')),
 
-
+# ===============================================================
 # Skapīši
     url(r'^locker/$', 'database.views.locker'),
 
@@ -32,17 +36,11 @@ urlpatterns = [
     url(r'^subscription/$', 'database.views.subscription'),
 
 
+# ===============================================================
 # Clear ID
     url(r'^clear_id/$', 'database.views.clear_id'),
 
-
-# Search Klient
-    url(r'^search/$', 'database.views.search'),
-# Search rezultāts
-    url(r'^search_response/(?P<c_id>\d+)/$', 'database.views.search_response'),
-
-
-# Main --> Shodienas nodarbibas
+# Main --> Card reader e.t.c.
     url(r'^$', 'database.views.main'),
 
 ]

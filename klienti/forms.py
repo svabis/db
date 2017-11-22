@@ -32,7 +32,7 @@ class KlientsForm(ModelForm):
 
     class Meta():
         model = Klienti
-        fields = ('name', 'surname', 'e_mail', 'phone', 'birthday', 'reg_date', 'card_nr', 'status', 'sex', 'notes' )
+        fields = ('name', 'surname', 'e_mail', 'phone', 'birthday', 'reg_date', 'card_nr', 'status', 'gender', 'notes' )
 
         widgets = {
             'name': forms.TextInput( attrs={'class': 'form-control', 'size': 30}),
@@ -41,7 +41,7 @@ class KlientsForm(ModelForm):
             'phone': forms.TextInput( attrs={'class': 'form-control', 'size': 15}),
 
             'card_nr': forms.TextInput(attrs={'class': 'form-control'}),
-            'sex': forms.Select(attrs={'class': 'form-control'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
 
 # works            'birthday': forms.DateTimeInput(attrs={'class': 'form-control'}),

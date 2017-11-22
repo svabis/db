@@ -1,0 +1,27 @@
+{% extends 'main_head.html' %}
+{% load staticfiles %}
+{% block settings %}
+
+<h1>UZSTĀDĪJUMI...</h1>
+
+<table class="table table-hover table-striped table-condensed">
+ <thead>
+  <tr style="background: #aaa;">
+   <th style="vertical-align: top;">Parametrs</th>
+   <th style="vertical-align: top;">Vērtība</th>
+  </tr>
+ </thead>
+ <tbody>
+
+{% for s in settings %}
+  <tr class="clickable-row">
+   <td>{{ s.key }}</td>
+   <td><input class="form-control" maxlength="40" name="value{{ forloop.counter0 }}" type="text" value="{{ s.value }}"></td>
+  </tr>
+{% endfor %}
+ </tbody>
+</table>
+
+
+
+{% endblock %}

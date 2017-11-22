@@ -52,7 +52,7 @@
   {% if active_tab_5 %}<li class="active">{% else %}<li>{% endif %}<a href="#"><span class="glyphicon glyphicon-calendar" aria-hidden="true">
 </span> &nbsp;Plānotājs</a></li><li class="divider-vertical"></li>
 
-  {% if active_tab_6 %}<li class="active">{% else %}<li>{% endif %}<a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true">
+  {% if active_tab_6 %}<li class="active">{% else %}<li>{% endif %}<a href="/settings/"><span class="glyphicon glyphicon-cog" aria-hidden="true">
 </span> &nbsp;Uzstādījumi</a></li>
 
 
@@ -82,18 +82,32 @@
 
 <div class="container">
 {% block main_view %}{% endblock %}
-{% block locker %}{% endblock %}
-{% block subscription %}{% endblock %}
+
+{% block search %}{% endblock %}
 
 {% block new_client %}{% endblock %}
 {% block edit_client %}{% endblock %}
 
-{% block search %}{% endblock %}
+{% block locker %}{% endblock %}
+{% block subscription %}{% endblock %}
+
+{% block settings %}{% endblock %}
+
+
 
 {% block reports %}{% endblock %}
-{% block settings %}{% endblock %}
 {% block logsys %}{% endblock %}
 </div>
+
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+ <div class="container">
+  <div class="navbar-header">
+   <span class="navbar-brand">ip: {{ ip }}</span>
+  </div>
+  <p class="navbar-text navbar-right">VF &copy; 2017</p>
+ </div>
+</nav>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
-{% extends 'main_head.html' %}
+{% extends 'kli_search_paginator.html' %}
 {% load staticfiles %}
-{% block subscription %}
 
+{% block search_data %}
 <style>
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {  background-color: #9b9da0; }
 </style>
@@ -9,12 +9,10 @@
 <script>
 jQuery(document).ready(function($) {
   $(".clickable-row").click(function(e) {
-    window.location.href = "/search_response/" + $(this).children('td')[0].innerHTML + "/";
+    window.location.href = "/client/search_response/" + $(this).children('td')[0].innerHTML + "/";
   });
 });
 </script>
-
-<h3>Meklēšanas rezultāti...</h3>
 
 <table class="table table-hover table-striped table-condensed">
  <thead>
