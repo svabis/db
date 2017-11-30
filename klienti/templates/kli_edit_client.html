@@ -87,11 +87,25 @@ function readURL(input, display) {
      {{ form.card_nr }}
      {{ form.card_nr.errors }}
    </div>
+  </div>
+
+  <div class="col-sm-3 col-md-3 col-lg-3">
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_status" for="{{ form.status.id_for_label }}">Statuss:</label>
     {{ form.status }}
     {{ form.status.errors }}
    </div>
+  </div>
+
+  <div class="col-sm-1 col-md-1 col-lg-1">
+   <div class="form-group" style="margin-bottom: 5px;">
+    <label id="id_society" for="{{ form.society.id_for_label }}" style="margin-bottom: 1px;">Biedrība:</label>
+    {{ form.society }}
+    {{ form.society.errors }}
+   </div>
+  </div>
+
+  <div class="col-sm-4 col-md-4 col-lg-4">
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_gender" for="{{ form.sex.id_for_label }}">Dzimums:</label>
     {{ form.gender }}
@@ -125,10 +139,10 @@ function readURL(input, display) {
 <!-- KOLONA 2 RINDA 1 -->
    <div class="row" style="margin-top: 10px;">
     <div class="col-sm-4 col-md-4 col-lg-4">
-     <a href="/subscription/"><button type="button" class="btn btn-info">Pirkt</button></a>
+     <a href="#"><button type="button" class="btn btn-info" style="min-width: 200px; max-width: 200px;">Abonementu vēsture</button></a>
     </div>
     <div class="col-sm-3 col-md-3 col-lg-3">
-     <a href="#"><button type="button" class="btn btn-info">Vēsture</button></a>
+     <a href="/subscription/"><button type="button" class="btn btn-success" style="min-width: 80px; max-width: 80px;">Pirkt</button></a>
     </div>
     <div class="col-sm-5 col-md-5 col-lg-5">
      <a href="/freeze_subscription/"><button type="button" class="btn btn-info pull-right">Abonemeta iesaldēšana</button></a>
@@ -150,10 +164,10 @@ function readURL(input, display) {
 <!-- KOLONA 2 RINDA 3 -->
    <div class="row">
     <div class="col-sm-4 col-md-4 col-lg-4">
-     <a href="#"><button type="button" class="btn btn-info">Vēsture</button></a>
+     <a href="#"><button type="button" class="btn btn-info" style="min-width: 200px; max-width: 200px;">Apdrošināšanas vēsture</button></a>
     </div>
     <div class="col-sm-3 col-md-3 col-lg-3">
-     <a href="#"><button type="button" class="btn btn-info">Reģistrēt</button></a>
+     <a href="#"><button type="button" class="btn btn-success" style="min-width: 80px; max-width: 80px;">Reģistrēt</button></a>
     </div>
    </div>
   </div>
@@ -231,11 +245,11 @@ function cancelTimer() {
 <div class="row">
   <div class="col-sm-6 col-md-6 col-lg-6 text-left" style="margin-top: 10px;">
      <a href="/"><input class="btn btn-danger" value="Tiešām atcelt ? (15)" style="display: none;" id="exit"></a>
-     <input class="btn btn-danger" type="submit" value="Apstiprināt izmaiņas ? (15)" style="display: none;" id="yes" onclick="submit_changes();">
+     <input class="btn btn-success" type="submit" value="Apstiprināt izmaiņas ? (15)" style="display: none;" id="yes" onclick="submit_changes();">
   </div>
   <div class="col-sm-6 col-md-6 col-lg-6 text-right" style="margin-top: 10px;">
-     <button type="button" id="ok_btn" class="btn btn-danger" onclick="apply();">Saglabāt</button>
-     <button type="button" id="cancel_btn" class="btn btn-info" data-dismiss="modal" onclick="cancel();">Atcelt</button>
+     <button type="button" id="ok_btn" class="btn btn-success" onclick="apply();">Saglabāt</button>
+     <button type="button" id="cancel_btn" class="btn btn-danger" data-dismiss="modal" onclick="cancel();">Atcelt</button>
   </div>
 </div>
 

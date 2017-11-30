@@ -72,19 +72,33 @@ function readURL(input, display) {
      {{ form.e_mail }}
      {{ form.e_mail.errors }}
   </div>
-
   </div>
+
   <div class="col-sm-4 col-md-4 col-lg-4">
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_card_nr" for="{{ form.card_nr.id_for_label }}">Klienta kartes numurs:</label>
      {{ form.card_nr }}
      {{ form.card_nr.errors }}
    </div>
+  </div>
+
+  <div class="col-sm-3 col-md-3 col-lg-3">
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_status" for="{{ form.status.id_for_label }}">Statuss:</label>
     {{ form.status }}
     {{ form.status.errors }}
    </div>
+  </div>
+
+  <div class="col-sm-1 col-md-1 col-lg-1">
+   <div class="form-group" style="margin-bottom: 5px;">
+    <label id="id_society" for="{{ form.society.id_for_label }}" style="margin-bottom: 1px;">Biedrība:</label>
+    {{ form.society }}
+    {{ form.society.errors }}
+   </div>
+  </div>
+
+  <div class="col-sm-4 col-md-4 col-lg-4">
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_gender" for="{{ form.sex.id_for_label }}">Dzimums:</label>
     {{ form.gender }}
@@ -135,11 +149,11 @@ function apply(mod) {
 
 function applyTimer() {
   display = document.querySelector("#yes");
-  display.value ="Apstiprināt izmaiņas ? (15)";
+  display.value ="Saglabāt ? (15)";
   var timer = duration, seconds = 15;
   countdown = setInterval( function () {
     seconds = parseInt(timer % 60, 10); 
-    display.value = "Apstiprināt izmaiņas ? (" + seconds + ")"; --timer;
+    display.value = "Saglabāt ? (" + seconds + ")"; --timer;
     if (seconds < 1) {
       $("#yes").hide();
       $("#ok_btn").removeAttr('disabled');
@@ -169,11 +183,11 @@ function cancelTimer() {
 <div class="row">
   <div class="col-sm-6 col-md-6 col-lg-6 text-left" style="margin-top: 10px;">
      <a href="/"><input class="btn btn-danger" value="Tiešām atcelt ? (15)" style="display: none;" id="exit"></a>
-     <input class="btn btn-danger" type="submit" value="Apstiprināt izmaiņas ? (15)" style="display: none;" id="yes" onclick="submit_changes();">
+     <input class="btn btn-success" type="submit" value="Saglabāt ? (15)" style="display: none;" id="yes" onclick="submit_changes();">
   </div>
   <div class="col-sm-6 col-md-6 col-lg-6 text-right" style="margin-top: 10px;">
-     <button type="button" id="ok_btn" class="btn btn-danger" onclick="apply();">Saglabāt</button>
-     <button type="button" id="cancel_btn" class="btn btn-info" data-dismiss="modal" onclick="cancel();">Atcelt</button>
+     <button type="button" id="ok_btn" class="btn btn-success" onclick="apply();">Saglabāt</button>
+     <button type="button" id="cancel_btn" class="btn btn-danger" data-dismiss="modal" onclick="cancel();">Atcelt</button>
   </div>
 </div>
 

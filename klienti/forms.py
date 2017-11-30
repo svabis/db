@@ -32,9 +32,10 @@ class KlientsForm(ModelForm):
 
     class Meta():
         model = Klienti
-        fields = ('name', 'surname', 'e_mail', 'phone', 'birthday', 'reg_date', 'card_nr', 'status', 'gender', 'notes' )
+        fields = ('avatar', 'name', 'surname', 'e_mail', 'phone', 'birthday', 'reg_date', 'card_nr', 'status', 'society', 'gender', 'notes' )
 
         widgets = {
+            'avatar': forms.FileInput(),
             'name': forms.TextInput( attrs={'class': 'form-control', 'size': 30}),
             'surname': forms.TextInput( attrs={'class': 'form-control', 'size': 30}),
             'e_mail': forms.EmailInput( attrs={'class': 'form-control'}),
@@ -43,6 +44,7 @@ class KlientsForm(ModelForm):
             'card_nr': forms.TextInput(attrs={'class': 'form-control'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
+            'society': forms.CheckboxInput(attrs={'class': 'form-control'}),
 
 # works            'birthday': forms.DateTimeInput(attrs={'class': 'form-control'}),
 # nope           'birthday': forms.SelectDateWidget(attrs={'class': 'form-control'}),

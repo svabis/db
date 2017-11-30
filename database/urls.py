@@ -29,9 +29,15 @@ urlpatterns = [
     url(r'^client/', include('klienti.urls')),
 
 # ===============================================================
-# Skapīši
-    url(r'^locker/$', 'database.views.locker'),
+# Kas klubā
+    url(r'^in_club/$', 'lockers.views.persons_in_club'),
 
+
+# ===============================================================
+# Skapīši
+    url(r'^locker/$', 'lockers.views.locker'),
+# checkin
+    url(r'^locker_checkin/(?P<gender>\w+)/(?P<locker_nr>\d+)/$', 'lockers.views.locker_checkin'),
 
 # Abonementi
     url(r'^subscription/$', 'database.views.subscription'),

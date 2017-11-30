@@ -25,7 +25,7 @@ def main(request):
 def new_client(request):
     args = create_args(request)
     if args['access'] == False:
-        return redirect ("http://kuvalda.lv/")
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
     args.update(csrf(request)) # ADD CSRF TOKEN
 
@@ -34,10 +34,10 @@ def new_client(request):
         form = KlientsForm( request.POST, request.FILES )
 
         if form.is_valid():
-           # INSERT SOME STUFF HERE :D
             new_client = form.save()
-            response = redirect("/client/new/")
+            response = redirect("/")
             response.set_cookie( key='active_client', value=new_client.id )
+            response.set_cookie( key='new_client', value="True", max_age=5 )
             return response
         else:
             args['form'] = form
@@ -53,7 +53,7 @@ def new_client(request):
 def edit_client(request):
     args = create_args(request)
     if args['access'] == False:
-        return redirect ("http://kuvalda.lv/")
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
     args.update(csrf(request)) # ADD CSRF TOKEN
 
@@ -64,9 +64,10 @@ def edit_client(request):
         form = KlientsForm( request.POST, request.FILES, instance = client )
 
         if form.is_valid():
-           # INSERT SOME STUFF HERE :D
             form.save()
-            return redirect("/client/edit/")
+            response = redirect("/")
+            response.set_cookie( key='edit_client', value="True", max_age=5 )
+            return response
         else:
             args['form'] = form
             return render_to_response ( 'kli_edit_client.html', args )
@@ -96,7 +97,7 @@ def edit_client(request):
 def search(request, pageid = 1):
     args = create_args(request)
     if args['access'] == False:
-        return redirect ("http://kuvalda.lv/")
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
     args.update(csrf(request)) # ADD CSRF TOKEN
 
@@ -115,7 +116,6 @@ def search(request, pageid = 1):
            Q( surname__icontains = to_find ) |
            Q( e_mail__icontains = to_find ) |
            Q( phone__icontains = to_find ) ).order_by( search_order )
-
 
    # Search from COOKIE
     else:
@@ -158,7 +158,7 @@ def search(request, pageid = 1):
 def search_response(request, c_id):
     args = create_args(request)
     if args['access'] == False:
-        return redirect ("http://kuvalda.lv/")
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
     client = Klienti.objects.get( id = c_id )
 

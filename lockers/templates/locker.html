@@ -28,14 +28,14 @@ jQuery(document).ready(function($) {
 <a href="/"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> &nbsp;Atpakaļ</button></a><br><br>
 
 {% for l in lockers %}
-{% if forloop.counter == 10 %}
+{% if l.1 == 1 %}
 <div class="locker_busy" id="locker{{ forloop.counter }}">
-<h3>{{ l }}</h3>
+<h3>{{ l.0 }}</h3>
 </div>
 
 {% else %}
 <div class="locker" id="locker{{ forloop.counter }}">
-<h3>{{ l }}</h3>
+<a href="/locker_checkin/{{ gender }}/{{ l.0 }}/"><h3>{{ l.0 }}</h3></a>
 </div>
 {% endif %}
 {% endfor %}

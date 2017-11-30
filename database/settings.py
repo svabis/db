@@ -26,7 +26,7 @@ SECRET_KEY = '4$5$p&vo82t)@e1_=l8elh%*e#ovvqo5f*xm*136!x*fdft(zu'
 DEBUG = True
 #DEBUG = False
 
-ALLOWED_HOSTS = ['pieraksts.vfabrika.lv']
+ALLOWED_HOSTS = ['pieraksts.vfabrika.lv','*']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'klienti',
     'log',
+    'lockers',
     'setup',
     'django_cleanup'
 )

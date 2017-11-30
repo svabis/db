@@ -4,8 +4,8 @@ from klienti.models import *
 
 # !!!!! Klienti !!!!!
 class KlientiAdmin(admin.ModelAdmin):
-    list_display = ['surname', 'name', 'client_blocked', 'card_blocked', 'birthday', 'phone', 'e_mail', 'status', 'gender', 'reg_date', 'notes']
-    list_filter = ['client_blocked', 'card_blocked', 'status', 'gender', 'reg_date']
+    list_display = ['surname', 'name', 'client_blocked', 'card_blocked', 'birthday', 'phone', 'e_mail', 'status', 'status_changed', 'society',  'gender', 'reg_date', 'notes']
+    list_filter = ['client_blocked', 'card_blocked', 'status', 'status_changed', 'society', 'gender', 'reg_date']
     search_fields = ['name', 'surname', 'phone', 'e_mail']
 #    exclude = []
 

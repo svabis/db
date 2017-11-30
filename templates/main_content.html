@@ -8,7 +8,10 @@ function clearID() {
 }
 
 $(document).ready(function(){
-{% if error %}$("#Error").modal('show');{% endif %}
+{% if mesage %}$("#MesageModal").modal('show');{% endif %}
+
+{% if new_client %}$("#ClientModal").modal('show');{% endif %}
+{% if edit_client %}$("#ClientModal").modal('show');{% endif %}
 });
 
 var card_string = ";778=147050001=0";
@@ -44,21 +47,48 @@ $(document).keypress(function (e) {
 
 </script>
 
-<!-- Error Modal START -->
-<div class="modal fade" id="Error" tabindex="-1" role="dialog" aria-hidden="true"><div class="modal-dialog modal-lg"><div class="modal-content">
+<!-- Error ClientModal START -->
+<div class="modal fade" id="ClientModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
 <div class="modal-header">
- <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;Kļūda!</h3>
+ <h3 style="margin-top:5px; margin-bottom:5px;">
+<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Paziņojums!</h3>
 </div>
 <div class="modal-body">
-{% if error_code_1 %}<h4>Klienta karte nav reģistrēta, ieraksts nav atrasts!</h4>{% endif %}
-{% if error_code_2 %}<h4>Klienta karte ir BLOĶĒTA!</h4>{% endif %}
-{% if error_code_3 %}<h4>Klients ir bloķēts un atrodas melnajā sarakstā!</h4>{% endif %}
+<center>
+{% if new_client %}<h4>Jauna klienta kartiņa ir izveidota!</h4>{% endif %}
+{% if edit_client %}<h4>Klienta kartiņa ir sekmīgi rediģēta!</h4>{% endif %}
+</center>
 </div>
 <div class="modal-footer">
  <button type="button" class="btn btn-default" data-dismiss="modal">Aizvērt</button>
 </form>
 </div></div></div></div>
-<!-- Error Modal END -->
+<!-- MesageModal Modal END -->
+
+
+<!-- Error MesageModal START -->
+<div class="modal fade" id="MesageModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
+<div class="modal-header">
+ <h3 style="margin-top:5px; margin-bottom:5px;">
+{% if mesage_type == "error" %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;Kļūda!</h3>{% endif%}
+{% if mesage_type == "mesage" %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Paziņojums!</h3>{% endif%}
+</div>
+<div class="modal-body">
+<center>
+{% if mesage_code_1 %}<h4>Klienta karte nav reģistrēta, ieraksts nav atrasts!</h4>{% endif %}
+{% if mesage_code_2 %}<h4>Klienta karte ir BLOĶĒTA!</h4>{% endif %}
+{% if mesage_code_3 %}<h4>Klients ir bloķēts un atrodas melnajā sarakstā!</h4>{% endif %}
+
+{% if mesage_code_4 %}<h4>Klienta status ir izmainīts uz <b>{{ client.get_status_display }}</b>!</h4>{% endif %}
+</center>
+</div>
+<div class="modal-footer">
+ <button type="button" class="btn btn-default" data-dismiss="modal">Aizvērt</button>
+</form>
+</div></div></div></div>
+<!-- MesageModal Modal END -->
 
 
 <div class="row">
@@ -126,7 +156,9 @@ document.getElementById("avatar").style.borderColor = "red";
     <div class="container-fluid" style="background: #d2dff4; border: solid #ccc 1px; margin-bottom: 10px;">
      Informācija par klientu:<br>
 {% if client %}<b>{{ client.name}} {{ client.surname }}</b>,{% else %}Vārds, Uzvārds,{% endif %}<br>
-{% if client %}<b>{{ client.get_status_display }}</b>,{% else %}Status,{% endif %}<br>
+
+{% if client %}<b>{{ client.get_status_display }}</b>{% if client.society == True %} <b>(BIEDRĪBA)</b>{% endif %},<br>{% else %}Status,{% endif %}
+
      Aktīvais abonements,<br>
      palikušo reižu skaits/derīguma termiņš,<br>
      Pēdējā vizīte<br>
@@ -144,10 +176,16 @@ document.getElementById("avatar").style.borderColor = "red";
 
 
 <!-- KOLONA 2 START -->
- <div class="col-sm-6 col-md-6 col-lg-6">
+ <div class="col-sm-6 col-md-6 col-lg-6" style="border: solid red 1px;">
   <a href="/subscription">
    <button type="button" class="btn btn-info" data-dismiss="modal">Pirkt abonementu</button>
   </a>
+
+<br><br><br><br><br><br>
+<br><br><br><br><br><br>
+<br><br><br><br><br><br>
+<br><br><br><br><br><br>
+
  </div>
 </div>
 <!-- KOLONA 2 START -->

@@ -21,14 +21,14 @@ class Klienti(models.Model):
     class Meta():
         db_table = "klienti"
 
-    name = models.CharField( max_length = 15, default = '' )
-    surname = models.CharField( max_length = 15, default = '' )
+    name = models.CharField( max_length = 40, default = '' )
+    surname = models.CharField( max_length = 40, default = '' )
 
     avatar = models.ImageField( blank = True, null=True, upload_to = "client/" )
 
-    birthday = models.DateField( default = timezone.now )
-    phone = models.CharField( max_length=16, default = '' )
-    e_mail = models.EmailField ()
+    birthday = models.DateField( blank = True, null = True ) #, default = timezone.now )
+    phone = models.CharField( max_length=25, blank = True, null = True ) #default = '' )
+    e_mail = models.EmailField ( blank = True, null = True )
 
     card_nr = models.CharField( max_length = 16, default = '', blank = True )
 
@@ -36,6 +36,9 @@ class Klienti(models.Model):
     client_blocked = models.BooleanField( default=False )
 
     status = models.CharField( max_length = 1, choices = STATUS_CHOISE )
+    status_changed = models.BooleanField( default=False )
+    society = models.BooleanField( default=False )
+
     gender = models.CharField( max_length = 1, choices = GENDER_CHOISE )
 
     reg_date = models.DateTimeField( default = timezone.now )

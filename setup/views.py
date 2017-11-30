@@ -11,7 +11,7 @@ from setup.models import Settings
 def settings(request):
     args = create_args(request)
     if args['access'] == False:
-        return redirect ("http://kuvalda.lv/")
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
     args['active_tab_7'] = True
 
