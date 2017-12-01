@@ -8,7 +8,7 @@
   <tr style="background: #aaa;">
    <th style="vertical-align: top;">Vārds</th>
    <th style="vertical-align: top;">Uzvārds</th>
-   <th colspan="2" style="vertical-align: top;">Skapītis</th>
+   <th style="vertical-align: top;">Skapītis</th>
    <th style="vertical-align: top;">Iečekošanās laiks</th>
   </tr>
  </thead>
@@ -17,8 +17,9 @@
   <tr class="clickable-row">
    <td>{{ d.client.name }}</td>
    <td>{{ d.client.surname }}</td>
-   <td>{{ d.locker_type }}</td>
-   <td>{{ d.number }}</td>
+   <td {% if d.locker_type == "V" %}style="background: {{ man_locker_color }};"{% else %}style="background: {{ woman_locker_color }};"{% endif %}>
+    <center>{{ d.locker_type }} {{ d.number }}</center>
+   </td>
    <td>{{ d.checkin_time }}</td>
   </tr>
 {% endfor %}

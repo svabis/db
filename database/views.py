@@ -31,6 +31,8 @@ def main(request):
 
     args['active_tab_1'] = True
 
+    args['card_string'] = Settings.objects.get( key = "card string" ).value
+
    # New client created
     if "new_client" in request.COOKIES:
         args['new_client'] = True

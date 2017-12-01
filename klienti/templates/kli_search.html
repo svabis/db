@@ -21,6 +21,9 @@ jQuery(document).ready(function($) {
    <th style="vertical-align: top;">Vārds</th>
    <th style="vertical-align: top;">Uzvārds</th>
    <th style="vertical-align: top;">Dzimšanas datums</th>
+
+   <th colspan="2" style="vertical-align: top;">Status</th>
+
    <th style="vertical-align: top;">E-pasts</th>
    <th style="vertical-align: top;">Tālrunis</th>
   </tr>
@@ -32,6 +35,10 @@ jQuery(document).ready(function($) {
    <td>{{ c.name }}</td>
    <td>{{ c.surname }}</td>
    <td>{{ c.birthday }}</td>
+
+   <td>{{ c.status }}</td>
+   <td>{% if c.society == True %}<b>Biedrība</b>{% endif %}</td>
+
    <td>{{ c.e_mail }}</td>
    <td>{{ c.phone }}</td>
   </tr>

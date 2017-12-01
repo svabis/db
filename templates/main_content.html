@@ -14,7 +14,7 @@ $(document).ready(function(){
 {% if edit_client %}$("#ClientModal").modal('show');{% endif %}
 });
 
-var card_string = ";778=147050001=0";
+var card_string = "{{ card_string }}";
 var temp_string = ""; var char_count = 0; var card_start = false;
         
 $(document).keypress(function (e) {

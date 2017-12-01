@@ -2,8 +2,6 @@
 from django.db import models
 from django.utils import timezone
 
-
-# !!! Klienti !!!
 STATUS_CHOISE = (
     ('B', 'Biedrs'),
     ('S', 'Sudrabs'),
@@ -12,6 +10,19 @@ STATUS_CHOISE = (
     ('D', 'Darbinieks')
 )
 
+# !!! StatusType !!!
+class StatusType(models.Model):
+    class Meta():
+        db_table = "status_type"
+
+    status_name = models.CharField( max_length = 40, default = '' )
+    status_discount = models.CharField( max_length = 5, default = '' )
+
+    def __unicode__(self):
+        return u'%s' % (self.status_name)
+
+
+# !!! Klienti !!!
 GENDER_CHOISE = (
     ('V', 'Vīrietis'),
     ('S', 'Sieviete'),
@@ -21,13 +32,16 @@ class Klienti(models.Model):
     class Meta():
         db_table = "klienti"
 
+   # ID FROM S3 DATABASE FOR BINDING KLIENTS, IMAGES, NOTES E.T.C.
+    s3_nr = models.CharField( max_length = 10, default = '' )
+
     name = models.CharField( max_length = 40, default = '' )
     surname = models.CharField( max_length = 40, default = '' )
 
     avatar = models.ImageField( blank = True, null=True, upload_to = "client/" )
 
-    birthday = models.DateField( blank = True, null = True ) #, default = timezone.now )
-    phone = models.CharField( max_length=25, blank = True, null = True ) #default = '' )
+    birthday = models.DateField( blank = True, null = True )
+    phone = models.CharField( max_length = 25, blank = True, null = True )
     e_mail = models.EmailField ( blank = True, null = True )
 
     card_nr = models.CharField( max_length = 16, default = '', blank = True )
@@ -35,7 +49,8 @@ class Klienti(models.Model):
     card_blocked = models.BooleanField( default=False )
     client_blocked = models.BooleanField( default=False )
 
-    status = models.CharField( max_length = 1, choices = STATUS_CHOISE )
+    status = models.ForeignKey( StatusType )
+#.CharField( max_length = 1, choices = STATUS_CHOISE )
     status_changed = models.BooleanField( default=False )
     society = models.BooleanField( default=False )
 

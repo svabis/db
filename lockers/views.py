@@ -23,18 +23,23 @@ def locker(request):
     else:
         redirect ("/")
 
-    lockers_filled = []
-#    lockers_filled = Skapji.objects.filter( locker_type = client.gender ) #.values( 'number' )
-    lockers_temp = Skapji.objects.filter( locker_type = client.gender ) #.values( 'number' )
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!! INSERT DISABLED LOCKERS !!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+   # LOCKER COLORS FROM SETTINGS
+    args['woman_locker_color'] = Settings.objects.get( key = "woman locker color" ).value
+    args['man_locker_color'] = Settings.objects.get( key = "man locker color" ).value
+
+    lockers_filled = []
+    lockers_temp = Skapji.objects.filter( locker_type = client.gender )
     for n in lockers_temp:
         lockers_filled.append( int(n.number) )
 
     lockers = []
-
    # MALE LOCKERS
     if client.gender == "V":
-       for i in range(1,106):
+       for i in range(1, int(Settings.objects.get( key = "man locker count" ).value) + 1 ):
            if i not in lockers_filled:
                lockers.append([i,0])
            else:
@@ -42,7 +47,7 @@ def locker(request):
 
    # FEMALE LOCKERS
     else:
-       for i in range(1,177):
+       for i in range(1, int(Settings.objects.get( key = "woman locker count" ).value) + 1 ):
            if i not in lockers_filled:
                lockers.append([i,0])
            else:
@@ -50,23 +55,23 @@ def locker(request):
 
     args['lockers'] = lockers
     args['gender'] = client.gender
-
     return render_to_response ( 'locker.html', args )
 
 
+#============================================================
 # !!!! CHECK IN !!!!!
 def locker_checkin(request, gender, locker_nr):
     if "active_client" in request.COOKIES:
         c_id = int(request.COOKIES.get(str('active_client')))
         client = Klienti.objects.get( id = c_id )
 
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!! Test if locker is available !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # !!!!! Test if client is not checked in already !!!!!
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!! Test if locker is available !!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     new_checkin = Skapji( number = locker_nr, locker_type = gender, client = client )
     new_checkin.save()
@@ -85,6 +90,11 @@ def persons_in_club(request):
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
+   # LOCKER COLORS FROM SETTINGS
+    args['woman_locker_color'] = Settings.objects.get( key = "woman locker color" ).value
+    args['man_locker_color'] = Settings.objects.get( key = "man locker color" ).value
+
+    args['active_tab_4'] = True
     args['data'] = Skapji.objects.all().order_by( 'checkin_time' )
 
     return render_to_response ( 'in_club.html', args )

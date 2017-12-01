@@ -3,9 +3,12 @@ main_head.html
   active_tab_1  "home"
   active_tab_2  Jauns klients
   active_tab_3  Rediģēt
-  active_tab_4  Atskaites
-  active_tab_5  Plānotājs
-  active_tab_6  Uzstādījumi
+
+  active_tab_4  Kas klubā
+
+  active_tab_5  Atskaites
+  active_tab_6  Plānotājs
+  active_tab_7  Uzstādījumi
 
   admin - 
 
@@ -13,11 +16,23 @@ main_head.html
 
   help - palīdzības tabs
 
+  {% block main_view %}{% endblock %}
 
-  {% block main %}
-  {% block new_client %}
-  {% block edit_client %}
-  {% block reports %}
-  {% block settings %}
-  {% block logsys %}
+  {% block search %}{% endblock %}
+
+  {% block new_client %}{% endblock %}
+  {% block edit_client %}{% endblock %}
+
+  {% block locker %}{% endblock %}
+  {% block in_club %}{% endblock %}
+
+  {% block subscription %}{% endblock %}
+  {% block freeze_subscription %}{% endblock %}
+
+  {% block settings %}{% endblock %}
+
+
+
+  {% block reports %}{% endblock %}
+  {% block logsys %}{% endblock %}
 
