@@ -2,7 +2,7 @@
 from django.db import models
 from django.utils import timezone
 
-from klienti.models import Klienti
+from clients.models import Klienti
 
 GENDER_CHOISE = (
     ('V', 'Vīrietis'),

@@ -5,14 +5,14 @@ from django.core.context_processors import csrf
 
 from django.db.models import Q # search in multiple columns
 
-from klienti.forms import KlientsForm
-from klienti.models import Klienti
+from clients.forms import KlientsForm
+from clients.models import Klienti
 
 from setup.models import Settings
 
 from database.args import create_args
 
-from klienti.paginator import Paginator  # import paginator
+from clients.paginator import Paginator  # import paginator
 import math # for rounding up Page Counter
 
 

@@ -4,7 +4,7 @@ import re       # for regular expresions (regex)
 import datetime # for file create field
 import pytz	# to set timezone
 
-from klienti.models import Klienti, StatusType
+from clients.models import Klienti, StatusType
 
 from slugify import slugify
 

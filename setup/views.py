@@ -5,7 +5,7 @@ from django.core.context_processors import csrf
 
 from database.args import create_args
 
-from klienti.models import StatusType
+from clients.models import StatusType
 from setup.models import Settings
 
 

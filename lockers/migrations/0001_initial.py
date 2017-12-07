@@ -8,7 +8,7 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('klienti', '0015_auto_20171126_0807'),
+        ('clients', '0001_initial'),
     ]
 
     operations = [
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('number', models.CharField(max_length=3)),
                 ('locker_type', models.CharField(max_length=1, choices=[(b'V', b'V\xc4\xabrietis'), (b'S', b'Sieviete')])),
                 ('checkin_time', models.DateTimeField(default=django.utils.timezone.now)),
-                ('client', models.ForeignKey(related_name='locker_client', to='klienti.Klienti')),
+                ('client', models.ForeignKey(related_name='locker_client', to='clients.Klienti')),
             ],
             options={
                 'db_table': 'skapji',

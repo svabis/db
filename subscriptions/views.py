@@ -8,7 +8,7 @@ from database.args import create_args
 from setup.models import Settings
 
 # Klienta modelis
-from klienti.models import Klienti
+#from clients.models import Klienti
 
 
 #============================================================

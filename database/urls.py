@@ -26,7 +26,7 @@ urlpatterns = [
 
 # ===============================================================
 # Klienti
-    url(r'^client/', include('klienti.urls')),
+    url(r'^client/', include('clients.urls')),
 
 # ===============================================================
 # Kas klubā

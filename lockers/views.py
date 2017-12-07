@@ -7,7 +7,7 @@ from database.args import create_args
 
 from setup.models import Settings
 
-from klienti.models import Klienti
+from clients.models import Klienti
 from lockers.models import Skapji
 
 #============================================================
