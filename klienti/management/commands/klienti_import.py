@@ -4,7 +4,7 @@ import re       # for regular expresions (regex)
 import datetime # for file create field
 import pytz	# to set timezone
 
-from klienti.models import Klienti
+from klienti.models import Klienti, StatusType
 
 from slugify import slugify
 
@@ -31,7 +31,10 @@ class Command(BaseCommand):
 # 7 Status
 
        start = False
+       start = True
        counter = 0
+
+       temp_status = StatusType.objects.all()[0]
 
        for line in lines:
          l = line.split('\t')
@@ -72,20 +75,20 @@ class Command(BaseCommand):
            if birthday_exist == True:
               # AVATAR + BIRTHDAY
                if avatar_exist == True:
-                   new_client = Klienti( avatar = avatar_temp, name = l[1], surname = l[2], birthday = time, phone=l[4], e_mail=l[5],  gender = gender_temp )
+                   new_client = Klienti( avatar = avatar_temp, name = l[1], surname = l[2], birthday = time, phone=l[4], e_mail=l[5],  gender = gender_temp, status=temp_status, s3_nr=l[0] )
                    new_client.save()
               # BIRTHDAY
                else:
-                   new_client = Klienti( name = l[1], surname = l[2], birthday = time, phone=l[4], e_mail=l[5],  gender = gender_temp )
+                   new_client = Klienti( name = l[1], surname = l[2], birthday = time, phone=l[4], e_mail=l[5],  gender = gender_temp, status=temp_status, s3_nr=l[0] )
                    new_client.save()
            else:
               # AVATAR
                if avatar_exist == True:
-                   new_client = Klienti( avatar = avatar_temp, name = l[1], surname = l[2], phone=l[4], e_mail=l[5],  gender = gender_temp )
+                   new_client = Klienti( avatar = avatar_temp, name = l[1], surname = l[2], phone=l[4], e_mail=l[5],  gender = gender_temp, status=temp_status, s3_nr=l[0] )
                    new_client.save()
               # NO BIRTHDAY + NO AVATAR
                else:
-                   new_client = Klienti( name = l[1], surname = l[2], phone=l[4], e_mail=l[5],  gender = gender_temp )
+                   new_client = Klienti( name = l[1], surname = l[2], phone=l[4], e_mail=l[5],  gender = gender_temp, status=temp_status, s3_nr=l[0] )
                    new_client.save()
 
 #           print new_client

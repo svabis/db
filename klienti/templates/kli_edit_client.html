@@ -125,11 +125,11 @@ function readURL(input, display) {
   <div class="col-sm-4 col-md-4 col-lg-4" style="margin-top: 10px;">
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_status">Aktīvais abonements:</label>
-    <textarea class="form-control" cols="40" id="id_subscripton" name="subscripton" rows="2" style="resize:none;">Aktīva abonementa nav</textarea>
+    <textarea class="form-control" cols="40" id="id_subscripton" name="subscripton" rows="2" style="resize:none;" readonly="readonly">Aktīva abonementa nav</textarea>
    </div>
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_status">Apdrošināšanas polise:</label>
-    <input class="form-control" type="text" id="id_insurance" name="insurance">
+    <input class="form-control" type="text" id="id_insurance" name="insurance" readonly="readonly">
    </div>
   </div>
 
@@ -145,7 +145,7 @@ function readURL(input, display) {
      <a href="/subscription/"><button type="button" class="btn btn-success" style="min-width: 80px; max-width: 80px;">Pirkt</button></a>
     </div>
     <div class="col-sm-5 col-md-5 col-lg-5">
-     <a href="/freeze_subscription/"><button type="button" class="btn btn-info pull-right">Abonemeta iesaldēšana</button></a>
+     <a href="/subscription_freeze/"><button type="button" class="btn btn-info pull-right">Abonemeta iesaldēšana</button></a>
     </div>
    </div>
 
@@ -157,7 +157,7 @@ function readURL(input, display) {
      </div>
     </div>
     <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 15px;">
-     <input class="form-control" type="text" id="id_frozen_subscription" name="frozen_subscription">
+     <input class="form-control" type="text" id="id_frozen_subscription" name="frozen_subscription" readonly="readonly">
     </div>
    </div>
 

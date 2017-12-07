@@ -52,91 +52,53 @@ def main(request):
     else:
         client = False
 
-
+   # Card scanned
     if request.POST:
         client_card = int(request.POST.get('id', ''))
-#        client = Klienti.objects.get( card_nr = client_card )
-        client = Klienti.objects.get( id = client_card )
+        try:
+#            client = Klienti.objects.get( card_nr = client_card )
+            client = Klienti.objects.get( id = client_card )
 
-        args['abon_active'] = True
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!! Modal apvienojums, vai dalījums ? !!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!! INSERT CARD NOT FOUND E.T.C. !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+           # Karte bloķēta
+            if client.card_blocked == True:
+                 args['message'] = True
+                 args['message_type'] = "message"
+                 args['message_code_2'] = True
 
-#        id = int(request.POST.get('id', ''))
-#        if id == "14083":
-#            client = Klienti.objects.all()[0]
-#            args['abon_active'] = True
-#        if id == "uldis":
-#            client = Klienti.objects.all()[0]
-#            args['abon_active'] = True
-#        if id == "1":
-#            client = Klienti.objects.all()[2]
-#            args['abon_active'] = True
-#        if id == "2":
-#            client = Klienti.objects.all()[3]
-#        if id == "3":
-#            client = Klienti.objects.all()[4]
-#        if id == "klblok":
-#            client = Klienti.objects.all()[2]
-#            args['mesage'] = True
-#            args['mesage_type'] = "error"
-#            args['mesage_code_3'] = True
-#        if id == "cblok":
-#            client = Klienti.objects.all()[2]
-#            args['mesage'] = True
-#            args['mesage_type'] = "error"
-#            args['mesage_code_2'] = True
-#        if id == "er":
-#            args['mesage'] = True
-#            args['mesage_type'] = "error"
-#            args['mesage_code_1'] = True
+           # Karte melnajā sarakstā
+            if client.client_blocked == True:
+                 args['message'] = True
+                 args['message_type'] = "message"
+                 args['message_code_3'] = True
 
-#        if id == "svabis" or  id == "20002":
-#            client = Klienti.objects.get(id=18077)
-#            args['mesage'] = True
-#            args['mesage_type'] = "mesage"
-#            args['mesage_code_4'] = True
-#            args['abon_active'] = True
+           # Klienta status ir mainījies
+            if client.status_changed == True:
+                 args['message'] = True
+                 args['message_type'] = "message"
+                 args['message_code_4'] = True
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!!   ABONEMENTU APSTRĀDES ALGORITMS   !!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            args['abon_active'] = True # pagaidām bez algoritma, 1-scan card=lockers, 2-atgriežoties no citas sadaļas=subscription
+
+        except:
+           # Klients nav atrasts
+            args['message'] = True
+            args['message_type'] = "error"
+            args['message_code_1'] = True
 
     if client != False:
         args['client'] = client
 
     response = render_to_response ( 'main_content.html', args )
-#    response = rendirect ("/")
+#    response = rendirect ("/") # domāts ja strādā ar cookies, lai disable refresh iespēju iekš lapas
     try:
         response.set_cookie( key='active_client', value=client.id )
     except:
         response.delete_cookie('active_client')
     return response
-
-
-#============================================================
-# !!!!! ABONEMENTI !!!!!
-def subscription(request):
-    args = create_args(request)
-    if args['access'] == False:
-        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
-
-    return render_to_response ( 'subscription.html', args )
-
-
-# !!!!! ABONEMENTA APMAKSA !!!!!
-def subscription_payment(request):
-    args = create_args(request)
-    if args['access'] == False:
-        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
-
-    return render_to_response ( 'subscription_payment.html', args )
-
-
-# !!!!! ABONEMENTA IESLADĒŠANA !!!!!
-def freeze_subscription(request):
-    args = create_args(request)
-    if args['access'] == False:
-        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
-
-    return render_to_response ( 'freeze_subscription.html', args )
-
-

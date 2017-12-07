@@ -8,7 +8,7 @@ function clearID() {
 }
 
 $(document).ready(function(){
-{% if mesage %}$("#MesageModal").modal('show');{% endif %}
+{% if message %}$("#MesageModal").modal('show');{% endif %}
 
 {% if new_client %}$("#ClientModal").modal('show');{% endif %}
 {% if edit_client %}$("#ClientModal").modal('show');{% endif %}
@@ -72,16 +72,16 @@ $(document).keypress(function (e) {
 <div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
 <div class="modal-header">
  <h3 style="margin-top:5px; margin-bottom:5px;">
-{% if mesage_type == "error" %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;Kļūda!</h3>{% endif%}
-{% if mesage_type == "mesage" %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Paziņojums!</h3>{% endif%}
+{% if message_type == "error" %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;Kļūda!</h3>{% endif%}
+{% if message_type == "message" %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Paziņojums!</h3>{% endif%}
 </div>
 <div class="modal-body">
 <center>
-{% if mesage_code_1 %}<h4>Klienta karte nav reģistrēta, ieraksts nav atrasts!</h4>{% endif %}
-{% if mesage_code_2 %}<h4>Klienta karte ir BLOĶĒTA!</h4>{% endif %}
-{% if mesage_code_3 %}<h4>Klients ir bloķēts un atrodas melnajā sarakstā!</h4>{% endif %}
+{% if message_code_1 %}<h4>Klienta karte nav reģistrēta, ieraksts nav atrasts!</h4>{% endif %}
+{% if message_code_2 %}<h4>Klienta karte ir BLOĶĒTA!</h4>{% endif %}
+{% if message_code_3 %}<h4>Klients ir bloķēts un atrodas melnajā sarakstā!</h4>{% endif %}
 
-{% if mesage_code_4 %}<h4>Klienta status ir izmainīts uz <b>{{ client.get_status_display }}</b>!</h4>{% endif %}
+{% if message_code_4 %}<h4>Klienta status ir izmainīts uz <b>{{ client.status }}</b> !</h4>{% endif %}
 </center>
 </div>
 <div class="modal-footer">
@@ -157,7 +157,7 @@ document.getElementById("avatar").style.borderColor = "red";
      Informācija par klientu:<br>
 {% if client %}<b>{{ client.name}} {{ client.surname }}</b>,{% else %}Vārds, Uzvārds,{% endif %}<br>
 
-{% if client %}<b>{{ client.get_status_display }}</b>{% if client.society == True %} <b>(BIEDRĪBA)</b>{% endif %},<br>{% else %}Status,{% endif %}
+{% if client %}<b>{{ client.status }}</b>{% if client.society == True %} <b>(BIEDRĪBA)</b>{% endif %},<br>{% else %}Status,{% endif %}
 
      Aktīvais abonements,<br>
      palikušo reižu skaits/derīguma termiņš,<br>

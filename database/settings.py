@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'log',
     'lockers',
     'setup',
+    'subscriptions',
     'django_cleanup'
 )
 

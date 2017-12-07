@@ -1,6 +1,11 @@
 {% extends 'main_head.html' %}
 {% load staticfiles %}
 {% block freeze_subscription %}
+<style>
+#hider { position: absolute; top: 0px; left: 0px; right: 0px; height: 50px; background: #000; opacity: 0.6; }
+</style>
+
+<div id="hider"></div>
 
 <h3>Abonementu iesaldēšana</h3>
 
@@ -29,7 +34,7 @@
 
 <div class="row text-right">
  <a href="#"><button type="button" class="btn btn-success">Iesaldēt</button></a>
- <a href="#"><button type="button" class="btn btn-danger">Atcelt</button></a> 
+ <a href="/client/edit/"><button type="button" class="btn btn-danger">Atcelt</button></a> 
 </div>
 
 {% endblock %}

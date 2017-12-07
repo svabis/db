@@ -40,9 +40,9 @@ urlpatterns = [
     url(r'^locker_checkin/(?P<gender>\w+)/(?P<locker_nr>\d+)/$', 'lockers.views.locker_checkin'),
 
 # Abonementi
-    url(r'^subscription/$', 'database.views.subscription'),
-    url(r'^subscription_payment/$', 'database.views.subscription_payment'),
-    url(r'^freeze_subscription/$', 'database.views.freeze_subscription'),
+    url(r'^subscription/$', 'subscriptions.views.subscription'),
+    url(r'^subscription_payment/$', 'subscriptions.views.subscription_payment'),
+    url(r'^subscription_freeze/$', 'subscriptions.views.subscription_freeze'),
 
 
 # ===============================================================
