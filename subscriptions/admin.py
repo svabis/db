@@ -6,8 +6,8 @@ from subscriptions.models import *
 
 # !!!!! Abonementu_tipi !!!!!
 class AbonementTypeAdmin(admin.ModelAdmin):
-    list_display = ['title', 'price', 'special', 'first_time', 'best_before', 'time_limit', 'times', 'times_count']
-    list_filter = ['title', 'price', 'special', 'first_time', 'best_before', 'time_limit', 'times', 'times_count']
+    list_display = ['title', 'short_title', 'position', 'price', 'special', 'first_time', 'best_before', 'time_limit', 'times', 'times_count']
+    list_filter = ['title', 'short_title', 'position', 'price', 'special', 'first_time', 'best_before', 'time_limit', 'times', 'times_count']
 #    search_fields = []
 #    exclude = []
 

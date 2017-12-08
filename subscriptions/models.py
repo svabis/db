@@ -10,6 +10,10 @@ class AbonementType(models.Model):
         db_table = "abonementu_tipi"
 
     title = models.CharField( max_length = 60, default = '' ) # nosaukums
+
+    short_title = models.CharField( max_length = 60, default = '' ) # saīsinātais nosaukums ar HTML tagiem priekš izvēles sadaļas
+    position = models.IntegerField( blank = True, null = True ) # novietojums izvēles sadaļā
+
     price = models.DecimalField( max_digits = 5, decimal_places = 2 ) # cena
 
     special = models.BooleanField( default=False ) # īpašie abonementi

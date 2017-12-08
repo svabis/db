@@ -3,9 +3,22 @@
 {% block subscription %}
 <style>
 #hider { position: absolute; top: 0px; left: 0px; right: 0px; height: 50px; background: #000; opacity: 0.6; }
+hr { margin-top:5px; margin-bottom:5px;}
 </style>
 
 <div id="hider"></div>
+
+<script>
+jQuery(document).ready(function($) {
+  $(document).keyup(function (e) {
+    // ESC 27
+    if ( e.keyCode === 27 ) {
+      window.location.href = "/";
+    }
+  });
+});
+</script>
+
 
 <h3>Abonementu veidi</h3>
 
@@ -13,19 +26,31 @@
 <div class="row" style="border: solid black 1px;">
 <!-- RINDA 1 KOLONA 1-->
  <div class="col-lg-8 col-md-8 col-sm-8" style="border: solid black 1px;">
-kolona 1
+kolona 1<br>
+
+{% for a in abonementi %}
+<b>{{ a.short_title }}</b><hr>
+{% endfor %}
 
  </div>
 
 <!-- RINDA 1 KOLONA 2-->
  <div class="col-lg-2 col-md-2 col-sm-2" style="border: solid black 1px;">
-kolona 2
+kolona 2<br>
+
+{% for v in vienreiz %}
+<b>{{ v.short_title }}</b><hr>
+{% endfor %}
 
  </div>
 
 <!-- RINDA 1 KOLONA 3-->
  <div class="col-lg-2 col-md-2 col-sm-2" style="border: solid black 1px;">
-kolona 3
+kolona 3<br>
+
+{% for s in special %}
+<b>{{ s.short_title }}</b><hr>
+{% endfor %}
 
  </div>
 </div>
@@ -33,7 +58,11 @@ kolona 3
 <!-- RINDA 2 -->
 <div class="row" style="border: solid black 1px;">
  <div class="col-lg-12 col-md-12 col-sm-12" style="border: solid black 1px;">
-rinda 2
+rinda 2<br>
+
+{% for f in first_time %}
+<b>{{ f.short_title }}</b><hr>
+{% endfor %}
 
  </div>
 </div>
@@ -41,7 +70,7 @@ rinda 2
 <!-- RINDA 3 -->
 <div class="row text-right" style="margin-top: 10px;">
  <a href="/subscription_payment/"><button type="button" class="btn btn-success">Pirkt</button></a>
- <a href="#"><button type="button" class="btn btn-danger">Atcelt</button></a>
+ <a href="/"><button type="button" class="btn btn-danger">Atcelt</button></a>
 </div>
 
 

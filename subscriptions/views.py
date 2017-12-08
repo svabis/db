@@ -7,6 +7,7 @@ from database.args import create_args
 
 from setup.models import Settings
 
+from subscriptions.models import AbonementType
 # Klienta modelis
 #from clients.models import Klienti
 
@@ -17,6 +18,14 @@ def subscription(request):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    args['abonementi'] = AbonementType.objects.filter( position = 1 )
+
+    args['vienreiz'] = AbonementType.objects.filter( position = 2 )
+
+    args['special'] = AbonementType.objects.filter( position = 3 )
+
+    args['first_time'] = AbonementType.objects.filter(  position = 4 )
 
     return render_to_response ( 'subscription_choise.html', args )
 

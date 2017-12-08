@@ -1,5 +1,11 @@
 {% extends 'main_head.html' %}
 {% load staticfiles %}
+
+{% block javascript %}
+<script type="text/javascript" src="{% static 'bootstrap/js/datepicker.js' %}"></script>
+<link rel="stylesheet" href="{% static 'bootstrap/css/datepicker.css' %}"/>
+{% endblock %}
+
 {% block freeze_subscription %}
 <style>
 #hider { position: absolute; top: 0px; left: 0px; right: 0px; height: 50px; background: #000; opacity: 0.6; }
@@ -31,6 +37,17 @@
   </div>
  </div>
 </div>
+
+<script>
+$(document).ready(function(){ var date_input=$('input[name="freeze_start"]');
+ var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ var options={ format: 'dd/mm/yyyy', container: container, todayHighlight: true, autoclose: true, weekStart: 1, };
+ date_input.datepicker(options); })
+$(document).ready(function(){ var date_input=$('input[name="freeze_end"]');
+ var container=$('.form-group form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ var options={ format: 'dd/mm/yyyy', container: container, todayHighlight: true, autoclose: true, weekStart: 1, };
+ date_input.datepicker(options); })
+</script>
 
 <div class="row text-right">
  <a href="#"><button type="button" class="btn btn-success">Iesaldēt</button></a>
