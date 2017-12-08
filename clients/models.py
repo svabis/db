@@ -2,13 +2,6 @@
 from django.db import models
 from django.utils import timezone
 
-STATUS_CHOISE = (
-    ('B', 'Biedrs'),
-    ('S', 'Sudrabs'),
-    ('Z', 'Zelts'),
-    ('V', 'VIP'),
-    ('D', 'Darbinieks')
-)
 
 # !!! StatusType !!!
 class StatusType(models.Model):
