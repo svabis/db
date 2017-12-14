@@ -14,7 +14,8 @@
   .navbar-xs .navbar-default .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu { background-color: #ccc; }
   .navbar-default { background-color: #ccc; border-bottom: 1px solid #ddd !important; }
   .divider-vertical { height: 50px; border-right: 2px solid #ccc; }
-  #avatar { width: 192px; height: 144px; border: solid #aaa 3px; }
+  #avatar { width: 256px; height: 192px; border: solid #aaa 3px; }
+/* 192px; height: 144px; border: solid #aaa 3px; } */
   {% block style %}{% endblock %}
 </style>
 </head>
@@ -46,26 +47,26 @@
   {% if active_tab_3 %}<li class="active">{% else %}<li>{% endif %}<a href="/client/edit/"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 <span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp;Rediģēt</a></li><li class="divider-vertical"></li>
 
-  {% if active_tab_4 %}<li class="active">{% else %}<li>{% endif %}<a href="/in_club/"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+  {% if active_tab_4 %}<li class="active">{% else %}<li>{% endif %}<a href="/lockers/taken/"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>
 <span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp;Kas klubā</a></li><li class="divider-vertical"></li>
 
+{% if admin %}
   {% if active_tab_5 %}<li class="active">{% else %}<li>{% endif %}<a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true">
 </span> &nbsp;Atskaites</a></li><li class="divider-vertical"></li>
+{% endif%}
 
   {% if active_tab_6 %}<li class="active">{% else %}<li>{% endif %}<a href="http://pieraksts.vfabrika.lv/reception/" target="_blank"><span class="glyphicon glyphicon-calendar" aria-hidden="true">
 </span> &nbsp;Plānotājs</a></li><li class="divider-vertical"></li>
 
+{% if admin %}
   {% if active_tab_7 %}<li class="active">{% else %}<li>{% endif %}<a href="/settings/"><span class="glyphicon glyphicon-cog" aria-hidden="true">
 </span> &nbsp;Uzstādījumi</a></li>
+{% endif%}
 
-
-
-{% if admin %}{% endif%}
  </ul>
 
  <ul class="nav navbar-nav navbar-right">
 {% if django %}
-<!--  <li class="divider-vertical"></li> -->
   <li><a href="/admin/" target="_blank" style="color: #CC0000;"><span class="glyphicon glyphicon-cog" aria-hidden="true" style="color: #CC0000;"></span> &nbsp;Django</a></li>
 {% endif %}
 

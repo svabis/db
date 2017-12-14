@@ -29,20 +29,12 @@ urlpatterns = [
     url(r'^client/', include('clients.urls')),
 
 # ===============================================================
-# Kas klubā
-    url(r'^in_club/$', 'lockers.views.persons_in_club'),
-
+# Abonementi
+    url(r'^subscription', include('subscriptions.urls')),
 
 # ===============================================================
 # Skapīši
-    url(r'^locker/$', 'lockers.views.locker'),
-# checkin
-    url(r'^locker_checkin/(?P<gender>\w+)/(?P<locker_nr>\d+)/$', 'lockers.views.locker_checkin'),
-
-# Abonementi
-    url(r'^subscription/$', 'subscriptions.views.subscription'),
-    url(r'^subscription_payment/$', 'subscriptions.views.subscription_payment'),
-    url(r'^subscription_freeze/$', 'subscriptions.views.subscription_freeze'),
+    url(r'^lockers', include('lockers.urls')),
 
 
 # ===============================================================

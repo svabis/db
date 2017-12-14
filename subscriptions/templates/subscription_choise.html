@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
   $(document).keyup(function (e) {
     // ESC 27
     if ( e.keyCode === 27 ) {
-      window.location.href = "/";
+      window.location.href = "{{ back }}";
     }
   });
 });
@@ -70,7 +70,7 @@ rinda 2<br>
 <!-- RINDA 3 -->
 <div class="row text-right" style="margin-top: 10px;">
  <a href="/subscription_payment/"><button type="button" class="btn btn-success">Pirkt</button></a>
- <a href="/"><button type="button" class="btn btn-danger">Atcelt</button></a>
+ <a href="{{ back }}"><button type="button" class="btn btn-danger">Atcelt</button></a>
 </div>
 
 

@@ -14,10 +14,17 @@ from subscriptions.models import AbonementType
 
 #============================================================
 # !!!!! ABONEMENTI !!!!!
-def subscription(request):
+def subscription(request, back=False):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+   # return path from this view
+    if back == "edit":
+        args['back'] = "/client/edit/"
+
+    else:
+        args['back'] = "/"
 
     args['abonementi'] = AbonementType.objects.filter( position = 1 )
 

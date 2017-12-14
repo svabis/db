@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block main_view %}
 
-<script> // ;778=147050001=014083?
+<script>
 function clearID() {
   window.location.href = "/clear_id/";
 }
@@ -32,8 +32,12 @@ $(document).keypress(function (e) {
 
   // ENTER
     if ( e.keyCode == 13 ) {
-  {% if client and abon_active %}
-       window.location.href = "/locker/";
+  {% if client and abon_active and checked == False %}
+       window.location.href = "/lockers/";
+
+  {% elif client and checked == True %}
+       window.location.href = "/lockers/checkout/";
+
   {% elif client %}
        window.location.href = "/subscription/";
   {% endif %}
@@ -93,7 +97,7 @@ $(document).keypress(function (e) {
 
 <div class="row">
 <!-- KOLONA 1 START -->
- <div class="col-sm-6 col-md-6 col-lg-6">
+ <div class="col-sm-7 col-md-7 col-lg-7" style="border: solid green 1px;">
 <!-- Search -->
   <div class="row">
     <table class="table">
@@ -149,6 +153,12 @@ document.getElementById("avatar").style.borderColor = "red";
      {% else %}
      <img id="avatar" src="{% static 'avatar_wait.png' %}"/>
      {% endif %}
+     <br><br>
+     {% if client_locker %}
+     <div style="border: solid black 2px; {% if client_locker.locker_type == "V" %}background: {{ man_locker_color }};{% else %}background: {{ woman_locker_color }};{% endif %}">
+      <center>{{client_locker.locker_type}} {{ client_locker.number }}</center>
+     </div>
+     {% endif %}
    </div>
 
 
@@ -176,7 +186,7 @@ document.getElementById("avatar").style.borderColor = "red";
 
 
 <!-- KOLONA 2 START -->
- <div class="col-sm-6 col-md-6 col-lg-6" style="border: solid red 1px;">
+ <div class="col-sm-5 col-md-5 col-lg-5" style="border: solid red 1px;">
   <a href="/subscription">
    <button type="button" class="btn btn-info" data-dismiss="modal">Pirkt abonementu</button>
   </a>

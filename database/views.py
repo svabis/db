@@ -10,6 +10,9 @@ from setup.models import Settings
 # Klienta modelis
 from clients.models import Klienti
 
+# Skapīši modelis
+from lockers.models import Skapji
+
 
 # !!!!! Clear ID !!!!!
 def clear_id(request):
@@ -29,9 +32,13 @@ def main(request):
 
     args.update(csrf(request))      # ADD CSRF TOKEN
 
-    args['active_tab_1'] = True
-
+   # SETTINGS
+    args['woman_locker_color'] = Settings.objects.get( key = "woman locker color" ).value
+    args['man_locker_color'] = Settings.objects.get( key = "man locker color" ).value
     args['card_string'] = Settings.objects.get( key = "card string" ).value
+
+
+    args['active_tab_1'] = True
 
    # New client created
     if "new_client" in request.COOKIES:
@@ -59,41 +66,54 @@ def main(request):
 #            client = Klienti.objects.get( card_nr = client_card )
             client = Klienti.objects.get( id = client_card )
 
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!! Modal apvienojums, vai dalījums ? !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-           # Karte bloķēta
-            if client.card_blocked == True:
-                 args['message'] = True
-                 args['message_type'] = "message"
-                 args['message_code_2'] = True
-
-           # Karte melnajā sarakstā
-            if client.client_blocked == True:
-                 args['message'] = True
-                 args['message_type'] = "message"
-                 args['message_code_3'] = True
-
-           # Klienta status ir mainījies
-            if client.status_changed == True:
-                 args['message'] = True
-                 args['message_type'] = "message"
-                 args['message_code_4'] = True
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!!   ABONEMENTU APSTRĀDES ALGORITMS   !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            args['abon_active'] = True # pagaidām bez algoritma, 1-scan card=lockers, 2-atgriežoties no citas sadaļas=subscription
-
         except:
            # Klients nav atrasts
             args['message'] = True
             args['message_type'] = "error"
             args['message_code_1'] = True
+            client = False
 
     if client != False:
         args['client'] = client
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!! Modal apvienojums. !!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+       # Karte bloķēta
+        if client.card_blocked == True:
+             args['message'] = True
+             args['message_type'] = "message"
+             args['message_code_2'] = True
+
+       # Karte melnajā sarakstā
+        if client.client_blocked == True:
+             args['message'] = True
+             args['message_type'] = "message"
+             args['message_code_3'] = True
+
+       # Klienta status ir mainījies
+        if client.status_changed == True:
+            # Make changes
+             client.status_changed = False
+             client.save()
+             args['message'] = True
+             args['message_type'] = "message"
+             args['message_code_4'] = True
+
+       # Skapīša info
+        try:
+           # Skapītis piešķirts
+            args['client_locker'] = Skapji.objects.get( client = client )
+            args['checked'] = True
+        except:
+           # klients nav iečekojies
+            args['checked'] = False
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!!   ABONEMENTU APSTRĀDES ALGORITMS   !!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        args['abon_active'] = True # pagaidām bez algoritma, 1-scan card=lockers, 2-atgriežoties no citas sadaļas=subscription
 
     response = render_to_response ( 'main_content.html', args )
 #    response = rendirect ("/") # domāts ja strādā ar cookies, lai disable refresh iespēju iekš lapas

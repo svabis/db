@@ -13,6 +13,17 @@
 
 <div id="hider"></div>
 
+<script>
+jQuery(document).ready(function($) {
+  $(document).keyup(function (e) {
+    // ESC 27
+    if ( e.keyCode === 27 ) {
+      window.location.href = "/client/edit/";
+    }
+  });
+});
+</script>
+
 <h3>Abonementu iesaldēšana</h3>
 
 <div class="row">

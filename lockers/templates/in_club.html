@@ -3,6 +3,18 @@
 
 {% block in_club %}
 
+<script>
+jQuery(document).ready(function($) {
+  $(document).keyup(function (e) {
+    // ESC 27
+    if ( e.keyCode === 27 ) {
+      window.location.href = "/";
+    }
+  });
+});
+</script>
+
+
 <table class="table table-hover table-striped table-condensed">
  <thead>
   <tr style="background: #aaa;">

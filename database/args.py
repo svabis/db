@@ -38,6 +38,7 @@ def create_args(request):
 
 
     args['help'] = False
-    args['django'] = True
+#    args['admin'] = True
+#    args['django'] = True
     return args
 

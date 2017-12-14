@@ -76,9 +76,21 @@ def locker_checkin(request, gender, locker_nr):
     new_checkin = Skapji( number = locker_nr, locker_type = gender, client = client )
     new_checkin.save()
 
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!! respone ar COOKIE - iečekots, OR SOMTHING LIKE THAT !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    return redirect ('/')
+
+
+#============================================================
+# !!!! CHECK OUT !!!!!
+def locker_checkout(request):
+    if "active_client" in request.COOKIES:
+        c_id = int(request.COOKIES.get(str('active_client')))
+        client = Klienti.objects.get( id = c_id )
+
+    try:
+        locker = Skapji.objects.get( client = client )
+        locker.delete()
+    except:
+        pass
 
     return redirect ('/')
 
