@@ -110,10 +110,8 @@ def main(request):
            # klients nav iečekojies
             args['checked'] = False
 
+       # Pēdējais apmeklējums
         try:
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!! no visiem jaunāko checkout_time !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             last_visit = Skapji_history.objects.filter( client = client ).order_by('-checkout_time')[0]
             args['last_visit'] = last_visit.checkout_time
         except:

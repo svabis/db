@@ -110,8 +110,13 @@ def history(request):
 
     try:
         args['data'] = Skapji_history.objects.filter( client = client ).order_by('-checkin_time')
-    pass:
+    except:
         args['no_data'] = True
+
+    try:
+        args['new_data'] = Skapji.objects.get( client = client )
+    except:
+        pass
 
     return render_to_response ( 'lockers_history.html', args )
 

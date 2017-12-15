@@ -170,9 +170,14 @@ document.getElementById("avatar").style.borderColor = "red";
 {% if client %}<b>{{ client.status }}</b>{% if client.society == True %} <b>(BIEDRĪBA)</b>{% endif %},<br>{% else %}Status,{% endif %}
 
      Aktīvais abonements,<br>
-     palikušo reižu skaits/derīguma termiņš,<br>
-{% if client %}<b>Pēdējais apmeklējums:<br>{{ last_visit }}</b>{% endif %}<br>
-<br><br><br><br><br><br>
+     palikušo reižu skaits,<br>
+     derīguma termiņš,<br>
+
+     <b>Pēdējais apmeklējums:<br>
+{% if client and checked == True %} Pašlaik atrodas klubā
+{% elif client and last_visit %} {{ last_visit }}
+{% elif client %}Datu nav{% endif %}</b><br>
+
     </div>
     <center>
      <a href="/lockers/history/">

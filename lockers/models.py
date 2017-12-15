@@ -9,6 +9,7 @@ GENDER_CHOISE = (
     ('S', 'Sieviete'),
 )
 
+# !!! Skapīši !!!
 class Skapji(models.Model):
     class Meta():
         db_table = "skapji"
@@ -22,6 +23,7 @@ class Skapji(models.Model):
         return u'%s' % (self.number)
 
 
+# !!! Skapīšu vēsture !!!
 class Skapji_history(models.Model):
     class Meta():
         db_table = "skapji_vesture"
