@@ -11,7 +11,7 @@ from setup.models import Settings
 from clients.models import Klienti
 
 # Skapīši modelis
-from lockers.models import Skapji
+from lockers.models import Skapji, Skapji_history
 
 
 # !!!!! Clear ID !!!!!
@@ -109,6 +109,15 @@ def main(request):
         except:
            # klients nav iečekojies
             args['checked'] = False
+
+        try:
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!! no visiem jaunāko checkout_time !!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            last_visit = Skapji_history.objects.filter( client = client ).order_by('-checkout_time')[0]
+            args['last_visit'] = last_visit.checkout_time
+        except:
+            pass
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # !!!!!   ABONEMENTU APSTRĀDES ALGORITMS   !!!!!

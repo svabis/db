@@ -171,11 +171,13 @@ document.getElementById("avatar").style.borderColor = "red";
 
      Aktīvais abonements,<br>
      palikušo reižu skaits/derīguma termiņš,<br>
-     Pēdējā vizīte<br>
+{% if client %}<b>Pēdējais apmeklējums:<br>{{ last_visit }}</b>{% endif %}<br>
 <br><br><br><br><br><br>
     </div>
     <center>
-     <button type="button" class="btn btn-info" data-dismiss="modal">Apmeklējumu vēsture</button>
+     <a href="/lockers/history/">
+      <button type="button" class="btn btn-info" data-dismiss="modal">Apmeklējumu vēsture</button>
+     </a>
     </center>
    </div>
   </div>

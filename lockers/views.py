@@ -8,7 +8,7 @@ from database.args import create_args
 from setup.models import Settings
 
 from clients.models import Klienti
-from lockers.models import Skapji
+from lockers.models import Skapji, Skapji_history
 
 #============================================================
 # !!!!! SKAPĪŠI !!!!!
@@ -88,12 +88,32 @@ def locker_checkout(request):
 
     try:
         locker = Skapji.objects.get( client = client )
+        new_hist = Skapji_history( number = locker.number, locker_type = locker.locker_type, client = locker.client )
+        new_hist.save()
         locker.delete()
     except:
         pass
 
     return redirect ('/')
 
+
+#============================================================
+# !!!!! Apmeklējumu vēsture !!!!!
+def history(request):
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    if "active_client" in request.COOKIES:
+        c_id = int(request.COOKIES.get(str('active_client')))
+        client = Klienti.objects.get( id = c_id )
+
+    try:
+        args['data'] = Skapji_history.objects.filter( client = client ).order_by('-checkin_time')
+    pass:
+        args['no_data'] = True
+
+    return render_to_response ( 'lockers_history.html', args )
 
 #============================================================
 # !!!!! Kas Klubā !!!!!

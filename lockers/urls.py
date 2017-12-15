@@ -9,6 +9,11 @@ urlpatterns = [
 # Skapīšu izvēles skats
     url(r'^/$', 'lockers.views.locker'),
 
+
+# ===============================================================
+# Vēsture
+    url(r'^/history/$', 'lockers.views.history'),
+
 # ===============================================================
 # check-in
     url(r'^/checkin/(?P<gender>\w+)/(?P<locker_nr>\d+)/$', 'lockers.views.locker_checkin'),
