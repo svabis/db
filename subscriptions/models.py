@@ -16,12 +16,20 @@ class TimelimitType(models.Model):
     class Meta():
         db_table = "laika_limiti_tipi"
 
-    name = models.CharField( max_length = 60, default = '' ) # nosaukums
+    title = models.CharField( max_length = 60, default = '' ) # nosaukums
 
-    weekday = models.IntegerField( blank = True, null = True )
+    weekday = models.BooleanField( default=False )
 
-    start_time = models.TimeField( default=default_start_time )
-    end_time = models.TimeField( default=default_start_time )
+    weekday_start_time = models.TimeField( default=default_start_time )
+    weekday_end_time = models.TimeField( default=default_start_time )
+
+    weekend = models.BooleanField( default=False )
+
+    weekend_start_time = models.TimeField( default=default_start_time )
+    weekend_end_time = models.TimeField( default=default_start_time )
+
+    def __unicode__(self):
+        return u'%s' % (self.title)
 
 
 # !!! SUBSCRIPTION_TYPES !!!

@@ -7,7 +7,7 @@ from subscriptions.models import *
 # !!!!! Abonementu_tipi !!!!!
 class AbonementTypeAdmin(admin.ModelAdmin):
     list_display = ['title', 'short_title', 'position', 'price', 'special', 'first_time', 'best_before', 'time_limit', 'time_limit_type', 'times', 'times_count']
-    list_filter = ['title', 'short_title', 'position', 'price', 'special', 'first_time', 'best_before', 'time_limit', 'time_limit_type', 'times', 'times_count']
+    list_filter = ['position', 'special', 'first_time', 'best_before', 'time_limit', 'times', 'times_count']
 #    search_fields = []
 #    exclude = []
 
@@ -29,8 +29,8 @@ class AbonementiAdmin(admin.ModelAdmin):
 
 # !!!!! Laika Limiti !!!!!
 class TimelimitTypeAdmin(admin.ModelAdmin):
-    list_display = ['name', 'weekday', 'start_time', 'end_time']
-    list_filter = ['name', 'weekday', 'start_time', 'end_time']
+    list_display = ['title', 'weekday', 'weekday_start_time', 'weekday_end_time', 'weekend', 'weekend_start_time', 'weekend_end_time']
+    list_filter = ['title', 'weekday', 'weekday_start_time', 'weekday_end_time', 'weekend', 'weekend_start_time', 'weekend_end_time']
 
 
 admin.site.register(AbonementType, AbonementTypeAdmin)
