@@ -144,6 +144,8 @@ document.getElementById("avatar").style.borderColor = "red";
 <!-- Klienta info -->
   <div class="row">
    <div class="col-sm-6 col-md-6 col-lg-6">
+    <div class="row">
+
      {% if client %}
        {% if client.avatar != "" %}
        <img id="avatar" src="http://pieraksts.vfabrika.lv:5880/media/{{ client.avatar }}"/>
@@ -153,20 +155,31 @@ document.getElementById("avatar").style.borderColor = "red";
      {% else %}
      <img id="avatar" src="{% static 'avatar_wait.png' %}"/>
      {% endif %}
-     <br><br>
+
+    </div>
+    <div class="row" style="margin-bottom: 15px; margin-top: 20px; height: 100px;">
+
      {% if client_locker %}
-     <div class="locker" style="border: solid black 2px; {% if client_locker.locker_type == "V" %}background: {{ man_locker_color }};{% else %}background: {{ woman_locker_color }};{% endif %}">
-      <h3>{{ client_locker.number }}</h3>
+     <div class="locker" style="margin-left: 20px; {% if client_locker.locker_type == "V" %}background: {{ man_locker_color }};{% else %}background: {{ woman_locker_color }};{% endif %}">
+      <h3 class="locker_text">{{ client_locker.number }}</h3>
      </div>
      <div style="float: left;">
       <h4 style="margin-top: 5px;">Iečekojies:</h4>
       <h5 style="margin-left: 15px;">{{ client_locker.checkin_time|date:"Y/m/d H:i" }}</h5>
      </div>
      {% endif %}
+
+    </div>
+    <div class="row">
+     <center>
+      <a href="/lockers/history/">
+       <button type="button" class="btn btn-info">Apmeklējumu vēsture</button>
+      </a>
+     </center>
+    </div>
    </div>
 
-
-   <div class="col-sm-6 col-md-6 col-lg-6">
+   <div class="col-sm-6 col-md-6 col-lg-6" style="border: solid #ccc 1px;">
     <div class="container-fluid" style="background: #d2dff4; border: solid #ccc 1px; margin-bottom: 10px;">
      Informācija par klientu:<br>
 {% if client %}<b>{{ client.name}} {{ client.surname }}</b>,{% else %}Vārds, Uzvārds,{% endif %}<br>
@@ -183,11 +196,6 @@ document.getElementById("avatar").style.borderColor = "red";
 {% elif client %}Datu nav{% endif %}</b><br>
 
     </div>
-    <center>
-     <a href="/lockers/history/">
-      <button type="button" class="btn btn-info" data-dismiss="modal">Apmeklējumu vēsture</button>
-     </a>
-    </center>
    </div>
   </div>
 
@@ -199,11 +207,49 @@ document.getElementById("avatar").style.borderColor = "red";
 <!-- KOLONA 2 START -->
  <div class="col-sm-5 col-md-5 col-lg-5" style="border: solid red 1px;">
   <a href="/subscription">
-   <button type="button" class="btn btn-info" data-dismiss="modal">Pirkt abonementu</button>
+   <button type="button" class="btn btn-info" style="margin-top: 8px;">Pirkt abonementu</button>
   </a>
 
-<br><br><br><br><br><br>
-<br><br><br><br><br><br>
+<table class="table table-striped table-condensed" style="margin-top: 20px;">
+ <thead>
+  <tr style="background: #aaa;">
+   <th colspan="2" style="vertical-align: top;">Prece</th>
+   <th style="vertical-align: top;">Daudzums</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><input type="checkbox"></td>
+   <td>Preces nosaukums</td>
+   <td></td>
+  </tr>
+  <tr>
+   <td><input type="checkbox"></td>
+   <td>Preces nosaukums</td>
+   <td></td>
+  </tr>
+  <tr>
+   <td><input type="checkbox"></td>
+   <td>Preces nosaukums</td>
+   <td></td>
+  </tr>
+  <tr>
+   <td><input type="checkbox"></td>
+   <td>Preces nosaukums</td>
+   <td></td>
+  </tr>
+  <tr>
+   <td><input type="checkbox"></td>
+   <td>Preces nosaukums</td>
+   <td></td>
+  </tr>
+ </tbody>
+</table>
+
+  <a href="#">
+   <button type="button" class="btn btn-success pull-right">Apmaksāt</button>
+  </a>
+
 <br><br><br><br><br><br>
 <br><br><br><br><br><br>
 

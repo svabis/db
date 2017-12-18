@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block locker %}
-<div id="hider"></div>
+<!-- <div id="hider"></div> -->
 
 <script>
 var chosen = 0;
@@ -85,18 +85,23 @@ jQuery(document).ready(function($) {
  </div>
 </div>
 
+<div class="row">
 
 {% for l in lockers %}
 {% if l.1 == 1 %}
-<div class="locker_busy" id="locker{{ forloop.counter }}">
-<h4>{{ l.0 }}</h4>
-</div>
+ <div class="locker_busy" id="locker{{ forloop.counter }}">
+  <h3 class="locker_busy_text">{{ l.0 }}</h3>
+ </div>
 
 {% else %}
-<div class="locker" id="locker{{ forloop.counter }}">
-<a href="/lockers/checkin/{{ gender }}/{{ l.0 }}/"><h3>{{ l.0 }}</h3></a>
-</div>
+ <a href="/lockers/checkin/{{ gender }}/{{ l.0 }}/">
+  <div class="locker" id="locker{{ forloop.counter }}">
+   <h3 class="locker_text">{{ l.0 }}</h3>
+  </div>
+ </a>
 {% endif %}
 {% endfor %}
+
+</div>
 
 {% endblock %}

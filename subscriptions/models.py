@@ -2,7 +2,27 @@
 from django.db import models
 from django.utils import timezone
 
+from datetime import datetime
+
 from clients.models import Klienti # abonementa īpašnieks
+
+def default_start_time():
+    now = datetime.now()
+    start = now.replace(hour=8, minute=0, second=0, microsecond=0)
+    return start
+
+# !!! TIMELIMIT_TYPE !!!
+class TimelimitType(models.Model):
+    class Meta():
+        db_table = "laika_limiti_tipi"
+
+    name = models.CharField( max_length = 60, default = '' ) # nosaukums
+
+    weekday = models.IntegerField( blank = True, null = True )
+
+    start_time = models.TimeField( default=default_start_time )
+    end_time = models.TimeField( default=default_start_time )
+
 
 # !!! SUBSCRIPTION_TYPES !!!
 class AbonementType(models.Model):
@@ -23,6 +43,7 @@ class AbonementType(models.Model):
     best_before = models.IntegerField( blank = True, null = True ) # derīgs līdz (mēneši)
 
     time_limit = models.BooleanField( default=False ) # laika limits (rīti, darbadienas u.t.t.)
+    time_limit_type =  models.ForeignKey( TimelimitType, blank=True, null=True ) # laika limita relācija (ja tāda ir)
 
     times = models.BooleanField( default=False ) # reižu limits
     times_count = models.IntegerField( blank = True, null = True ) # reižu skaits

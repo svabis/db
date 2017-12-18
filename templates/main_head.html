@@ -18,12 +18,15 @@
 
   .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {  background-color: #9b9da0; }
 
-  .locker_busy { width: 50px; height: 80px; float: left; border: solid black 1px; margin: 0px 4px 4px 0px; text-align: center; vertical-align: middle; background: #888; }
-  .locker { width: 50px; height: 80px; float: left; border: solid black 1px; margin: 0px 4px 4px 0px; text-align: center; vertical-align: middle; }
+  .locker_busy { width: 50px; height: 80px; float: left; border: solid black 1px; margin: 0px 5px 5px 0px; text-align: center; vertical-align: middle; background: #888; }
+  .locker { width: 50px; height: 80px; float: left; border: solid black 1px; margin: 0px 5px 5px 0px; text-align: center; vertical-align: middle; }
+  .locker_busy_text { color: #000; }
+  .locker_text { color: #eee; font-weight: normal; text-decoration: none;}
+
   #hider { position: absolute; top: 0px; left: 0px; right: 0px; height: 50px; background: #000; opacity: 0.6; }
 
   hr { margin-top:5px; margin-bottom:5px;}
-
+  p{ position:absolute; width:100%; height:100%; top:0; left: 0; z-index: 0; background-image: url( {% static 'empty.png' %} ); }
 
   #avatar { width: 256px; height: 192px; border: solid #aaa 4px; }  /* 192px; height: 144px; border: solid #aaa 3px; } */
   {% block style %}{% endblock %}
