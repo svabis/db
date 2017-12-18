@@ -155,8 +155,12 @@ document.getElementById("avatar").style.borderColor = "red";
      {% endif %}
      <br><br>
      {% if client_locker %}
-     <div style="border: solid black 2px; {% if client_locker.locker_type == "V" %}background: {{ man_locker_color }};{% else %}background: {{ woman_locker_color }};{% endif %}">
-      <center>{{client_locker.locker_type}} {{ client_locker.number }}</center>
+     <div class="locker" style="border: solid black 2px; {% if client_locker.locker_type == "V" %}background: {{ man_locker_color }};{% else %}background: {{ woman_locker_color }};{% endif %}">
+      <h3>{{ client_locker.number }}</h3>
+     </div>
+     <div style="float: left;">
+      <h4 style="margin-top: 5px;">Iečekojies:</h4>
+      <h5 style="margin-left: 15px;">{{ client_locker.checkin_time|date:"Y/m/d H:i" }}</h5>
      </div>
      {% endif %}
    </div>

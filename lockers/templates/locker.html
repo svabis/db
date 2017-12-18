@@ -1,22 +1,68 @@
 {% extends 'main_head.html' %}
 {% load staticfiles %}
-{% block locker %}
-<style>
-.locker_busy { width: 50px; height: 100px; float: left; border: solid black 1px; margin: 0px 3px 3px 0px; text-align: center; vertical-align: middle; background: #888; }
-.locker { width: 50px; height: 100px; float: left; border: solid black 1px; margin: 0px 3px 3px 0px; text-align: center; vertical-align: middle; }
-#hider { position: absolute; top: 0px; left: 0px; right: 0px; height: 50px; background: #000; opacity: 0.6; }
-</style>
 
+{% block locker %}
 <div id="hider"></div>
 
 <script>
+var chosen = 0;
+var locker = [ {% for l in lockers %} {{ l.1 }}, {% endfor %} ];
+
+// izvēle
+function locker_choise(val) {
+  $(".locker").css( "border", "1px solid black" );
+  $(".locker_busy").css( "border", "1px solid black" );
+
+  if (val != '') {
+    chosen = parseInt(val);
+    if (locker.length >= val && val > 0) {
+      var chosen_el = document.getElementById( "locker" + parseInt(val) );
+      chosen_el.style.border = "thick solid black";
+      chosen_el.style.borderStyle = "dashed"; //"dotted";
+    }
+  }
+}
+
+// checkin skripts
+function checkin() {
+  if (chosen != 0 && locker.length >= chosen) {
+    if ( locker[chosen-1] != 1 ) {
+      window.location.href = "/lockers/checkin/{{ gender }}/" + chosen + "/";
+    }
+  }
+}
+
 jQuery(document).ready(function($) {
+// Keyboard Input
+  $(document).keypress(function (e) {
+    var input = document.getElementById("locker_input");
+    var symb = String.fromCharCode(e.which);
+   // Numbers
+    if ( e.keyCode > 47 && 58 > e.keyCode ) {
+      input.value += symb;
+    }
+  });
+
   $(document).keyup(function (e) {
-    // ESC 27
+    var input = document.getElementById("locker_input");
+   // ESC 27
     if ( e.keyCode === 27 ) {
       window.location.href = "/";
     }
+   // ENTER
+    if ( e.keyCode === 13 ) {
+      checkin();
+    }
+   // BACKSPACE
+    if ( e.keyCode === 8 ) {
+      if (input.value != '') {
+        input.value = input.value.substring(0, input.value.length - 1);
+      }
+    }
+    locker_choise(input.value);
   });
+
+//locker_choise(8);
 
 {% if gender == "V" %}  var color = '{{ man_locker_color }}';{% else %}  var color = '{{ woman_locker_color }}';{% endif %}
   var elements = document.getElementsByClassName("locker");
@@ -25,12 +71,25 @@ jQuery(document).ready(function($) {
 });
 </script>
 
-<a href="/"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> &nbsp;Atpakaļ</button></a><br><br>
+<div class="row">
+ <div class="col-sm-2 col-md-2 col-lg-2">
+  <a href="/"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> &nbsp;Atpakaļ</button></a><br><br>
+ </div>
+ <div class="col-sm-8 col-md-8 col-lg-8 text-right" style="padding-right: 0px;">
+  <label style="margin-top: 5px;">Skapīša numurs:</label>
+ </div>
+ <div class="col-sm-2 col-md-2 col-lg-2">
+  <div class="input-group">
+   <input class="form-control" id="locker_input" size="3" type="text" onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;">
+  </div>
+ </div>
+</div>
+
 
 {% for l in lockers %}
 {% if l.1 == 1 %}
 <div class="locker_busy" id="locker{{ forloop.counter }}">
-<h3>{{ l.0 }}</h3>
+<h4>{{ l.0 }}</h4>
 </div>
 
 {% else %}

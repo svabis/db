@@ -11,7 +11,7 @@ class SkapjiAdmin(admin.ModelAdmin):
 # !!!!! Skapji !!!!!
 class Skapji_historyAdmin(admin.ModelAdmin):
     list_display = ['number', 'locker_type', 'checkin_time', 'checkout_time',  'client']
-    list_filter = ['locker_type', 'checkout_time']
+    list_filter = ['locker_type', 'checkin_time', 'checkout_time']
 
 
 # 'number', 'locker_type', 'checkin_time'

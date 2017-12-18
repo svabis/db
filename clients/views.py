@@ -37,7 +37,7 @@ def new_client(request):
             new_client = form.save()
             response = redirect("/")
             response.set_cookie( key='active_client', value=new_client.id )
-            response.set_cookie( key='new_client', value="True", max_age=5 )
+            response.set_cookie( key='new_client', value="True", max_age=3 )
             return response
         else:
             args['form'] = form
@@ -66,7 +66,7 @@ def edit_client(request):
         if form.is_valid():
             form.save()
             response = redirect("/")
-            response.set_cookie( key='edit_client', value="True", max_age=5 )
+            response.set_cookie( key='edit_client', value="True", max_age=3 )
             return response
         else:
             args['form'] = form

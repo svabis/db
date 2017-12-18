@@ -14,7 +14,7 @@ class Log(models.Model):
     log_date = models.DateTimeField( default = timezone.now )
     log_event = models.CharField( max_length = 30 )
 
-    log_event_data = models.CharField( max_length = 200 )
+    log_event_data = models.CharField( max_length = 300 )
 
     def __unicode__(self):
         return u'%s' % (self.log_event)
