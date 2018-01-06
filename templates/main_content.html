@@ -1,104 +1,11 @@
-{% extends 'main_head.html' %}
+{% extends 'main_modals.html' %}
 {% load staticfiles %}
-{% block main_view %}
+{% block main_content %}
 
-<script>
-function clearID() {
-  window.location.href = "/clear_id/";
-}
-
-$(document).ready(function(){
-{% if message %}$("#MesageModal").modal('show');{% endif %}
-
-{% if new_client %}$("#ClientModal").modal('show');{% endif %}
-{% if edit_client %}$("#ClientModal").modal('show');{% endif %}
-});
-
-var card_string = "{{ card_string }}";
-var temp_string = ""; var char_count = 0; var card_start = false;
-        
-$(document).keypress(function (e) {
-  var symb = String.fromCharCode(e.which);
-
-  if (card_start == true) {
-    if (char_count != 6) { temp_string += symb; char_count++; event.preventDefault(); }
-    else {
-      document.getElementById('id').value = temp_string;
-      temp_string = ""; char_count = 0; event.preventDefault();
-      // some action with id field
-      document.getElementById("search_card_id").submit();
-    }
-  } else {
-
-  // ENTER
-    if ( e.keyCode == 13 ) {
-  {% if client and abon_active and checked == False %}
-       window.location.href = "/lockers/";
-
-  {% elif client and checked == True %}
-       window.location.href = "/lockers/checkout/";
-
-  {% elif client %}
-       window.location.href = "/subscription/";
-  {% endif %}
-
-    }
-    if (card_string[char_count] == symb) {
-      temp_string += symb;
-      if (card_string == temp_string) { temp_string = ""; char_count = 0; card_start = true; }
-      event.preventDefault(); char_count++;
-    } else { char_count = 0; temp_string = ""; } } });
-
-</script>
-
-<!-- Error ClientModal START -->
-<div class="modal fade" id="ClientModal" tabindex="-1" role="dialog" aria-hidden="true">
-<div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
-<div class="modal-header">
- <h3 style="margin-top:5px; margin-bottom:5px;">
-<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Paziņojums!</h3>
-</div>
-<div class="modal-body">
-<center>
-{% if new_client %}<h4>Jauna klienta kartiņa ir izveidota!</h4>{% endif %}
-{% if edit_client %}<h4>Klienta kartiņa ir sekmīgi rediģēta!</h4>{% endif %}
-</center>
-</div>
-<div class="modal-footer">
- <button type="button" class="btn btn-default" data-dismiss="modal">Aizvērt</button>
-</form>
-</div></div></div></div>
-<!-- MesageModal Modal END -->
-
-
-<!-- Error MesageModal START -->
-<div class="modal fade" id="MesageModal" tabindex="-1" role="dialog" aria-hidden="true">
-<div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
-<div class="modal-header">
- <h3 style="margin-top:5px; margin-bottom:5px;">
-{% if message_type == "error" %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;Kļūda!</h3>{% endif%}
-{% if message_type == "message" %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Paziņojums!</h3>{% endif%}
-</div>
-<div class="modal-body">
-<center>
-{% if message_code_1 %}<h4>Klienta karte nav reģistrēta, ieraksts nav atrasts!</h4>{% endif %}
-{% if message_code_2 %}<h4>Klienta karte ir BLOĶĒTA!</h4>{% endif %}
-{% if message_code_3 %}<h4>Klients ir bloķēts un atrodas melnajā sarakstā!</h4>{% endif %}
-
-{% if message_code_4 %}<h4>Klienta status ir izmainīts uz <b>{{ client.status }}</b> !</h4>{% endif %}
-</center>
-</div>
-<div class="modal-footer">
- <button type="button" class="btn btn-default" data-dismiss="modal">Aizvērt</button>
-</form>
-</div></div></div></div>
-<!-- MesageModal Modal END -->
-
-
-<div class="row">
 <!-- KOLONA 1 START -->
  <div class="col-sm-7 col-md-7 col-lg-7" style="border: solid green 1px;">
-<!-- Search -->
+
+<!-- Search MODULIS START -->
   <div class="row">
     <table class="table">
    <form id="search_card_id" action="/" method=POST>{% csrf_token %}
@@ -130,20 +37,13 @@ $(document).keypress(function (e) {
    </form>
     </table>
   </div>
+<!-- Search MODULIS END -->
 
-<script>
-$(document).ready(function(){
-{% if client and abon_active %}
-document.getElementById("avatar").style.borderColor = "green";
-{% elif client %}
-document.getElementById("avatar").style.borderColor = "red";
-{% endif %}
-});
-</script>
 
-<!-- Klienta info -->
+
+<!-- AVATAR MODULIS START -->
   <div class="row">
-   <div class="col-sm-6 col-md-6 col-lg-6">
+   <div class="col-sm-6 col-md-6 col-lg-6" style="border: solid black 1px;">
     <div class="row">
 
      {% if client %}
@@ -157,14 +57,14 @@ document.getElementById("avatar").style.borderColor = "red";
      {% endif %}
 
     </div>
-    <div class="row" style="margin-bottom: 15px; margin-top: 20px; height: 100px;">
+    <div class="row" style="margin-top: 15px; height: 100px;">
 
      {% if client_locker %}
      <div class="locker" style="margin-left: 20px; {% if client_locker.locker_type == "V" %}background: {{ man_locker_color }};{% else %}background: {{ woman_locker_color }};{% endif %}">
       <h3 class="locker_text">{{ client_locker.number }}</h3>
      </div>
      <div style="float: left;">
-      <h4 style="margin-top: 5px;">Iečekojies:</h4>
+      <h4 style="margin-top: 5px; margin-bottom: 5px;">Atrodas klubā kopš:</h4>
       <h5 style="margin-left: 15px;">{{ client_locker.checkin_time|date:"Y/m/d H:i" }}</h5>
      </div>
      {% endif %}
@@ -173,11 +73,16 @@ document.getElementById("avatar").style.borderColor = "red";
     <div class="row">
      <center>
       <a href="/lockers/history/">
-       <button type="button" class="btn btn-info">Apmeklējumu vēsture</button>
+       <button type="button" class="btn btn-info" style="border: solid #888 1px;">Apmeklējumu vēsture</button>
       </a>
      </center>
     </div>
    </div>
+<!-- AVATAR MODULIS END -->
+
+
+
+<!-- Klienta info MODULIS START -->
 
    <div class="col-sm-6 col-md-6 col-lg-6" style="border: solid #ccc 1px;">
     <div class="container-fluid" style="background: #d2dff4; border: solid #ccc 1px; margin-bottom: 10px;">
@@ -199,8 +104,29 @@ document.getElementById("avatar").style.borderColor = "red";
    </div>
   </div>
 
-<!-- KOLONA 1 END -->
+<!-- Klienta info MODULIS END -->
+
+
+
+<!-- Piezīmes MODULIS START -->
+
+  <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 10px;">
+   <hr>
+   <form id="search" action="/update_notes/" method=POST>{% csrf_token %}
+    <div class="form-group" style="margin-bottom: 5px;">
+     <label id="id_notes" for="id_notes">Piezīmes:</label>
+     <textarea class="form-control" cols="40" id="id_notes" maxlength="150" name="notes" rows="4" style="resize:none;">{{ client.notes }}</textarea>
+    </div>
+    {% if client %}
+    <input type="submit" id="ok_btn" class="btn btn-success pull-right" value="Saglabāt piezīmju izmaiņas">
+    {% endif %}
+   </form>
+  </div>
+
+<!-- Piezīmes MODULIS END -->
+
  </div>
+<!-- KOLONA 1 END -->
 
 
 
@@ -254,6 +180,6 @@ document.getElementById("avatar").style.borderColor = "red";
 <br><br><br><br><br><br>
 
  </div>
-</div>
-<!-- KOLONA 2 START -->
+<!-- KOLONA 2 END -->
+
 {% endblock %}

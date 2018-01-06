@@ -1,4 +1,4 @@
-{% extends 'kli_search_paginator.html' %}
+{% extends 'clients_search_paginator.html' %}
 {% load staticfiles %}
 
 {% block search_data %}
@@ -30,7 +30,7 @@ jQuery(document).ready(function($) {
    <td>{{ c.id }}</td>
    <td>{{ c.name }}</td>
    <td>{{ c.surname }}</td>
-   <td>{{ c.birthday }}</td>
+   <td>{% if c.birthday != None %}{{ c.birthday }}{% endif %}</td>
 
    <td>{{ c.status }}</td>
    <td>{% if c.society == True %}<b>Biedrība</b>{% endif %}</td>

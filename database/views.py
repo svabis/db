@@ -24,6 +24,7 @@ def clear_id(request):
     return response
 
 
+#===============================================================================
 # !!!!! MAIN VIEW !!!!!
 def main(request):
     args = create_args(request)
@@ -61,8 +62,8 @@ def main(request):
 
    # Card scanned
     if request.POST:
-        client_card = int(request.POST.get('id', ''))
         try:
+            client_card = int(request.POST.get('id', ''))
 #            client = Klienti.objects.get( card_nr = client_card )
             client = Klienti.objects.get( id = client_card )
 
@@ -129,3 +130,23 @@ def main(request):
     except:
         response.delete_cookie('active_client')
     return response
+
+
+
+#===============================================================================
+# !!!!! Update Client Notes !!!!!
+def update_notes(request):
+   # Get Active client from COOKIE
+    if "active_client" in request.COOKIES:
+        try:
+            c_id = int(request.COOKIES.get(str('active_client')))
+            client = Klienti.objects.get( id = c_id )
+            if request.POST:
+                new_notes = request.POST.get('notes', '')
+
+                client.notes = new_notes
+                client.save()
+        except:
+            pass
+
+    return redirect("/")

@@ -19,7 +19,4 @@ urlpatterns = [
 # Rediģēt Klienta kartiņu
     url(r'^edit/$', 'clients.views.edit_client'),
 
-
-# Main --> Redirect UP
-    url(r'^$', 'clients.views.main'),
 ]

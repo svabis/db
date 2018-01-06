@@ -10,6 +10,8 @@ from setup.models import Settings
 from clients.models import Klienti
 from lockers.models import Skapji, Skapji_history
 
+import unicodedata
+
 #============================================================
 # !!!!! SKAPĪŠI !!!!!
 def locker(request):
@@ -23,9 +25,23 @@ def locker(request):
     else:
         redirect ("/")
 
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!! INSERT DISABLED LOCKERS !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   # DISABLED LOCKERS
+    dml_value = Settings.objects.get( key = "disabled man locker" ).value
+    dwl_value = Settings.objects.get( key = "disabled woman locker" ).value
+   # convert unicode to string
+    dml_value = unicodedata.normalize('NFKD', dml_value).encode('ascii','ignore')
+    dwl_value = unicodedata.normalize('NFKD', dwl_value).encode('ascii','ignore')
+
+   # split string to array
+    dml = dml_value.split(",")
+    dwl = dwl_value.split(",")
+
+   # convert arrays to int
+    dml = map(int, dml)
+    dwl = map(int, dwl)
+
+    args['dm'] = dml
+    args['dw'] = dwl
 
    # LOCKER COLORS FROM SETTINGS
     args['woman_locker_color'] = Settings.objects.get( key = "woman locker color" ).value
@@ -35,6 +51,14 @@ def locker(request):
     lockers_temp = Skapji.objects.filter( locker_type = client.gender )
     for n in lockers_temp:
         lockers_filled.append( int(n.number) )
+
+   # ADD DISABLED LOCKERS
+    if client.gender == "V":
+        lockers_filled = lockers_filled + dml
+    else:
+        lockers_filled = lockers_filled + dwl
+
+    args['print'] = lockers_filled
 
     lockers = []
    # MALE LOCKERS
@@ -135,3 +159,17 @@ def persons_in_club(request):
     args['data'] = Skapji.objects.all().order_by( 'checkin_time' )
 
     return render_to_response ( 'in_club.html', args )
+
+
+# !!!!! Klientu Meklēšanas pēc skapīša !!!!!
+def search_by_locker(request, c_id):
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    client = Klienti.objects.get( id = c_id )
+
+    response = redirect ("/")
+    response.set_cookie( key='active_client', value=client.id )
+    return response
+

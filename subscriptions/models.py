@@ -16,17 +16,22 @@ class TimelimitType(models.Model):
     class Meta():
         db_table = "laika_limiti_tipi"
 
-    title = models.CharField( max_length = 60, default = '' ) # nosaukums
+    title = models.CharField( max_length = 60, default = '' )
 
-    weekday = models.BooleanField( default=False )
+    weekday1 = models.BooleanField( default=False )
 
-    weekday_start_time = models.TimeField( default=default_start_time )
-    weekday_end_time = models.TimeField( default=default_start_time )
+    weekday1_start_time = models.TimeField( blank=True, null=True )
+    weekday1_end_time = models.TimeField( blank=True, null=True )
+
+    weekday2 = models.BooleanField( default=False )
+
+    weekday2_start_time = models.TimeField( blank=True, null=True )
+    weekday2_end_time = models.TimeField( blank=True, null=True )
 
     weekend = models.BooleanField( default=False )
 
-    weekend_start_time = models.TimeField( default=default_start_time )
-    weekend_end_time = models.TimeField( default=default_start_time )
+    weekend_start_time = models.TimeField( blank=True, null=True )
+    weekend_end_time = models.TimeField( blank=True, null=True )
 
     def __unicode__(self):
         return u'%s' % (self.title)
@@ -38,6 +43,8 @@ class AbonementType(models.Model):
         db_table = "abonementu_tipi"
 
     title = models.CharField( max_length = 60, default = '' ) # nosaukums
+
+    available = models.BooleanField( default=True ) # pašlaik pieejams
 
     short_title = models.CharField( max_length = 60, default = '' ) # saīsinātais nosaukums ar HTML tagiem priekš izvēles sadaļas
     position = models.IntegerField( blank = True, null = True ) # novietojums izvēles sadaļā

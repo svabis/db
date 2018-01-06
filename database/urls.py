@@ -40,6 +40,8 @@ urlpatterns = [
 # ===============================================================
 # Clear ID
     url(r'^clear_id/$', 'database.views.clear_id'),
+# Update Client Notes
+    url(r'^update_notes/$', 'database.views.update_notes'),
 
 # Main --> Card reader e.t.c.
     url(r'^$', 'database.views.main'),

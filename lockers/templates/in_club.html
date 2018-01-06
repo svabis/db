@@ -11,6 +11,10 @@ jQuery(document).ready(function($) {
       window.location.href = "/";
     }
   });
+
+  $(".clickable-row").click(function(e) {
+    window.location.href = "/lockers/taken/" + $(this).children('td')[0].innerHTML + "/";
+  });
 });
 </script>
 
@@ -27,6 +31,7 @@ jQuery(document).ready(function($) {
  <tbody>
 {% for d in data %}
   <tr class="clickable-row">
+   <td style="display:none;">{{ d.client.id }}</td>
    <td>{{ d.client.name }}</td>
    <td>{{ d.client.surname }}</td>
    <td {% if d.locker_type == "V" %}style="background: {{ man_locker_color }};"{% else %}style="background: {{ woman_locker_color }};"{% endif %}>

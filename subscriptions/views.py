@@ -26,6 +26,10 @@ def subscription(request, back=False):
     else:
         args['back'] = "/"
 
+    card_cost = int(Settings.objects.get( key = "client card price" ).value)
+
+    args['card'] = card_cost
+
     args['abonementi'] = AbonementType.objects.filter( position = 1 )
 
     args['vienreiz'] = AbonementType.objects.filter( position = 2 )

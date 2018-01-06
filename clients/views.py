@@ -16,11 +16,6 @@ from clients.paginator import Paginator  # import paginator
 import math # for rounding up Page Counter
 
 
-# !!!!! Redirect UP !!!!!
-def main(request):
-    return redirect('/')
-
-
 # !!!!! NEW CLIENT !!!!!
 def new_client(request):
     args = create_args(request)
@@ -41,14 +36,15 @@ def new_client(request):
             return response
         else:
             args['form'] = form
-            return render_to_response ( 'kli_new_client.html', args )
+            return render_to_response ( 'clients_new_client.html', args )
 
     args['form'] = KlientsForm
 
     args['active_tab_2'] = True
-    return render_to_response ( 'kli_new_client.html', args )
+    return render_to_response ( 'clients_new_client.html', args )
 
-#------------------------------------------------------------------
+
+#==================================================================
 # !!!!! EDIT CLIENT !!!!!
 def edit_client(request):
     args = create_args(request)
@@ -70,7 +66,7 @@ def edit_client(request):
             return response
         else:
             args['form'] = form
-            return render_to_response ( 'kli_edit_client.html', args )
+            return render_to_response ( 'clients_edit_client.html', args )
 
    # LOAD ACTIVE CLIENT FROM COOKIES
     if "active_client" in request.COOKIES:
@@ -89,7 +85,7 @@ def edit_client(request):
     else:
         return redirect ("/")
 
-    return render_to_response ( 'kli_edit_client.html', args )
+    return render_to_response ( 'clients_edit_client.html', args )
 
 
 #============================================================
@@ -110,6 +106,8 @@ def search(request, pageid = 1):
     if request.POST:
         post = True # Triger search from POST
         to_find = request.POST.get('search', '')
+        if len( to_find ) < 3: # IF SEARCH STRING IS LESS THAN 3 SYMBOLS --> redirect main
+            return redirect ('/')
 
         rez_obj = Klienti.objects.filter(
            Q( name__icontains = to_find ) |
@@ -145,13 +143,10 @@ def search(request, pageid = 1):
     args['paginator'] = Paginator( pagecount, pageid )
     args['results'] = rez_obj.order_by('surname')[start_obj:end_obj] # -argument is for negative sort
 
-    response = render_to_response ( 'kli_search.html', args )
+    response = render_to_response ( 'clients_search.html', args )
     response.set_cookie( key='search_client', value = to_find )
 
     return response
-
-
-
 
 
 # !!!!! Klientu Meklēšanas response uz Main !!!!!

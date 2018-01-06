@@ -1,0 +1,152 @@
+{% extends 'main_head.html' %}
+{% load staticfiles %}
+{% block main_view %}
+
+<script>
+function clearID() {
+  window.location.href = "/clear_id/";
+}
+
+$(document).ready(function(){
+{% if message %}$("#MesageModal").modal('show');{% endif %}
+
+{% if new_client %}$("#ClientModal").modal('show');{% endif %}
+{% if edit_client %}$("#ClientModal").modal('show');{% endif %}
+
+// -------------------------------------------------------------------
+// avatar border color
+{% if client %}
+
+// ja: aktīvs abonements, nav iečekots, kļūdu kartiņā nav -->
+{% if abon_active and checked == False and message_type != "error" %}
+document.getElementById("avatar").style.borderColor = "green";
+
+// bet ja: iečekots un kļūdu kartiņā nav -->
+{% elif checked == True and message_type != "error" %}
+document.getElementById("avatar").style.borderColor = "green";
+
+// citā gadījumā (nav aktīvs abonements, klients bloķēts) -->
+{% else %}
+document.getElementById("avatar").style.borderColor = "red";
+{% endif %}
+
+{% endif %}
+});
+
+
+// -------------------------------------------------------------------
+// card read & ENTER button events
+var card_string = "{{ card_string }}";
+var temp_string = ""; var char_count = 0; var card_start = false;
+
+$(document).keypress(function (e) {
+  if ($(e.target).is('input, textarea')) {
+    if ( e.keyCode === 13 )
+      return;
+  }
+  var symb = String.fromCharCode(e.which);
+
+  if (card_start == true) {
+    if (char_count != 6) { temp_string += symb; char_count++; event.preventDefault(); }
+    else {
+      document.getElementById('id').value = temp_string;
+      temp_string = ""; char_count = 0; event.preventDefault();
+      // some action with id field
+      document.getElementById("search_card_id").submit();
+    }
+  } else {
+
+  // ENTER
+    if ( e.keyCode == 13 ) {
+  {% if client and abon_active and checked == False and message_type != "error" %}
+       window.location.href = "/lockers/";
+
+  {% elif client and checked == True %}
+       $("#CheckoutModal").modal('show');
+       document.getElementById("checkot_cancel").focus();
+//       window.location.href = "/lockers/checkout/";
+
+  {% elif client and message_type != "error" %}
+       window.location.href = "/subscription/";
+  {% endif %}
+
+    }
+    if (card_string[char_count] == symb) {
+      temp_string += symb;
+      if (card_string == temp_string) { temp_string = ""; char_count = 0; card_start = true; }
+      event.preventDefault(); char_count++;
+    } else { char_count = 0; temp_string = ""; } } 
+});
+</script>
+
+
+<!-- Error ClientModal START -->
+<div class="modal fade" id="ClientModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
+<div class="modal-header">
+ <h3 style="margin-top:5px; margin-bottom:5px;">
+<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Paziņojums!</h3>
+</div>
+<div class="modal-body">
+<center>
+{% if new_client %}<h4>Jauna klienta kartiņa ir izveidota!</h4>{% endif %}
+{% if edit_client %}<h4>Klienta kartiņa ir sekmīgi rediģēta!</h4>{% endif %}
+</center>
+</div>
+<div class="modal-footer">
+ <button type="button" class="btn btn-default" data-dismiss="modal">Aizvērt</button>
+</form>
+</div></div></div></div>
+<!-- MesageModal Modal END -->
+
+
+<!-- Checkot Modal START -->
+<div class="modal fade" id="CheckoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
+<div class="modal-header">
+<!-- <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;!</h3> -->
+</div>
+<div class="modal-body">
+<center>
+<h4>Izčekot klientu?</h4>
+</center>
+</div>
+<div class="modal-footer">
+ <a href="/lockers/checkout/">
+  <button type="button" class="btn btn-success">Jā</button>
+ </a>
+  <button id="checkot_cancel" type="button" class="btn btn-danger" data-dismiss="modal">Atcelt</button>
+</form>
+</div></div></div></div>
+<!-- Checkout Modal END -->
+
+
+<!-- Error MesageModal START -->
+<div class="modal fade" id="MesageModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
+<div class="modal-header">
+ <h3 style="margin-top:5px; margin-bottom:5px;">
+{% if message_type == "error" %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;Kļūda!</h3>{% endif%}
+{% if message_type == "message" %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Paziņojums!</h3>{% endif%}
+</div>
+<div class="modal-body">
+<center>
+{% if message_code_1 %}<h4>Klienta karte nav reģistrēta, ieraksts nav atrasts!</h4>{% endif %}
+{% if message_code_2 %}<h4>Klienta karte ir BLOĶĒTA!</h4>{% endif %}
+{% if message_code_3 %}<h4>Klients ir bloķēts un atrodas melnajā sarakstā!</h4>{% endif %}
+
+{% if message_code_4 %}<h4>Klienta status ir izmainīts uz <b>{{ client.status }}</b> !</h4>{% endif %}
+</center>
+</div>
+<div class="modal-footer">
+ <button type="button" class="btn btn-default" data-dismiss="modal">Aizvērt</button>
+</form>
+</div></div></div></div>
+<!-- MesageModal Modal END -->
+
+
+<div class="row">
+{% block main_content %}{% endblock %}
+</div>
+
+{% endblock %}

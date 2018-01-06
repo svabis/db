@@ -3,25 +3,40 @@ main_head.html
   active_tab_1  "home"
   active_tab_2  Jauns klients
   active_tab_3  Rediģēt
-
   active_tab_4  Kas klubā
-
   active_tab_5  Atskaites
   active_tab_6  Plānotājs
   active_tab_7  Uzstādījumi
 
-  admin - 
+?  admin - 
 
-  django - ieeja Django admin tabs
+  django - ieeja Django admin tabs (tikai glimpikona)
 
-  help - palīdzības tabs
+?  help - palīdzības tabs
 
-  {% block main_view %}{% endblock %}
+  {% block main_view %}
+    templates/main_modals.html
+      {% block main_content %}
+         templates/main_content.html
+      {% endblock %}
+  {% endblock %}
 
-  {% block search %}{% endblock %}
+  {% block search %}
+    clients/templates/kli_search_paginator.html
+      {% block search_data %}
+         clients/templates/kli_search.html
+      {% endblock %}
+  {% endblock %}
 
-  {% block new_client %}{% endblock %}
-  {% block edit_client %}{% endblock %}
+  {% block new_client %}
+    clients/templates/kli_new_client.html
+  {% endblock %}
+
+  {% block edit_client %}
+    clients/templates/kli_edit_client.html
+  {% endblock %}
+
+
 
   {% block locker %}{% endblock %}
   {% block in_club %}{% endblock %}
