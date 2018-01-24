@@ -112,7 +112,7 @@ def locker_checkout(request):
 
     try:
         locker = Skapji.objects.get( client = client )
-        new_hist = Skapji_history( number = locker.number, locker_type = locker.locker_type, client = locker.client )
+        new_hist = Skapji_history( number = locker.number, locker_type = locker.locker_type, client = locker.client, checkin_time = locker.checkin_time )
         new_hist.save()
         locker.delete()
     except:

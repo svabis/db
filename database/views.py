@@ -64,8 +64,7 @@ def main(request):
     if request.POST:
         try:
             client_card = int(request.POST.get('id', ''))
-#            client = Klienti.objects.get( card_nr = client_card )
-            client = Klienti.objects.get( id = client_card )
+            client = Klienti.objects.get( card_nr = client_card )
 
         except:
            # Klients nav atrasts
@@ -116,7 +115,8 @@ def main(request):
             last_visit = Skapji_history.objects.filter( client = client ).order_by('-checkout_time')[0]
             args['last_visit'] = last_visit.checkout_time
         except:
-            pass
+            args['no_visit_history'] = True
+#            pass
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # !!!!!   ABONEMENTU APSTRĀDES ALGORITMS   !!!!!

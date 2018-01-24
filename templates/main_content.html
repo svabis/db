@@ -1,5 +1,13 @@
 {% extends 'main_modals.html' %}
 {% load staticfiles %}
+
+{% block javascript %}
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="{% static 'angulars.js' %}"></script>
+<script src="{% static 'pas_ef.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css.css' %}" />
+{% endblock %}
+
 {% block main_content %}
 
 <!-- KOLONA 1 START -->
@@ -136,41 +144,38 @@
    <button type="button" class="btn btn-info" style="margin-top: 8px;">Pirkt abonementu</button>
   </a>
 
-<table class="table table-striped table-condensed" style="margin-top: 20px;">
- <thead>
-  <tr style="background: #aaa;">
-   <th colspan="2" style="vertical-align: top;">Prece</th>
-   <th style="vertical-align: top;">Daudzums</th>
-  </tr>
- </thead>
- <tbody>
-  <tr>
-   <td><input type="checkbox"></td>
-   <td>Preces nosaukums</td>
-   <td></td>
-  </tr>
-  <tr>
-   <td><input type="checkbox"></td>
-   <td>Preces nosaukums</td>
-   <td></td>
-  </tr>
-  <tr>
-   <td><input type="checkbox"></td>
-   <td>Preces nosaukums</td>
-   <td></td>
-  </tr>
-  <tr>
-   <td><input type="checkbox"></td>
-   <td>Preces nosaukums</td>
-   <td></td>
-  </tr>
-  <tr>
-   <td><input type="checkbox"></td>
-   <td>Preces nosaukums</td>
-   <td></td>
-  </tr>
- </tbody>
-</table>
+ <!-- EDIJA KIOSKS START -->
+ <div ng-app="kiosks" ng-controller="main_ctrl">
+  <div class="row solarijs" style="border: solid red 1px;">
+   <h4 class="text-center" style="margin-bottom: 0px;">Vertikālais Solarijs</h4>
+   <div id="precu-cont">
+    <div id="vSolarijaBloks" ng-repeat="x in vSolarijs">
+     <p ng-click="izveletaisSolarijs(x)"></p>
+     <h6 style="margin-left:2px; text-align:left">Min: {% verbatim %} {{x.minutes}} {% endverbatim %}</h6>
+     <h6 style="margin-left:2px; text-align:left">Cena: {% verbatim %} {{x.cena}} {% endverbatim %} &euro;</h6>
+    </div>
+   </div>
+  </div>
+  <div class="row solarijs"  style="border: solid red 1px;">
+   <h4 class="text-center" style="margin-bottom: 0px;">Horizontālais Solarijs</h4>
+   <div id="precu-cont">
+    <div id="vSolarijaBloks" ng-repeat="y in hSolarijs">
+     <p ng-click="izveletaisSolarijs(y)"></p>
+     <h6 style="margin-left:2px; text-align:left">Min: {% verbatim %} {{y.minutes}} {% endverbatim %}</h6>
+     <h6 style="margin-left:2px; text-align:left">Cena: {% verbatim %} {{y.cena}} {% endverbatim %} &euro;</h6>
+    </div>
+   </div>
+  </div>
+ </div>
+ <!-- EDIJA KIOSKS START -->
+
+  <div style="border: solid red 1px;">
+   <h4>Preces</h4>
+  </div>
+
+  <div class="text-right" style="border: solid red 1px;">
+   <h4>summa</h4>
+  </div>
 
   <a href="#">
    <button type="button" class="btn btn-success pull-right">Apmaksāt</button>

@@ -30,13 +30,13 @@ def subscription(request, back=False):
 
     args['card'] = card_cost
 
-    args['abonementi'] = AbonementType.objects.filter( position = 1 )
+    args['abonementi'] = AbonementType.objects.filter( position = 1, available = True )
 
-    args['vienreiz'] = AbonementType.objects.filter( position = 2 )
+    args['vienreiz'] = AbonementType.objects.filter( position = 2, available = True )
 
-    args['special'] = AbonementType.objects.filter( position = 3 )
+    args['special'] = AbonementType.objects.filter( position = 3, available = True )
 
-    args['first_time'] = AbonementType.objects.filter(  position = 4 )
+    args['first_time'] = AbonementType.objects.filter(  position = 4, available = True )
 
     return render_to_response ( 'subscription_choise.html', args )
 

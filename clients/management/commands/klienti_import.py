@@ -59,6 +59,7 @@ class Command(BaseCommand):
                avatar_temp = File( open_image  )
 #               print avatar_temp
                avatar_exist = True
+               new_client = ""
           # NO AVATAR
            except:
                pass
@@ -90,6 +91,9 @@ class Command(BaseCommand):
                else:
                    new_client = Klienti( name = l[1], surname = l[2], phone=l[4], e_mail=l[5],  gender = gender_temp, status=temp_status, s3_nr=l[0] )
                    new_client.save()
+
+           if new_client == "":
+               print l
 
 #           print new_client
          counter += 1
