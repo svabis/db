@@ -18,9 +18,14 @@ jQuery(document).ready(function($) {
 
 {% if no_data %}
 <br>
-<center><h2>Datu par klienta apmeklējuma vēsturi nav.</h2></center>
+<center><h2>Datu par klienta apmeklējumu vēsturi nav.</h2></center>
 {% endif %}
 
+{% if admin %}
+<a href="/lockers/history/csv/"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus CSV</button></a>
+<a href="/lockers/history/xls/"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button></a>
+<br>
+{% endif %}
 
 <table class="table table-hover table-striped table-condensed">
  <thead>
