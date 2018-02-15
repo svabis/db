@@ -1,0 +1,47 @@
+{% load staticfiles %}{% load tz %}
+<!DOCTYPE html>
+<html lang="LV-LV">
+<head>
+<title>{{ heading }}</title>
+ <meta charset="UTF-8">
+ <link rel="shortcut icon" type="image/png" href="{% static 'vf-logo.png' %}"/>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+ <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+{% block javascript %}{% endblock %}
+<style>
+{% block style %}{% endblock %}</style>
+</head>
+<body>
+
+<div class="container-fluid">
+<h2>{{ heading }}</h2>
+
+<form action="/login/" method=POST>
+    <div class="col-md-5 col-md-offset-3">
+        <div class="form-group">
+                {% csrf_token %}
+                <label for"username">Lietotājs</label>
+                <input type="text" name="username" id="username" class="form-control" autofocus="autofocus">
+        </div>
+        <div class="form-group">
+                <label for="password">Parole</label>
+                <input type="password" name="password" id="password" class="form-control">
+        </div>
+{% if login_error %}
+        <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Kļūda:</span> {{ login_error }}
+        </div>
+{% endif %}
+        <div class="form-group">
+                <input class="btn btn-primary" type="submit" value="Ielogoties">
+        </div>
+    </div>
+</form>
+
+</div>
+
+</body>
+</html>

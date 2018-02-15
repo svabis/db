@@ -31,6 +31,9 @@ def main(request):
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
+    if args['loged_in'] == False:
+        return redirect("/login/")
+
     args.update(csrf(request))      # ADD CSRF TOKEN
 
    # SETTINGS
@@ -63,7 +66,7 @@ def main(request):
    # Card scanned
     if request.POST:
         try:
-            client_card = int(request.POST.get('id', ''))
+            client_card = str(request.POST.get('id', ''))
             client = Klienti.objects.get( card_nr = client_card )
 
         except:

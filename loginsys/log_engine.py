@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from log.models import Log
+from loginsys.models import Log
 
 from django.contrib.auth.models import User
 

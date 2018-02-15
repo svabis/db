@@ -19,6 +19,9 @@ def subscription(request, back=False):
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
+    if args['loged_in'] == False:
+        return redirect("/login/")
+
    # return path from this view
     if back == "edit":
         args['back'] = "/client/edit/"
@@ -48,6 +51,9 @@ def subscription_payment(request):
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
+    if args['loged_in'] == False:
+        return redirect("/login/")
+
     return render_to_response ( 'subscription_payment.html', args )
 
 
@@ -57,5 +63,8 @@ def subscription_freeze(request):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    if args['loged_in'] == False:
+        return redirect("/login/")
 
     return render_to_response ( 'subscription_freeze.html', args )

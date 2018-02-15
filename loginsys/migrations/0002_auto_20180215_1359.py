@@ -7,13 +7,12 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('log', '0001_initial'),
+        ('loginsys', '0001_initial'),
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='log',
-            name='log_event_data',
-            field=models.CharField(max_length=300),
+        migrations.AlterModelTable(
+            name='log',
+            table='logs',
         ),
     ]

@@ -27,6 +27,9 @@ def locker(request):
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
+    if args['loged_in'] == False:
+        return redirect("/login/")
+
     if "active_client" in request.COOKIES:
         c_id = int(request.COOKIES.get(str('active_client')))
         client = Klienti.objects.get( id = c_id )
@@ -97,16 +100,23 @@ def locker_checkin(request, gender, locker_nr):
         c_id = int(request.COOKIES.get(str('active_client')))
         client = Klienti.objects.get( id = c_id )
 
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!! Test if client is not checked in already !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!! Test if locker is available !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if args['loged_in'] == False:
+        return redirect("/login/")
 
-    new_checkin = Skapji( number = locker_nr, locker_type = gender, client = client )
-    new_checkin.save()
+    try:
+       # !!!!! Test if client is not checked in already !!!!!
+        locker = Skapji.objects.get( client = client )
+    except:
+        try:
+           # !!!!! Test if locker is available !!!!!
+            locker = Skapji.objects.get( number = locker_nr )
+        except:
+            new_checkin = Skapji( number = locker_nr, locker_type = gender, client = client )
+            new_checkin.save()
 
     return redirect ('/')
 
@@ -114,6 +124,13 @@ def locker_checkin(request, gender, locker_nr):
 #============================================================
 # !!!! CHECK OUT !!!!!
 def locker_checkout(request):
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    if args['loged_in'] == False:
+        return redirect("/login/")
+
     if "active_client" in request.COOKIES:
         c_id = int(request.COOKIES.get(str('active_client')))
         client = Klienti.objects.get( id = c_id )
@@ -135,6 +152,9 @@ def history(request):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    if args['loged_in'] == False:
+        return redirect("/login/")
 
     if "active_client" in request.COOKIES:
         c_id = int(request.COOKIES.get(str('active_client')))
@@ -175,6 +195,9 @@ def search_by_locker(request, c_id):
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
+    if args['loged_in'] == False:
+        return redirect("/login/")
+
     client = Klienti.objects.get( id = c_id )
 
     response = redirect ("/")
@@ -191,6 +214,9 @@ def history_csv(request):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    if args['loged_in'] == False:
+        return redirect("/login/")
 
     if "active_client" in request.COOKIES:
         c_id = int(request.COOKIES.get(str('active_client')))
@@ -227,6 +253,9 @@ def history_xls(request):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    if args['loged_in'] == False:
+        return redirect("/login/")
 
     if "active_client" in request.COOKIES:
         c_id = int(request.COOKIES.get(str('active_client')))

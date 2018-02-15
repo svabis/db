@@ -39,11 +39,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'clients',
-    'log',
     'lockers',
     'setup',
     'subscriptions',
-    'django_cleanup'
+    'django_cleanup',
+    'loginsys'
 )
 
 MIDDLEWARE_CLASSES = (

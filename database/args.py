@@ -23,13 +23,15 @@ def get_client_ip(request):
 def create_args(request):
     args = {}
     ip = get_client_ip(request)
-    args['ip'] = ip
+    args['ip'] = ip # GET IP
+
 
    # get allowed IP address list and create True or False
     ip_list = Settings.objects.filter( key = "allowed access from ip" ) #.value
     alowed_ip = []
     for n in ip_list:
         alowed_ip.append( n.value )
+
     if ip in alowed_ip:
         args['access'] = True
     else:
@@ -37,8 +39,17 @@ def create_args(request):
     args['access'] = True
 
 
+    args['loged_in'] = True
+   # User not logged in
+    if auth.get_user(request).get_username() == '': # IF NO USER -->
+        args['loged_in'] = False
+
+    username = auth.get_user(request)
+    if username.is_superuser:
+        args['django'] = True
+
     args['help'] = False
     args['admin'] = True
-    args['django'] = True
+#    args['django'] = True
     return args
 

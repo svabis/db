@@ -1,5 +1,5 @@
 from django.contrib import admin
-from log.models import *
+from loginsys.models import *
 
 
 class LogAdmin(admin.ModelAdmin):

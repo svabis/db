@@ -22,6 +22,9 @@ def new_client(request):
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
+    if args['loged_in'] == False:
+        return redirect("/login/")
+
     args.update(csrf(request)) # ADD CSRF TOKEN
 
    # Created form POST
@@ -50,6 +53,9 @@ def edit_client(request):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    if args['loged_in'] == False:
+        return redirect("/login/")
 
     args.update(csrf(request)) # ADD CSRF TOKEN
 
@@ -94,6 +100,9 @@ def search(request, pageid = 1):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    if args['loged_in'] == False:
+        return redirect("/login/")
 
     args.update(csrf(request)) # ADD CSRF TOKEN
 
@@ -154,6 +163,9 @@ def search_response(request, c_id):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    if args['loged_in'] == False:
+        return redirect("/login/")
 
     client = Klienti.objects.get( id = c_id )
 

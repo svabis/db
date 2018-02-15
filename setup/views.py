@@ -14,6 +14,9 @@ def settings(request):
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
+    if args['loged_in'] == False:
+        return redirect("/login/")
+
     args['active_tab_7'] = True
 
    # Klienti StatusType's
