@@ -2,6 +2,11 @@ from django.contrib import admin
 
 from clients.models import *
 
+# !!!!! Blacklist !!!!!
+class BlacklistAdmin(admin.ModelAdmin):
+    list_display = ['bl_user', 'bl_date', 'bl_date']
+    list_filter = ['bl_date']
+    search_fields = ['bl_user']
 
 # !!!!! StatusType !!!!!
 class StatusTypeAdmin(admin.ModelAdmin):
@@ -19,6 +24,7 @@ class KlientiAdmin(admin.ModelAdmin):
 
 
 
+admin.site.register(Blacklist, BlacklistAdmin)
 admin.site.register(Klienti, KlientiAdmin)
 admin.site.register(StatusType, StatusTypeAdmin)
 

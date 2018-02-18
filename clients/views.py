@@ -26,6 +26,8 @@ def new_client(request):
         return redirect("/login/")
 
     args.update(csrf(request)) # ADD CSRF TOKEN
+   # Settings
+    args['card_string'] = Settings.objects.get( key = "card string" ).value
 
    # Created form POST
     if request.POST:
@@ -58,6 +60,8 @@ def edit_client(request):
         return redirect("/login/")
 
     args.update(csrf(request)) # ADD CSRF TOKEN
+   # Settings
+    args['card_string'] = Settings.objects.get( key = "card string" ).value
 
    # Edited form POST
     if request.POST:

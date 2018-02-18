@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.models import User # autorisation library
+from django.contrib.auth.models import User, Group  # autorisation library
 from django.contrib import auth		    # autorisation library
 
 
@@ -36,20 +36,24 @@ def create_args(request):
         args['access'] = True
     else:
         args['access'] = False
-    args['access'] = True
-
 
     args['loged_in'] = True
+    args['admin'] = False
    # User not logged in
     if auth.get_user(request).get_username() == '': # IF NO USER -->
         args['loged_in'] = False
 
+   # SUPERUSER
     username = auth.get_user(request)
     if username.is_superuser:
         args['django'] = True
+        args['admin'] = True
 
-    args['help'] = False
-    args['admin'] = True
-#    args['django'] = True
+   # GROUP --> "administrator"
+    if username.groups.filter(name='administrator').exists():
+        args['admin'] = True
+
+    args['username'] = username
+    args['help'] = True
     return args
 

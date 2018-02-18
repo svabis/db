@@ -56,7 +56,7 @@
 
      {% if client %}
        {% if client.avatar != "" %}
-       <img id="avatar" src="http://pieraksts.vfabrika.lv:5880/media/{{ client.avatar }}"/>
+       <img id="avatar" src="/media/{{ client.avatar }}"/>
        {% else %}
        <img id="avatar" src="{% static 'avatar_none.png' %}"/>
        {% endif %}

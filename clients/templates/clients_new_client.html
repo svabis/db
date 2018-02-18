@@ -18,10 +18,6 @@ jQuery(document).ready(function($) {
     cancel();
   }
  });
-
-// document.getElementById("id_reg_date").disabled = true;
-// document.getElementById("id_reg_date").readOnly = true;
-
 });
 
 // IMAGE PREVIEW
@@ -31,17 +27,45 @@ function readURL(input, display) {
     reader.onload = function (e) {
       $("#" + display)
         .attr("src", e.target.result);
-//        .width(320)
-//        .height(240);
       };
-//    $("#" + display).css("display", "block");
     reader.readAsDataURL(input.files[0]);
   }
 };
+// ===========================================================
+var card_string = "{{ card_string }}";
+var temp_string = ""; var char_count = 0; var card_start = false;
+
+$(document).keypress(function (e) {
+  var symb = String.fromCharCode(e.which);
+
+  if (card_start == true) {
+    if (char_count != 7) {
+      temp_string += symb; char_count++;
+      event.preventDefault();
+    } else {
+      document.getElementsByName('card_nr')[0].value = temp_string;
+      temp_string = ""; char_count = 0; card_start = false;
+      event.preventDefault();
+    }
+  } else {
+
+    if (card_string[char_count] == symb) {
+      temp_string += symb;
+
+      if (card_string == temp_string) {
+        temp_string = ""; char_count = 0; card_start = true;
+      }
+        event.preventDefault();
+        char_count++;
+      } else {
+        char_count = 0; temp_string = "";
+      }
+    }
+});
 </script>
 
 
-<form action="/client/new/" method=POST enctype="multipart/form-data">{% csrf_token %}
+<form action="/client/new/" method=POST enctype="multipart/form-data" onsubmit="submit_changes();">{% csrf_token %}
 <div class="row">
   <div class="col-sm-4 col-md-4 col-lg-4">
    <center>

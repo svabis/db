@@ -59,3 +59,14 @@ class Klienti(models.Model):
         return u'%s' % (self.name)
 
 
+# !!!!! Blacklist !!!!!
+class Blacklist(models.Model):
+    class Meta():
+        db_table = "blacklist"
+
+    bl_user = models.ForeignKey( Klienti )
+    bl_date = models.DateTimeField( default = timezone.now )
+    bl_data = models.CharField( max_length = 300 )
+
+    def __unicode__(self):
+        return u'%s' % (self.bl_user)

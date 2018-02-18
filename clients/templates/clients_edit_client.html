@@ -18,8 +18,8 @@ jQuery(document).ready(function($) {
     cancel();
   }
  });
-
 });
+
 
 // IMAGE PREVIEW
 function readURL(input, display) {
@@ -33,6 +33,46 @@ function readURL(input, display) {
     reader.readAsDataURL(input.files[0]);
   }
 };
+
+
+// ===========================================================
+var card_string = "{{ card_string }}";
+var temp_string = ""; var char_count = 0; var card_start = false;
+
+$(document).keypress(function (e) {
+  var symb = String.fromCharCode(e.which);
+
+  if ($(e.target).is('input')) {
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  if (card_start == true) {
+    if (char_count != 7) {
+      temp_string += symb; char_count++;
+      event.preventDefault();
+    } else {
+      document.getElementsByName('card_nr')[0].value = temp_string;
+      temp_string = ""; char_count = 0; card_start = false;
+      event.preventDefault();
+    }
+  } else {
+
+    if (card_string[char_count] == symb) {
+      temp_string += symb;
+
+      if (card_string == temp_string) {
+        temp_string = ""; char_count = 0; card_start = true;
+      }
+        event.preventDefault();
+        char_count++;
+      } else {
+        char_count = 0; temp_string = "";
+      }
+    }
+});
 </script>
 
 {% if client.client_blocked == True %}
@@ -46,7 +86,7 @@ function readURL(input, display) {
   <div class="col-sm-4 col-md-4 col-lg-4">
    <center>
     {% if client.avatar != "" %}
-    <img id="avatar" src="http://pieraksts.vfabrika.lv:5880/media/{{ client.avatar }}" style="margin-top: 30px;"/>
+    <img id="avatar" src="/media/{{ client.avatar }}" style="margin-top: 30px;"/>
     {% else %}
     <img id="avatar" src="{% static 'avatar_none.png' %}" style="margin-top: 30px;"/>
     {% endif %}
@@ -81,15 +121,38 @@ function readURL(input, display) {
      {{ form.e_mail.errors }}
   </div>
 
+<script>
+function blacklistID() {
+ alert("Klients ievietots melnajā sarakstā !!!");
+}
+
+function blockCard() {
+ alert("klienta karte tiek bloķēta !!!")
+}
+</script>
+
   </div>
   <div class="col-sm-4 col-md-4 col-lg-4">
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_reg_date" for="id_reg_date">Klienta ID:</label>
-    <input class="form-control" id="id_id" name="reg_date" readonly="readonly" type="text" value="{{ client.id }}" />
+    <div class="input-group">
+      <input class="form-control" id="id_id" name="reg_date" readonly="readonly" type="text" value="{{ client.id }}" />
+      <span class="input-group-btn">
+        <button class="btn btn-danger" type="button" onclick="blacklistID();">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+      </span>
+    </div>
    </div>
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_card_nr" for="{{ form.card_nr.id_for_label }}">Klienta kartes numurs:</label>
+    <div class="input-group">
      {{ form.card_nr }}
+      <span class="input-group-btn">
+        <button class="btn btn-danger" type="button" onclick="blockCard();">Bloķēt Karti
+<!--        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> -->
+        </button>
+      </span>
+    </div>
      {{ form.card_nr.errors }}
    </div>
   </div>
