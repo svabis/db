@@ -44,8 +44,10 @@ $(document).keypress(function (e) {
 
   if ($(e.target).is('input')) {
     if(event.keyCode == 13) {
-      event.preventDefault();
-      return false;
+      if (e.target.id != "yes") {
+        event.preventDefault();
+        return false;
+      }
     }
   }
 
@@ -277,30 +279,34 @@ function apply() {
 
 function applyTimer() {
   display = document.querySelector("#yes");
+  display.focus();
   display.value ="Apstiprināt izmaiņas ? (15)";
   var timer = duration, seconds = 15;
   countdown = setInterval( function () {
     seconds = parseInt(timer % 60, 10);
     display.value = "Apstiprināt izmaiņas ? (" + seconds + ")"; --timer;
-    if (seconds < 1) {
+    if (1 > seconds) {
       $("#yes").hide();
       $("#ok_btn").removeAttr('disabled');
       clearInterval(countdown);
+      document.getElementById("ok_btn").focus();
     }
   }
   , 1000);
 }
 function cancelTimer() {
   display = document.querySelector("#exit");
+  document.getElementById("cancel_link").focus();
   display.value ="Tiešām atcelt ? (15)";
   var timer = duration, seconds = 15;
   countdown = setInterval( function () {
     seconds = parseInt(timer % 60, 10);
     display.value = "Tiešām atcelt ? (" + seconds + ")"; --timer;
-    if (seconds < 1) {
+    if (1 > seconds) {
       $("#exit").hide();
       $("#cancel_btn").removeAttr('disabled');
       clearInterval(countdown);
+      document.getElementById("ok_btn").focus();
     }
   }
   , 1000);
@@ -310,7 +316,7 @@ function cancelTimer() {
 
 <div class="row">
   <div class="col-sm-6 col-md-6 col-lg-6 text-left" style="margin-top: 10px;">
-     <a href="/"><input class="btn btn-danger" value="Tiešām atcelt ? (15)" style="display: none;" id="exit"></a>
+     <a id="cancel_link" href="/"><input class="btn btn-danger" value="Tiešām atcelt ? (15)" style="display: none;" id="exit"></a>
      <input class="btn btn-success" type="submit" value="Apstiprināt izmaiņas ? (15)" style="display: none;" id="yes" onclick="submit_changes();">
   </div>
   <div class="col-sm-6 col-md-6 col-lg-6 text-right" style="margin-top: 10px;">

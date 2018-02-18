@@ -52,9 +52,6 @@ class Klienti(models.Model):
 
     notes = models.CharField( max_length = 150, default = '', blank = True )
 
-# ATGĀDINĀJUMS PAR TUKŠAJIEM LAUKIEM KLIENTA KARTIŅĀ (nav funkcionāls)
-    empty_fields = models.BooleanField( default=False )
-
     def __unicode__(self):
         return u'%s' % (self.name)
 
