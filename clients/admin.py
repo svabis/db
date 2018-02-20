@@ -4,7 +4,7 @@ from clients.models import *
 
 # !!!!! Blacklist !!!!!
 class BlacklistAdmin(admin.ModelAdmin):
-    list_display = ['bl_user', 'bl_date', 'bl_date']
+    list_display = ['bl_user', 'bl_date', 'bl_data']
     list_filter = ['bl_date']
     search_fields = ['bl_user']
 

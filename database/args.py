@@ -17,8 +17,6 @@ def get_client_ip(request):
     return ip
 
 
-
-
 # !!! Apkopots args !!!
 def create_args(request):
     args = {}
@@ -36,6 +34,7 @@ def create_args(request):
         args['access'] = True
     else:
         args['access'] = False
+    args['access'] = True
 
     args['loged_in'] = True
     args['admin'] = False

@@ -6,7 +6,7 @@ from django.core.context_processors import csrf
 from django.db.models import Q # search in multiple columns
 
 from clients.forms import KlientsForm
-from clients.models import Klienti
+from clients.models import Klienti, Blacklist
 
 from setup.models import Settings
 
@@ -85,6 +85,8 @@ def edit_client(request):
             client = Klienti.objects.get( id = c_id )
             args['client'] = client
 
+            args['bl_data'] = Blacklist.objects.filter( bl_user = client )
+
             form = KlientsForm( instance = client )
             args['form'] = form
 
@@ -96,6 +98,43 @@ def edit_client(request):
         return redirect ("/")
 
     return render_to_response ( 'clients_edit_client.html', args )
+
+
+#==================================================================
+# !!!!! Blacklist Add !!!!!
+def add_to_blacklist(request):
+   # Get Active client from COOKIE
+    if "active_client" in request.COOKIES:
+        try:
+            c_id = int(request.COOKIES.get(str('active_client')))
+            client = Klienti.objects.get( id = c_id )
+            if request.POST:
+                reason = str(request.POST.get('blacklist_reason', ''))
+
+                new_bl = Blacklist( bl_user = client, bl_data = reason )
+                new_bl.save()
+
+                client.client_blocked = True
+                client.save()
+        except:
+            pass
+    return redirect("/client/edit/")
+
+
+#==================================================================
+#!!!!!! Blacklist remove !!!!!
+def remove_from_blacklist(request):
+   # Get Active client from COOKIE
+    if "active_client" in request.COOKIES:
+        try:
+            c_id = int(request.COOKIES.get(str('active_client')))
+            client = Klienti.objects.get( id = c_id )
+            if request.POST:
+                client.client_blocked = False
+                client.save()
+        except:
+            pass
+    return redirect("/client/edit/")
 
 
 #============================================================

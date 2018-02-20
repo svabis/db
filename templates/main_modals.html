@@ -50,7 +50,9 @@ $(document).keypress(function (e) {
   var symb = String.fromCharCode(e.which);
 
   if (card_start == true) {
-    if (char_count != 7) { temp_string += symb; char_count++; event.preventDefault(); }
+
+    if (symb != "?") { temp_string += symb; char_count++; event.preventDefault(); }
+//    if (char_count != 7) { temp_string += symb; char_count++; event.preventDefault(); }
     else {
       document.getElementById('id').value = temp_string;
       temp_string = ""; char_count = 0; event.preventDefault();
@@ -90,7 +92,7 @@ $(document).keypress(function (e) {
 
 
 <!-- MesageModal Modal START -->
-<div class="modal fade" id="ClientModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="ClientModal" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 9999;">
 <div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
 <div class="modal-header">
  <h3 style="margin-top:5px; margin-bottom:5px;">

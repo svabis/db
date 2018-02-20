@@ -67,7 +67,30 @@ def main(request):
     if request.POST:
         try:
             client_card = str(request.POST.get('id', ''))
+    # may be multiple objects
             client = Klienti.objects.get( card_nr = client_card )
+#            client = Klienti.objects.filter( card_nr = client_card )[0]
+
+           # Karte bloķēta
+            if client.card_blocked == True:
+                args['message'] = True
+                args['message_type'] = "message"
+                args['message_code_2'] = True
+
+           # Karte melnajā sarakstā
+            if client.client_blocked == True:
+                args['message'] = True
+                args['message_type'] = "message"
+                args['message_code_3'] = True
+
+           # Klienta status ir mainījies
+            if client.status_changed == True:
+               # Make changes
+                client.status_changed = False
+                client.save()
+                args['message'] = True
+                args['message_type'] = "message"
+                args['message_code_4'] = True
 
         except:
            # Klients nav atrasts
@@ -76,33 +99,19 @@ def main(request):
             args['message_code_1'] = True
             client = False
 
-    if client != False:
-        args['client'] = client
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!! Modal apvienojums. !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+# tam ir jābūt pat no cepuma
+    try:
        # Karte bloķēta
         if client.card_blocked == True:
-             args['message'] = True
-             args['message_type'] = "message"
              args['message_code_2'] = True
-
        # Karte melnajā sarakstā
         if client.client_blocked == True:
-             args['message'] = True
-             args['message_type'] = "message"
              args['message_code_3'] = True
+    except:
+        pass
 
-       # Klienta status ir mainījies
-        if client.status_changed == True:
-            # Make changes
-             client.status_changed = False
-             client.save()
-             args['message'] = True
-             args['message_type'] = "message"
-             args['message_code_4'] = True
+    if client != False:
+        args['client'] = client
 
        # Skapīša info
         try:

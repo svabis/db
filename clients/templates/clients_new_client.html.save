@@ -43,17 +43,16 @@ $(document).keypress(function (e) {
 
   if ($(e.target).is('input')) {
     if(event.keyCode == 13) {
-      if (e.target.id != "yes") {
-        event.preventDefault();
-        return false;
-      }
+      event.preventDefault();
+      return false;
     }
   }
 
   if (card_start == true) {
-    if (symb != "?") { temp_string += symb; char_count++; event.preventDefault(); }
-//    if (char_count != 7) { temp_string += symb; char_count++; event.preventDefault(); }
-    else {
+    if (char_count != 7) {
+      temp_string += symb; char_count++;
+      event.preventDefault();
+    } else {
       document.getElementsByName('card_nr')[0].value = temp_string;
       temp_string = ""; char_count = 0; card_start = false;
       event.preventDefault();
@@ -176,6 +175,7 @@ function cancel() {
   $("#exit").show();
   clearInterval(countdown);
   cancelTimer();
+  display.focus();
 }
 function apply() {
   $("#yes").show();
@@ -198,14 +198,14 @@ function applyTimer() {
       $("#yes").hide();
       $("#ok_btn").removeAttr('disabled');
       clearInterval(countdown);
-      document.getElementById("ok_btn").focus();
     }
   }
   , 1000);
+  document.getElementById("ok_btn").focus();
 }
 function cancelTimer() {
   display = document.querySelector("#exit");
-  document.getElementById("cancel_link").focus();
+  display.focus();
   display.value ="Tiešām atcelt ? (15)";
   var timer = duration, seconds = 15;
   countdown = setInterval( function () {
@@ -215,17 +215,17 @@ function cancelTimer() {
       $("#exit").hide();
       $("#cancel_btn").removeAttr('disabled');
       clearInterval(countdown);
-      document.getElementById("ok_btn").focus();
     }
   }
   , 1000);
+  document.getElementById("ok_btn").focus();
 }
 </script>
 
 
 <div class="row">
   <div class="col-sm-6 col-md-6 col-lg-6 text-left" style="margin-top: 10px;">
-     <a id="cancel_link" href="/"><input class="btn btn-danger" value="Tiešām atcelt ? (15)" style="display: none;" id="exit"></a>
+     <a href="/"><input class="btn btn-danger" value="Tiešām atcelt ? (15)" style="display: none;" id="exit"></a>
      <input class="btn btn-success" type="submit" value="Saglabāt ? (15)" style="display: none;" id="yes" onclick="submit_changes();">
   </div>
   <div class="col-sm-6 col-md-6 col-lg-6 text-right" style="margin-top: 10px;">

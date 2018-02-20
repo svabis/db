@@ -20,7 +20,6 @@ jQuery(document).ready(function($) {
  });
 });
 
-
 // IMAGE PREVIEW
 function readURL(input, display) {
   if (input.files && input.files[0]) {
@@ -33,7 +32,6 @@ function readURL(input, display) {
     reader.readAsDataURL(input.files[0]);
   }
 };
-
 
 // ===========================================================
 var card_string = "{{ card_string }}";
@@ -52,10 +50,9 @@ $(document).keypress(function (e) {
   }
 
   if (card_start == true) {
-    if (char_count != 7) {
-      temp_string += symb; char_count++;
-      event.preventDefault();
-    } else {
+    if (symb != "?") { temp_string += symb; char_count++; event.preventDefault(); }
+//    if (char_count != 7) { temp_string += symb; char_count++; event.preventDefault(); }
+    else {
       document.getElementsByName('card_nr')[0].value = temp_string;
       temp_string = ""; char_count = 0; card_start = false;
       event.preventDefault();
@@ -77,9 +74,50 @@ $(document).keypress(function (e) {
 });
 </script>
 
+<div style="display: none;">
+  <form id="blacklist_remove" action="/client/blacklist/remove/" method=POST>{% csrf_token %}
+  </form>
+</div>
+
+<!-- Blacklist Modal START -->
+<div class="modal fade" id="BlacklistModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
+<div class="modal-header">
+ <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Klienta bloķēšanas iemesls!</h3>
+</div>
+<div class="modal-body">
+ <center>
+  <form action="/client/blacklist/add/" method=POST>{% csrf_token %}
+   <textarea class="form-control" cols="40" maxlength="150" name="blacklist_reason" rows="2" style="resize:none;"></textarea>
+ </center>
+</div>
+<div class="modal-footer">
+ <input class="btn btn-danger" type="submit" value="Pievienot personu melnajam sarakstam">
+ <button id="checkot_cancel" type="button" class="btn btn-success" data-dismiss="modal">Atcelt</button>
+</form>
+</div></div></div></div>
+<!-- Blacklist Modal END -->
+
+
 {% if client.client_blocked == True %}
 <div class="alert alert-danger">
  <center><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"> </span><strong> Klients ir bloķēts un atrodas melnajā sarakstā!</strong></center>
+ <table class="table table-hover table-striped table-condensed" style="margin-bottom: 0px;">
+ <thead>
+  <tr style="background: #aaa;">
+   <th style="vertical-align: top;">Datums</th>
+   <th style="vertical-align: top;">Iemesls</th>
+  </tr>
+ </thead>
+ <tbody>
+{% for b in bl_data %}
+  <tr class="clickable-row">
+   <td>{{ b.bl_date }}</td>
+   <td>{{ b.bl_data }}</td>
+  </tr>
+{% endfor %}
+ </tbody>
+</table>
 </div>
 {% endif %}
 
@@ -125,7 +163,12 @@ $(document).keypress(function (e) {
 
 <script>
 function blacklistID() {
- alert("Klients ievietots melnajā sarakstā !!!");
+ {% if client.client_blocked == False %}
+   $("#BlacklistModal").modal('show');
+ {% else %}
+//   alert("klients tika izņemts no melnā saraksta");
+   document.getElementById("blacklist_remove").submit();
+ {% endif %}
 }
 
 function blockCard() {
@@ -147,14 +190,14 @@ function blockCard() {
    </div>
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_card_nr" for="{{ form.card_nr.id_for_label }}">Klienta kartes numurs:</label>
-    <div class="input-group">
+<!--    <div class="input-group"> -->
      {{ form.card_nr }}
-      <span class="input-group-btn">
-        <button class="btn btn-danger" type="button" onclick="blockCard();">Bloķēt Karti
+<!--      <span class="input-group-btn">
+        <button class="btn btn-danger" type="button" onclick="blockCard();">Bloķēt Karti -->
 <!--        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> -->
-        </button>
-      </span>
-    </div>
+<!--        </button>
+      </span> -->
+<!--    </div> -->
      {{ form.card_nr.errors }}
    </div>
   </div>
@@ -210,7 +253,9 @@ function blockCard() {
 <!-- KOLONA 2 RINDA 1 -->
    <div class="row" style="margin-top: 10px;">
     <div class="col-sm-4 col-md-4 col-lg-4">
-     <a href="#"><button type="button" class="btn btn-info" style="min-width: 200px; max-width: 200px;">Abonementu vēsture</button></a>
+     <a href="/subscription/history/">
+      <button type="button" class="btn btn-info" style="min-width: 200px; max-width: 200px;">Abonementu vēsture</button>
+     </a>
     </div>
     <div class="col-sm-2 col-md-2 col-lg-2">
      <a href="/subscription/edit/"><button type="button" class="btn btn-success" style="min-width: 100px; max-width: 100px;">Pirkt</button></a>

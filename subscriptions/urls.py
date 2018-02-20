@@ -5,6 +5,13 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = [
+# History export
+    url(r'^history/csv/$', 'subscriptions.views.subscription_history_csv'),
+    url(r'^history/xls/$', 'subscriptions.views.subscription_history_xls'),
+
+# History
+    url(r'^/history/$', 'subscriptions.views.subscription_history'),
+
 # Abonementu apmaksa
     url(r'^_payment/$', 'subscriptions.views.subscription_payment'),
 
