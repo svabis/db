@@ -50,7 +50,7 @@ class Klienti(models.Model):
 
     reg_date = models.DateTimeField( default = timezone.now )
 
-    notes = models.CharField( max_length = 150, default = '', blank = True )
+    notes = models.CharField( max_length = 500, default = '', blank = True )
 
     def __unicode__(self):
         return u'%s' % (self.name)

@@ -4,12 +4,17 @@ import re       # for regular expresions (regex)
 
 from clients.models import Klienti
 
+import datetime
+
 # IMPORT DJANGO STUFF
 from django.core.management.base import BaseCommand, CommandError
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-       db = '/home/svabis/T01402GeraeteZo.xls'
+
+       print datetime.datetime.now()
+
+       db = '/home/svabis/Tabulas/T01402GerateZoo'
 
        lines = [line.rstrip('\n') for line in open(db)]
 
@@ -27,4 +32,6 @@ class Command(BaseCommand):
                klient.card_nr = card
                klient.save()
            except:
-               print l # id + "\t" +card
+               print l
+
+       print datetime.datetime.now()
