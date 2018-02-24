@@ -17,13 +17,14 @@ jQuery(document).ready(function($) {
 
 <h3>Abonementu pirkšana</h3>
 
-
+<form action="/subscription_purchase/" method=POST>{% csrf_token %}
+<input type="hiden" name="subscription" value="{{ chosen_subscr.id }}">
 <div class="row">
 <!-- RINDA 1 -->
  <div class="col-lg-9 col-md-9 col-sm-9">
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Izvēlētā abonementa nosaukums:</label>
-   <input type="text" class="form-control" id="id_subscripton" readonly="readonly">
+   <input type="text" class="form-control" id="id_subscripton" readonly="readonly" value="{{ chosen_subscr }}">
   </div>
  </div>
 
@@ -114,9 +115,9 @@ jQuery(document).ready(function($) {
 
 <!-- RINDA 6 -->
 <div class="row text-right" style="margin-top: 10px;">
- <a href="#"><button type="button" class="btn btn-success">Apmaksāt</button></a>
+ <input type="submit" class="btn btn-success" value="Apmaksāt">
  <a href="/"><button type="button" class="btn btn-danger">Atcelt</button></a>
 </div>
-
+</form>
 
 {% endblock %}

@@ -15,6 +15,9 @@ urlpatterns = [
 # Abonementu apmaksa
     url(r'^_payment/$', 'subscriptions.views.subscription_payment'),
 
+# Abonementu pirkums
+    url(r'^_purchase/$', 'subscriptions.views.subscription_purchase'),
+
 # Abonementu iesaldēšana
     url(r'^_freeze/$', 'subscriptions.views.subscription_freeze'),
 

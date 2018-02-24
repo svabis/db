@@ -13,6 +13,8 @@ from clients.models import Klienti
 # Skapīši modelis
 from lockers.models import Skapji, Skapji_history
 
+# Abonementi
+from subscriptions.models import Abonementi
 
 # !!!!! Clear ID !!!!!
 def clear_id(request):
@@ -50,6 +52,9 @@ def main(request):
    # Client Edited
     if "edit_client" in request.COOKIES:
         args['edit_client'] = True
+   # Subscription purchased
+    if "subscription_purchased" in request.COOKIES:
+        args['subscription_purchased'] = True
 
    # Get Active client from COOKIE
     if "active_client" in request.COOKIES:
@@ -130,10 +135,13 @@ def main(request):
             args['no_visit_history'] = True
 #            pass
 
+        subscr = Abonementi.objects.filter( client = client )
+        if subscr.count() > 0:
+             args['subscr'] = subscr
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # !!!!!   ABONEMENTU APSTRĀDES ALGORITMS   !!!!!
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        args['abon_active'] = True # pagaidām bez algoritma, 1-scan card=lockers, 2-atgriežoties no citas sadaļas=subscription
+             args['abon_active'] = True # pagaidām bez algoritma, 1-scan card=lockers, 2-atgriežoties no citas sadaļas=subscription
 
     response = render_to_response ( 'main_content.html', args )
 #    response = rendirect ("/") # domāts ja strādā ar cookies, lai disable refresh iespēju iekš lapas

@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, redirect
 
-from django.core.context_processors import csrf
-
 from database.args import create_args
 
 from setup.models import Settings
 
-from subscriptions.models import AbonementType
-
-# Klienta modelis
 from clients.models import Klienti
+from lockers.models import Skapji, Skapji_history
+
+import unicodedata # locker data unicode normalize
 
 # export
 from django.http import HttpResponse
@@ -21,85 +19,10 @@ import xlwt
 from datetime import datetime
 
 #============================================================
-# !!!!! ABONEMENTI !!!!!
-def subscription(request, back=False):
-    args = create_args(request)
-    if args['access'] == False:
-        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
-
-    if args['loged_in'] == False:
-        return redirect("/login/")
-
-   # return path from this view
-    if back == "edit":
-        args['back'] = "/client/edit/"
-
-    else:
-        args['back'] = "/"
-
-    card_cost = int(Settings.objects.get( key = "client card price" ).value)
-
-    args['card'] = card_cost
-
-    args['abonementi'] = AbonementType.objects.filter( position = 1, available = True )
-
-    args['vienreiz'] = AbonementType.objects.filter( position = 2, available = True )
-
-    args['special'] = AbonementType.objects.filter( position = 3, available = True )
-
-    args['first_time'] = AbonementType.objects.filter(  position = 4, available = True )
-
-    return render_to_response ( 'subscription_choise.html', args )
-
-
-#============================================================
-# !!!!! ABONEMENTA APMAKSA !!!!!
-def subscription_payment(request):
-    args = create_args(request)
-    if args['access'] == False:
-        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
-
-    if args['loged_in'] == False:
-        return redirect("/login/")
-
-    return render_to_response ( 'subscription_payment.html', args )
-
-
-#============================================================
-# !!!!! SUBSCRIPTION HISTORY !!!!!
-def subscription_history(request):
-    args = create_args(request)
-    if args['access'] == False:
-        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
-
-    if args['loged_in'] == False:
-        return redirect("/login/")
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!! INSERT BRAIN HERE !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    return render_to_response ( 'subscription_history.html', args )
-
-
-#============================================================
-# !!!!! ABONEMENTA IESLADĒŠANA !!!!!
-def subscription_freeze(request):
-    args = create_args(request)
-    if args['access'] == False:
-        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
-
-    if args['loged_in'] == False:
-        return redirect("/login/")
-
-    return render_to_response ( 'subscription_freeze.html', args )
-
-
-#============================================================
 # !!!!!               DATU EKSPORTS CSV/XLS             !!!!!
 #============================================================
 # !!!!! Vēsture CSV eksports !!!!!
-def subscription_history_csv(request):
+def history_csv(request):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
@@ -112,11 +35,18 @@ def subscription_history_csv(request):
         client = Klienti.objects.get( id = c_id )
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="history.csv"'
+    response['Content-Disposition'] = 'attachment; filename="' + str(c_id) + '.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Klienta ID', str(c_id)])
+#    writer.writerow(['Klienta ID', str(c_id)])
     writer.writerow(['locker_nr', 'check_in_time', 'check_out_time'])
+
+   # THIS MOMENT
+    try:
+        data = Skapji.objects.get( client = client )
+        writer.writerow( [str(data.number), data.checkin_time.strftime("%Y-%m-%d %H:%M")] )
+    except:
+        pass
 
    # HISTORY
     try:
@@ -131,7 +61,7 @@ def subscription_history_csv(request):
 
 #============================================================
 # !!!!! Vēsture XLS eksports !!!!!
-def subscription_history_xls(request):
+def history_xls(request):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
@@ -144,7 +74,7 @@ def subscription_history_xls(request):
         client = Klienti.objects.get( id = c_id )
 
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="history.xls"'
+    response['Content-Disposition'] = 'attachment; filename="' + str(c_id) + '.xls"'
 
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Vēsture')
@@ -162,6 +92,15 @@ def subscription_history_xls(request):
 
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
+
+   # THIS MOMENT
+    try:
+        data = Skapji.objects.get( client = client )
+        ws.write( 1,0, str(data.number), font_style)
+        ws.write( 1,1, data.checkin_time.strftime("%Y-%m-%d %H:%M"), font_style )
+        row_num += 1
+    except:
+        pass
 
    # HISTORY
     rows = Skapji_history.objects.filter( client = client ).order_by('-checkin_time').values_list('number', 'checkin_time', 'checkout_time')

@@ -13,6 +13,7 @@ $(document).ready(function(){
  document.getElementById("closeMesageModal").focus();
 {% endif %}
 
+{% if subscription_purchased %} $("#ClientModal").modal('show'); document.getElementById("closeClientModal").focus(); setTimeout(function(){ $('#ClientModal').modal('hide'); } , 3000); {% endif %}
 {% if new_client %} $("#ClientModal").modal('show'); document.getElementById("closeClientModal").focus(); setTimeout(function(){ $('#ClientModal').modal('hide'); } , 3000); {% endif %}
 {% if edit_client %} $("#ClientModal").modal('show'); document.getElementById("closeClientModal").focus(); setTimeout(function(){ $('#ClientModal').modal('hide'); } , 3000); {% endif %}
 
@@ -100,8 +101,10 @@ $(document).keypress(function (e) {
 </div>
 <div class="modal-body">
 <center>
+{% if subscription_purchased %}<h4>Abonements ir iegādāts!</h4>{% endif %}
 {% if new_client %}<h4>Jauna klienta kartiņa ir izveidota!</h4>{% endif %}
 {% if edit_client %}<h4>Klienta kartiņa ir sekmīgi rediģēta!</h4>{% endif %}
+
 </center>
 </div>
 <div class="modal-footer">

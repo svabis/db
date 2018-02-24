@@ -17,14 +17,14 @@ jQuery(document).ready(function($) {
 
 <h3>Abonementu veidi</h3>
 
-
+<form action="/subscription_payment/" method=POST>{% csrf_token %}
 <div class="row" style="border: solid black 1px;">
 <!-- RINDA 1 KOLONA 1-->
  <div class="col-lg-8 col-md-8 col-sm-8" style="border: solid black 1px;">
 kolona 1<br>
 
 {% for a in abonementi %}
-<b>{{ a.short_title }}</b><hr>
+<input type="radio" name="subscription" value="{{ a.id }}"> <b> {{ a.short_title }}</b><hr>
 {% endfor %}
 
  </div>
@@ -34,9 +34,9 @@ kolona 1<br>
 kolona 2<br>
 
 {% for v in vienreiz %}
-<b>{{ v.short_title }}</b><hr>
+<input type="radio" name="subscription" value="{{ v.id }}"> <b> {{ v.short_title }}</b><hr>
 {% endfor %}
-<b>Klienta karte {{ card }} EUR</b>
+<!-- <b>Klienta karte {{ card }} EUR</b> -->
 
  </div>
 
@@ -45,7 +45,7 @@ kolona 2<br>
 kolona 3<br>
 
 {% for s in special %}
-<b>{{ s.short_title }}</b><hr>
+<input type="radio" name="subscription" value="{{ s.id }}"> <b> {{ s.short_title }}</b><hr>
 {% endfor %}
 
  </div>
@@ -57,7 +57,7 @@ kolona 3<br>
 rinda 2<br>
 
 {% for f in first_time %}
-<b>{{ f.short_title }}</b><hr>
+<input type="radio" name="subscription" value="{{ f.id }}"> <b> {{ f.short_title }}</b><hr>
 {% endfor %}
 
  </div>
@@ -65,9 +65,9 @@ rinda 2<br>
 
 <!-- RINDA 3 -->
 <div class="row text-right" style="margin-top: 10px;">
- <a href="/subscription_payment/"><button type="button" class="btn btn-success">Pirkt</button></a>
+ <input type="submit" class="btn btn-success" value="Pirkt">
  <a href="{{ back }}"><button type="button" class="btn btn-danger">Atcelt</button></a>
 </div>
-
+</form>
 
 {% endblock %}

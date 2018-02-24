@@ -16,11 +16,6 @@ jQuery(document).ready(function($) {
 });
 </script>
 
-{% if no_data %}
-<br>
-<center><h2>Datu par klienta apmeklējumu vēsturi nav.</h2></center>
-{% endif %}
-
 {% if admin %}
 <a href="/lockers/history/csv/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
  <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus CSV</button></a>

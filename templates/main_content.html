@@ -99,6 +99,8 @@
 
 {% if client %}<b>{{ client.status }}</b>{% if client.society == True %} <b>(BIEDRĪBA)</b>{% endif %},<br>{% else %}Status,{% endif %}
 
+{% for s in subscr %}<h4>{{ s }}</h4>{% endfor %}
+
      Aktīvais abonements,<br>
      palikušo reižu skaits,<br>
      derīguma termiņš,<br>
