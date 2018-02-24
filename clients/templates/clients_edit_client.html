@@ -81,21 +81,22 @@ $(document).keypress(function (e) {
 
 <!-- Blacklist Modal START -->
 <div class="modal fade" id="BlacklistModal" tabindex="-1" role="dialog" aria-hidden="true">
+ <form action="/client/blacklist/add/" method=POST>{% csrf_token %}
 <div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
 <div class="modal-header">
  <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Klienta bloķēšanas iemesls!</h3>
 </div>
 <div class="modal-body">
  <center>
-  <form action="/client/blacklist/add/" method=POST>{% csrf_token %}
-   <textarea class="form-control" cols="40" maxlength="150" name="blacklist_reason" rows="2" style="resize:none;"></textarea>
+  <textarea class="form-control" cols="40" maxlength="150" name="blacklist_reason" rows="2" style="resize:none;"></textarea>
  </center>
 </div>
 <div class="modal-footer">
  <input class="btn btn-danger" type="submit" value="Pievienot personu melnajam sarakstam">
  <button id="checkot_cancel" type="button" class="btn btn-success" data-dismiss="modal">Atcelt</button>
-</form>
-</div></div></div></div>
+</div></div></div>
+ </form>
+</div>
 <!-- Blacklist Modal END -->
 
 

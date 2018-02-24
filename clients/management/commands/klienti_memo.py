@@ -8,6 +8,9 @@ from clients.models import Klienti, StatusType
 
 import datetime
 
+# progress bar
+from tqdm import tqdm
+
 #from slugify import slugify
 
 # IMPORT DJANGO STUFF
@@ -17,6 +20,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+
 # 0 Person no
 # 31 Status
 
@@ -24,15 +28,17 @@ class Command(BaseCommand):
        st = '/home/svabis/Tabulas/T00808Memo'
 
        print datetime.datetime.now()
-
-      # read Memo
-       lines = [line.rstrip('\n') for line in open(st)]
 #       memo = []
-       for line in lines:
-         l = line.split('\t')
+
+       lines = [line.rstrip('\n') for line in open(st)]
+       print len(lines)
+
+#       for line in lines:
+       for i in tqdm( range( len(lines) ) ):
+         l = lines[i].split('\t')
+#         l = line.split('\t')
          temp = l[8].rstrip('\\x0d\\x0a')
          temp = temp.replace('\\x0d\\x0a', '\n')
-#         memo.append( [l[5], temp] )
 
          counter = 0
 
@@ -42,6 +48,11 @@ class Command(BaseCommand):
              k.save()
              counter += 1
          except:
-             print l[5]
+             print l
+#             memo.append( l )
+#             pass
+
+#       for m in memo:
+#           print m
 
        print datetime.datetime.now()

@@ -109,7 +109,7 @@ def add_to_blacklist(request):
             c_id = int(request.COOKIES.get(str('active_client')))
             client = Klienti.objects.get( id = c_id )
             if request.POST:
-                reason = str(request.POST.get('blacklist_reason', ''))
+                reason = request.POST.get('blacklist_reason', '')
 
                 new_bl = Blacklist( bl_user = client, bl_data = reason )
                 new_bl.save()

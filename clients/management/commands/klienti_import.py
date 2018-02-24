@@ -6,45 +6,48 @@ import pytz	# to set timezone
 
 from clients.models import Klienti, StatusType
 
-from slugify import slugify
 import datetime
 
-# IMPORT DJANGO STUFF
+# progress bar
+from tqdm import tqdm
+
 from django.core.files import File	# for file opening
 
+# IMPORT DJANGO STUFF
 from django.core.management.base import BaseCommand, CommandError
 
 d = datetime.datetime( 1899, 12, 30, 0, 0 ).date()
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-       db = '/home/svabis/Tabulas/T00801Person.xls'
-#       img_folder = '/home/svabis/Personen0/'
-       img_folder = '/home/svabis/Personen/'
-       tz = pytz.timezone('UTC')
+
+       print datetime.datetime.now()
+
+       db = '/home/svabis/Tabulas/T00801Person'
+       img_folder = '/home/svabis/Personen0/'
        lines = [line.rstrip('\n') for line in open(db)]
 
 # 0 Person no
-# 4 reģ date
+# 4 reg date
 # 5 First name
 # 6 Surname
 # 8 Date of birth
 
-# 14 Mobile 16
-# 15 E-mail 17
+# 13 14 15 Mobile
+# 16 E-mail 17
 # 25 Gender
-# 7 Status
+# 31 Status
 
        start = False
-  #     start = True
+       start = True
        counter = 0
 
        temp_status = StatusType.objects.all()[0]
 
-       for line in lines:
-         l = line.split('\t')
-         if l[0] == "1-20577":
-          start = True
+       for i in tqdm( range(len(lines)) ):
+         l = lines[i].split('\t')
+    #     if l[0] == "1-20577":
+    #      start = True
 
          if start == True:
            gender_temp = ""
@@ -56,14 +59,15 @@ class Command(BaseCommand):
            avatar_exist = False
            birthday_exist = False
 
-           print l[0] + "\t" + l[1]
+          # empty client for test if client is created
+           new_client = ""
+
+#           print l[0] + "\t" + l[1]
 
            try:
                open_image = open( img_folder + l[0] + ".jpg", 'rb')
                avatar_temp = File( open_image  )
-#               print avatar_temp
                avatar_exist = True
-               new_client = ""
           # NO AVATAR
            except:
                pass
@@ -72,42 +76,54 @@ class Command(BaseCommand):
                if l[8] != '':
 #                   time = d + datetime.timedelta( days = int(l[8].split('.')[0]) )
                    time = datetime.datetime.strptime( l[8], '%d/%m/%Y')
-#                   print time
                    birthday_exist = True
-#                   l.pop(8)
-
           # NO BIRTHDAY
            except:
                pass
 
            reg_date_temp = datetime.datetime.strptime( l[4], '%d/%m/%Y %H:%M:%S')
-#           l[16] = slugify( l[16] ) # nekorekti: fizmats-inbox-lv
 
+          # Phone numbers
+           phone_temp = ""
+           if l[13] != "":
+                phone_temp += l[13] + ","
+           if l[14] != "":
+                phone_temp += l[14] + ","
+           if l[15] != "":
+                phone_temp += l[15]
+
+          # Test Cases
+           if len( phone_temp ) > 25:
+                print l
+           if len( phone_temp.split('@') ) > 1:
+                print l
+
+    # !!!!! CREATE OBJECTS !!!!!
            if birthday_exist == True:
               # AVATAR + BIRTHDAY
                if avatar_exist == True:
-                   new_client = Klienti( avatar = avatar_temp, name = l[5], surname = l[6], birthday = time, phone=l[15], e_mail=l[16],  gender = gender_temp, status=temp_status,
+                   new_client = Klienti( avatar = avatar_temp, name = l[5], surname = l[6], birthday = time, phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status,
                                 s3_nr=l[0], reg_date=reg_date_temp )
                    new_client.save()
               # BIRTHDAY
                else:
-                   new_client = Klienti( name = l[5], surname = l[6], birthday = time, phone=l[15], e_mail=l[16],  gender = gender_temp, status=temp_status, s3_nr=l[0], reg_date=reg_date_temp )
+                   new_client = Klienti( name = l[5], surname = l[6], birthday = time, phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status, s3_nr=l[0], reg_date=reg_date_temp )
                    new_client.save()
            else:
               # AVATAR
                if avatar_exist == True:
-                   new_client = Klienti( avatar = avatar_temp, name = l[5], surname = l[5], phone=l[13], e_mail=l[16],  gender = gender_temp, status=temp_status, s3_nr=l[0], reg_date=reg_date_temp )
+                   new_client = Klienti( avatar = avatar_temp, name = l[5], surname = l[5], phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status, s3_nr=l[0], reg_date=reg_date_temp )
                    new_client.save()
               # NO BIRTHDAY + NO AVATAR
                else:
-                   new_client = Klienti( name = l[5], surname = l[6], phone=l[15], e_mail=l[16],  gender = gender_temp, status=temp_status, s3_nr=l[0], reg_date=reg_date_temp )
+                   new_client = Klienti( name = l[5], surname = l[6], phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status, s3_nr=l[0], reg_date=reg_date_temp )
                    new_client.save()
 
+          # no object was created --> print line's first column
            if new_client == "":
-                print l
+                print l[0]
 
-#           print new_client
          counter += 1
 
-
        print counter
+       print datetime.datetime.now()

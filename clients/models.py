@@ -33,6 +33,8 @@ class Klienti(models.Model):
 
     avatar = models.ImageField( blank = True, null=True, upload_to = "client/" )
 
+    first = models.BooleanField( default=False )
+
     birthday = models.DateField( blank = True, null = True )
     phone = models.CharField( max_length = 25, blank = True, null = True )
     e_mail = models.EmailField ( blank = True, null = True )

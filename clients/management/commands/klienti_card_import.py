@@ -5,6 +5,7 @@ import re       # for regular expresions (regex)
 from clients.models import Klienti
 
 import datetime
+from tqdm import tqdm
 
 # IMPORT DJANGO STUFF
 from django.core.management.base import BaseCommand, CommandError
@@ -21,8 +22,10 @@ class Command(BaseCommand):
 # 6 s3.id
 # 7 Status
 
-       for line in lines:
-           l = line.split('\t')
+       for i in tqdm( range(len(lines)) ):
+#       for line in lines:
+#           l = line.split('\t')
+           l = lines[i].split('\t')
 
            id = l[6]
            card = l[7].split('=')[-1]

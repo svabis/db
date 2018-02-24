@@ -3,6 +3,18 @@
 {% block subscription %}
 <div id="hider"></div>
 
+<script>
+jQuery(document).ready(function($) {
+// ESC keypress event
+ $(document).keyup(function (e) {
+  // ESC 27
+  if ( e.keyCode === 27 ) {
+    window.location.href = "/";
+  }
+ });
+});
+</script>
+
 <h3>Abonementu pirkšana</h3>
 
 
@@ -103,7 +115,7 @@
 <!-- RINDA 6 -->
 <div class="row text-right" style="margin-top: 10px;">
  <a href="#"><button type="button" class="btn btn-success">Apmaksāt</button></a>
- <a href="#"><button type="button" class="btn btn-danger">Atcelt</button></a>
+ <a href="/"><button type="button" class="btn btn-danger">Atcelt</button></a>
 </div>
 
 

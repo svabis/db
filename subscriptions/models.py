@@ -72,27 +72,23 @@ class Abonementi(models.Model):
     class Meta():
         db_table = "abonementi"
 
+    active = models.BooleanField( default = False ) # aktivējot mainās uz True
+    ended = models.BooleanField( default = False ) # ja beidzās, tad mainās uz True
+
     client = models.ForeignKey( Klienti ) # abonementa īpašnieks
 
-    title = models.CharField( max_length = 60, default = '' ) # nosaukums
+    subscr = models.ForeignKey( AbonementType ) # abonements
+
     price = models.DecimalField( max_digits = 5, decimal_places = 2 ) # cena
 
     purchase_date = models.DateTimeField( default = timezone.now ) # pirkuma datums (izmantošanas secībai)
 
-    active = models.BooleanField( default=True ) # ja beidzās, tad mainās uz False
+    activation_date = models.DateTimeField( blank = True, null = True ) # aktivācijas laiks
+    activate_before = models.DateTimeField( blank = True, null = True ) # derīgs aktivācijai līdz
 
-# LAIKAM NAV VAJADZĪGS
-#    special = models.BooleanField( default=False ) # īpašie abonementi
+    best_before = models.DateTimeField( blank = True, null = True ) # derīgs līdz (laiks/datums, rēķinās aktivācijas diena/laiks + timedelta month no AbonementType)
 
-    first_time = models.BooleanField( default=False ) # iepazīšanās (ja ir tāds tad otru pirkt --> DENIED)
-
-    best_before = models.DateTimeField( blank = True, null = True ) # derīgs līdz (laiks/datums, rēķinās pirkšanas diena/laiks + timedelta month no AbonementType)
-
-# FOREIGN KEY UZ KURŠ ???
-#    time_limit = models.BooleanField( default=False ) # laika limits (rīti, darbadienas u.t.t.)
-
-    times = models.BooleanField( default=False ) # reižu limits
-    times_count = models.IntegerField( blank = True, null = True ) # atlikušo reižu skaits
+    times_count = models.IntegerField( blank = True, null = True ) # atlikušo reižu skaits, ja ir
 
     def __unicode__(self):
-        return u'%s' % (self.title)
+        return u'%s' % (self.subscr)
