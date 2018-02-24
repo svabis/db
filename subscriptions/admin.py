@@ -2,21 +2,19 @@
 from django.contrib import admin
 from subscriptions.models import *
 
-# Register your models here.
 
 # !!!!! Abonementu_tipi !!!!!
 class AbonementTypeAdmin(admin.ModelAdmin):
-    list_display = ['title', 'short_title', 'available', 'position', 'price', 'special', 'first_time', 'best_before', 'time_limit', 'time_limit_type', 'times', 'times_count']
-    list_filter = ['position', 'available', 'special', 'first_time', 'best_before', 'time_limit', 'times', 'times_count']
+    list_display = ['purchase_date', 'active', 'ended', 'client', 'subscr', 'price', 'activation_date', 'activate_before', 'best_before', 'times_count']
+    list_filter = ['purchase_date', 'active', 'ended', 'activation_date', 'activate_before', 'best_before', 'subscr']
 #    search_fields = []
 #    exclude = []
 
 
 # !!!!! Abonementi !!!!!
-#class AbonementiAdmin(admin.ModelAdmin):
-#    list_display = ['title', 'client', 'price', 'purchase_date', 'active', 'first_time', 'best_before', 'times', 'times_count']
-#    list_filter = ['title', 'price', 'purchase_date', 'active', 'first_time', 'best_before', 'times', 'times_count']
-
+class AbonementiAdmin(admin.ModelAdmin):
+    list_display = ['purchase_date', 'active', 'ended', 'client', 'subscr', 'price', 'activation_date', 'activate_before', 'best_before', 'times_count']
+    list_filter = ['purchase_date', 'active', 'ended', 'activation_date', 'activate_before', 'best_before', 'times_count', 'subscr']
 #    search_fields = ['client']
 #    exclude = []
 
@@ -28,5 +26,5 @@ class TimelimitTypeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(AbonementType, AbonementTypeAdmin)
-#admin.site.register(Abonementi, AbonementiAdmin)
+admin.site.register(Abonementi, AbonementiAdmin)
 admin.site.register(TimelimitType, TimelimitTypeAdmin)
