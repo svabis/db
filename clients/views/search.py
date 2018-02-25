@@ -13,7 +13,7 @@ from setup.models import Settings
 
 from database.args import create_args
 
-from clients.paginator import Paginator  # import paginator
+from database.paginator import Paginator  # import paginator
 import math # for rounding up Page Counter
 
 

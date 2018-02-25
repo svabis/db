@@ -100,18 +100,6 @@ def subscription_purchase(request):
     response.set_cookie( key='subscription_purchased', value="True", max_age=3 )
     return response
 
-#============================================================
-# !!!!! SUBSCRIPTION HISTORY !!!!!
-def subscription_history(request):
-    args = create_args(request)
-    if args['access'] == False:
-        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
-
-    if args['loged_in'] == False:
-        return redirect("/login/")
-
-    return render_to_response ( 'subscription_history.html', args )
-
 
 #============================================================
 # !!!!! ABONEMENTA IESLADĒŠANA !!!!!

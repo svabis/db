@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^history/xls/$', 'subscriptions.views.subscription_history_xls'),
 
 # History
+    url(r'^/history/(?P<pageid>\d+)/$', 'subscriptions.views.subscription_history'),
     url(r'^/history/$', 'subscriptions.views.subscription_history'),
 
 # Abonementu apmaksa

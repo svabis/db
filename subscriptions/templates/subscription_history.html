@@ -1,36 +1,7 @@
-{% extends 'main_head.html' %}
+{% extends 'subscription_history_paginator.html' %}
 {% load staticfiles %}
-{% block subscription %}
-<div id="hider"></div>
 
-<h3>Abonementu vēsture</h3>
-
-<a href="/client/edit/"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> &nbsp;Atpakaļ</button></a>
-
-<script>
-jQuery(document).ready(function($) {
-// ESC keypress event
- $(document).keyup(function (e) {
-  // ESC 27
-  if ( e.keyCode === 27 ) {
-    window.location.href = "/client/edit/";
-  }
- });
-});
-</script>
-
-{% if no_data %}
-<br>
-<center><h2>Datu par klienta abonementu vēsturi nav.</h2></center>
-{% endif %}
-
-{% if admin %}
-<a href="/subscriptions/history/csv/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
- <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus CSV</button></a>
-<a href="/subscriptions/history/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
- <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button></a>
-<br><br>
-{% endif %}
+{% block subscription_data %}
 
 <table class="table table-hover table-striped table-condensed">
  <thead>
@@ -41,7 +12,7 @@ jQuery(document).ready(function($) {
  <tbody>
 {% for d in data %}
   <tr class="clickable-row">
-   <td class="text-danger"><b>{{ d.number }}</b></td>
+   <td class="text-danger">{{ d }}</td>
   </tr>
 {% endfor %}
 

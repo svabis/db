@@ -1,28 +1,7 @@
-{% extends 'main_head.html' %}
+{% extends 'lockers_history_paginator.html' %}
 {% load staticfiles %}
 
-{% block locker %}
-<a href="/"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> &nbsp;Atpakaļ</button></a>
-
-<script>
-jQuery(document).ready(function($) {
-// ESC keypress event
- $(document).keyup(function (e) {
-  // ESC 27
-  if ( e.keyCode === 27 ) {
-    window.location.href = "/";
-  }
- });
-});
-</script>
-
-{% if admin %}
-<a href="/lockers/history/csv/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
- <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus CSV</button></a>
-<a href="/lockers/history/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
- <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button></a>
-<br><br>
-{% endif %}
+{% block locker_data %}
 
 <table class="table table-hover table-striped table-condensed">
  <thead>
@@ -33,13 +12,15 @@ jQuery(document).ready(function($) {
   </tr>
  </thead>
  <tbody>
+{% if pageid == 1 %}
 {% if new_data %}
   <tr class="clickable-row">
    <td class="text-danger"><b>{{ new_data.number }}</b></td>
    <td class="text-danger"><b>{{ new_data.checkin_time }}</b></td>
    <td class="text-danger"><b>atrodas klubā</b></td>
   </tr>
-{% endif  %}
+{% endif %}
+{% endif %}
 {% for d in data %}
   <tr class="clickable-row">
    <td>{{ d.number }}</td>

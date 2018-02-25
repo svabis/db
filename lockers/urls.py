@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^/history/csv/$', 'lockers.views.history_csv'),
     url(r'^/history/xls/$', 'lockers.views.history_xls'),
 # Vēsture
+    url(r'^/history/(?P<pageid>\d+)/$', 'lockers.views.history'),
     url(r'^/history/$', 'lockers.views.history'),
 
 # ===============================================================
