@@ -51,3 +51,21 @@ def remove_from_blacklist(request):
         except:
             pass
     return redirect("/client/edit/")
+
+
+#==================================================================
+# !!!!! Deposit Add !!!!!
+def add_deposit(request):
+   # Get Active client from COOKIE
+    if "active_client" in request.COOKIES:
+        try:
+            c_id = int(request.COOKIES.get(str('active_client')))
+            client = Klienti.objects.get( id = c_id )
+            if request.POST:
+                amount = request.POST.get('deposit_add', '')
+
+# INSERT DEPOSIT SAVE HERE
+
+        except:
+            pass
+    return redirect("/client/edit/")

@@ -74,6 +74,27 @@ $(document).keypress(function (e) {
 });
 </script>
 
+<!-- Deposit Modal START -->
+<div class="modal fade" id="DepositModal" tabindex="-1" role="dialog" aria-hidden="true">
+ <form action="/client/deposit/add/" method=POST>{% csrf_token %}
+<div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
+<div class="modal-header">
+ <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-euro" aria-hidden="true"></span>&nbsp;Pievienot klientam depozītu</h3>
+</div>
+<div class="modal-body">
+ <center>
+  <input type="text" class="form-control" name="deposit_add">
+ </center>
+</div>
+<div class="modal-footer">
+ <input class="btn btn-danger pull-left" id="deposit_ok" type="submit" value="Pievienot depozītu ok">
+ <button id="deposit_apply" type="button" class="btn btn-danger">Pievienot depozītu</button>
+ <button id="deposit_cancel" type="button" class="btn btn-success" data-dismiss="modal">Atcelt</button>
+</div></div></div>
+ </form>
+</div>
+<!-- Deposit Modal END -->
+
 <div style="display: none;">
   <form id="blacklist_remove" action="/client/blacklist/remove/" method=POST>{% csrf_token %}
   </form>
@@ -93,7 +114,7 @@ $(document).keypress(function (e) {
 </div>
 <div class="modal-footer">
  <input class="btn btn-danger" type="submit" value="Pievienot personu melnajam sarakstam">
- <button id="checkot_cancel" type="button" class="btn btn-success" data-dismiss="modal">Atcelt</button>
+ <button id="bl_checkot_cancel" type="button" class="btn btn-success" data-dismiss="modal">Atcelt</button>
 </div></div></div>
  </form>
 </div>
@@ -184,8 +205,13 @@ function blockCard() {
     <div class="input-group">
       <input class="form-control" id="id_id" name="reg_date" readonly="readonly" type="text" value="{{ client.id }}" />
       <span class="input-group-btn">
+{% if client.client_blocked == False %}
         <button class="btn btn-danger" type="button" onclick="blacklistID();">
         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+{% else %}
+        <button class="btn btn-success" type="button" onclick="blacklistID();">
+        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+{% endif %}
       </span>
     </div>
    </div>
@@ -238,11 +264,11 @@ function blockCard() {
 <!-- KOLONA 1 -->
   <div class="col-sm-4 col-md-4 col-lg-4" style="margin-top: 10px;">
    <div class="form-group" style="margin-bottom: 5px;">
-    <label id="id_status">Aktīvais abonements:</label>
+<!--    <label id="id_status">Aktīvais abonements:</label> -->
 <!--    <textarea class="form-control" cols="40" id="id_subscripton" name="subscripton" rows="2" style="resize:none;" readonly="readonly">Aktīva abonementa nav</textarea> -->
-    <input class="form-control" type="text" id="id_subscripton" name="subscripton" readonly="readonly">
+<!--    <input class="form-control" type="text" id="id_subscripton" name="subscripton" readonly="readonly"> -->
    </div>
-   <div class="form-group" style="margin-bottom: 5px;">
+   <div class="form-group" style="margin-bottom: 5px; margin-top: 64px;">
     <label id="id_status">Apdrošināšanas polise:</label>
     <input class="form-control" type="text" id="id_insurance" name="insurance" readonly="readonly">
    </div>
@@ -262,7 +288,7 @@ function blockCard() {
      <a href="/subscription/edit/"><button type="button" class="btn btn-success" style="min-width: 100px; max-width: 100px;">Pirkt</button></a>
     </div>
     <div class="col-sm-6 col-md-6 col-lg-6">
-     <a href="/subscription_freeze/"><button type="button" class="btn btn-success pull-right">Abonemeta iesaldēšana</button></a>
+     <a href="/subscription_freeze/"><button id="freeze_button" type="button" class="btn btn-success pull-right" {% if freeze_disable %}disabled{% endif %}>Abonemeta iesaldēšana</button></a>
     </div>
    </div>
 
@@ -274,14 +300,42 @@ function blockCard() {
     <div class="col-sm-2 col-md-2 col-lg-2" style="margin-top: 30px;">
      <a href="#"><button type="button" class="btn btn-success" style="min-width: 100px; max-width: 100px;">Reģistrēt</button></a>
     </div>
-    <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 12px;">
-     <div class="form-group text-right" style="margin-bottom: 0px;">
-      <label id="id_frozen_subscription">Iesaldētā summa:</label>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+     <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 12px;">
+      <div class="form-group text-right" style="margin-bottom: 0px;">
+       <label id="id_frozen_subscription">Iesaldētā summa:</label>
+      </div>
+     </div>
+     <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 7px; padding-right: 0px;">
+      <input class="form-control" type="text" id="id_frozen_subscription" name="frozen_subscription" readonly="readonly"
+       value="{% if frozen_amount == 0 %}-{% else%}{{ frozen_amount|floatformat:2 }}{% endif %}">
      </div>
     </div>
-    <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 7px;">
-     <input class="form-control" type="text" id="id_frozen_subscription" name="frozen_subscription" readonly="readonly">
+{% if admin %}
+    <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 7px;">
+     <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 12px;">
+      <div class="form-group text-right" style="margin-bottom: 0px;">
+       <label id="id_deposit_label">Depozīts:</label>
+      </div>
+     </div>
+     <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 7px; padding-right: 0px;">
+      <div class="input-group">
+       <input class="form-control" id="id_deposit" name="deposit" readonly="readonly" type="text"
+        value="{% if deposit_amount == 0 %}-{% else%}{{ deposit_amount|floatformat:2 }}{% endif %}">
+       <span class="input-group-btn">
+        <button class="btn btn-warning" type="button" onclick="deposit_money();">
+        <span class="glyphicon glyphicon-euro" aria-hidden="true"></span></button>
+       </span>
+      </div>
+     </div>
     </div>
+{% endif %}
+
+<script>
+function deposit_money() {
+ $("#DepositModal").modal('show');
+}
+</script>
 
    </div>
   </div>

@@ -8,6 +8,8 @@ from django.core.context_processors import csrf
 from clients.forms import KlientsForm
 from clients.models import Klienti, Blacklist
 
+from subscriptions.models import Abonementi
+
 from setup.models import Settings
 
 from database.args import create_args
@@ -91,6 +93,15 @@ def edit_client(request):
             args['form'] = form
 
             args['active_tab_3'] = True
+
+# TEMPORARY DATA
+            args['frozen_amount'] = 3.2
+            args['deposit_amount'] = 0.00
+
+# FREEZED ABONEMNTUS ???
+            f_temp = Abonementi.objects.filter( client = client, ended = False )
+            if f_temp.count() == 0:
+                args['freeze_disable'] = True
         except:
            # COMMENT
             return redirect ("/")

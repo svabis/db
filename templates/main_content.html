@@ -95,22 +95,27 @@
    <div class="col-sm-6 col-md-6 col-lg-6" style="border: solid #ccc 1px;">
     <div class="container-fluid" style="background: #d2dff4; border: solid #ccc 1px; margin-bottom: 10px;">
      Informācija par klientu:<br>
-{% if client %}<b>{{ client.name}} {{ client.surname }}</b>,{% else %}Vārds, Uzvārds,{% endif %}<br>
+{% if client %}<b>{{ client.name}} {{ client.surname }}</b>,{% endif %}<br>
 
-{% if client %}<b>{{ client.status }}</b>{% if client.society == True %} <b>(BIEDRĪBA)</b>{% endif %},<br>{% else %}Status,{% endif %}
+{% if client %}<b>{{ client.status }}</b>{% if client.society == True %} <b>(BIEDRĪBA)</b>{% endif %}{% endif %}<br><br>
+
+{% if client %}Pašlaik pieejamais abonements:<br><b>{{ active_subscription }}</b>{% endif %}<br><br>
+
+{% if client %}Atlikušo reižu skaits:<br><b>{{ active_subscription.times_count }}</b>{% endif %}<br><br>
+
+{% if client %}Derīguma termiņš,<br><b>{{ active_subscription.best_before }}</b>{% endif %}<br><br>
+
+{% if client %}Pēdējais apmeklējums:<br>
+  {% if client and checked == True %} <b>Pašlaik atrodas klubā</b>
+  {% elif client and last_visit %} <b>{{ last_visit }}</b>
+  {% elif client %}Datu nav{% endif %}
+{% endif %}<br>
+
+
+    </div>
 
 {% for s in subscr %}<h4>{{ s }}</h4>{% endfor %}
 
-     Aktīvais abonements,<br>
-     palikušo reižu skaits,<br>
-     derīguma termiņš,<br>
-
-     <b>Pēdējais apmeklējums:<br>
-{% if client and checked == True %} Pašlaik atrodas klubā
-{% elif client and last_visit %} {{ last_visit }}
-{% elif client %}Datu nav{% endif %}</b><br>
-
-    </div>
    </div>
   </div>
 

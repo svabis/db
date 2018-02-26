@@ -16,6 +16,10 @@ from lockers.models import Skapji, Skapji_history
 # Abonementi
 from subscriptions.models import Abonementi
 
+# Tools
+from database.tools import ActiveSubscription
+
+
 # !!!!! Clear ID !!!!!
 def clear_id(request):
     response = redirect ('/')
@@ -72,31 +76,8 @@ def main(request):
     if request.POST:
         try:
             client_card = str(request.POST.get('id', ''))
-    # may be multiple objects
+           # may be multiple objects
             client = Klienti.objects.get( card_nr = client_card )
-#            client = Klienti.objects.filter( card_nr = client_card )[0]
-
-           # Karte bloķēta
-            if client.card_blocked == True:
-                args['message'] = True
-                args['message_type'] = "message"
-                args['message_code_2'] = True
-
-           # Karte melnajā sarakstā
-            if client.client_blocked == True:
-                args['message'] = True
-                args['message_type'] = "message"
-                args['message_code_3'] = True
-
-           # Klienta status ir mainījies
-            if client.status_changed == True:
-               # Make changes
-                client.status_changed = False
-                client.save()
-                args['message'] = True
-                args['message_type'] = "message"
-                args['message_code_4'] = True
-
         except:
            # Klients nav atrasts
             args['message'] = True
@@ -104,16 +85,35 @@ def main(request):
             args['message_code_1'] = True
             client = False
 
-# tam ir jābūt pat no cepuma
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!! COOKIE "mesages displayed" !!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     try:
-       # Karte bloķēta
+      # Karte bloķēta
         if client.card_blocked == True:
-             args['message_code_2'] = True
+            args['message'] = True
+            args['message_type'] = "message"
+            args['message_code_2'] = True
+
        # Karte melnajā sarakstā
         if client.client_blocked == True:
-             args['message_code_3'] = True
+            args['message'] = True
+            args['message_type'] = "message"
+            args['message_code_3'] = True
+
+       # Klienta status ir mainījies
+        if client.status_changed == True:
+           # save changes (status changed)
+            client.status_changed = False
+            client.save()
+
+            args['message'] = True
+            args['message_type'] = "message"
+            args['message_code_4'] = True
     except:
         pass
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     if client != False:
         args['client'] = client
@@ -133,18 +133,22 @@ def main(request):
             args['last_visit'] = last_visit.checkout_time
         except:
             args['no_visit_history'] = True
-#            pass
 
-        subscr = Abonementi.objects.filter( client = client )
-        if subscr.count() > 0:
-             args['subscr'] = subscr
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # !!!!!   ABONEMENTU APSTRĀDES ALGORITMS   !!!!!
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-             args['abon_active'] = True # pagaidām bez algoritma, 1-scan card=lockers, 2-atgriežoties no citas sadaļas=subscription
+
+        # INSERT ABONEMENTU ENDED TESTU ŠEIT...
+
+# TEMPORARY OUTPUT
+        args['subscr'] = Abonementi.objects.filter(client=client).order_by('purchase_date')
+
+        check = ActiveSubscription( client )
+        args['abon_active'] = check.exists
+        if check.exists:
+            args['active_subscription'] = check.active
 
     response = render_to_response ( 'main_content.html', args )
-#    response = rendirect ("/") # domāts ja strādā ar cookies, lai disable refresh iespēju iekš lapas
     try:
         response.set_cookie( key='active_client', value=client.id )
     except:

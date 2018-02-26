@@ -48,6 +48,6 @@ urlpatterns = [
     url(r'^update_notes/$', 'database.views.update_notes'),
 
 # Main --> Card reader e.t.c.
-    url(r'^$', 'database.views.main'),
+    url(r'^', 'database.views.main'),
 
 ]

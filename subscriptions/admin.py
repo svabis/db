@@ -13,8 +13,8 @@ class AbonementTypeAdmin(admin.ModelAdmin):
 
 # !!!!! Abonementi !!!!!
 class AbonementiAdmin(admin.ModelAdmin):
-    list_display = ['purchase_date', 'active', 'ended', 'client', 'subscr', 'price', 'activation_date', 'activate_before', 'best_before', 'times_count']
-    list_filter = ['purchase_date', 'active', 'ended', 'activation_date', 'activate_before', 'best_before', 'times_count', 'subscr']
+    list_display = ['purchase_date', 'client', 'subscr', 'price', 'active', 'ended', 'frozen', 'frozen_until_date', 'activation_date', 'activate_before', 'best_before', 'times_count']
+    list_filter = ['purchase_date', 'active', 'ended', 'frozen', 'frozen_until_date', 'activation_date', 'activate_before', 'best_before', 'times_count', 'subscr']
 #    search_fields = ['client']
 #    exclude = []
 

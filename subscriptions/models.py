@@ -75,6 +75,9 @@ class Abonementi(models.Model):
     active = models.BooleanField( default = False ) # aktivējot mainās uz True
     ended = models.BooleanField( default = False ) # ja beidzās, tad mainās uz True
 
+    frozen = models.BooleanField( default = False ) # iesaldēts
+    frozen_until_date = models.DateTimeField( blank = True, null = True ) # iesaldēts līdz
+
     client = models.ForeignKey( Klienti ) # abonementa īpašnieks
 
     subscr = models.ForeignKey( AbonementType ) # abonements

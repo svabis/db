@@ -107,7 +107,7 @@ def locker_checkin(request, gender, locker_nr):
     except:
         try:
            # !!!!! Test if locker is available !!!!!
-            locker = Skapji.objects.get( number = locker_nr )
+            locker = Skapji.objects.get( number = locker_nr, locker_type = str(gender) )
         except:
             new_checkin = Skapji( number = locker_nr, locker_type = gender, client = client )
             new_checkin.save()
