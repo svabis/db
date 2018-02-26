@@ -85,3 +85,17 @@ class ActiveSubscription(object):
 
        # 7. Kaut kāda hrena dēļ neder nekur :D
         return False
+
+
+"""
+abonementu endotājs:
+
+??? vai var endot IESALDĒTU ???
+
+1. atlasa visus ended = False, frozen = False un ņem pēc kārtas -->
+
+1.1. activate == False un activate_before < dateime.datetime.now() --> KILL
+1.2. best_before < dateime.datetime.now() --> KILL
+1.3. times == True --> times_count == 0 --> KILL
+
+"""

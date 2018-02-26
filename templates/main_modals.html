@@ -11,11 +11,12 @@ $(document).ready(function(){
 {% if message %}
  $("#MesageModal").modal('show');
  document.getElementById("closeMesageModal").focus();
+ setTimeout(function(){ $("#MesageModal").modal('hide'); } , 10000);
 {% endif %}
 
-{% if subscription_purchased %} $("#ClientModal").modal('show'); document.getElementById("closeClientModal").focus(); setTimeout(function(){ $('#ClientModal').modal('hide'); } , 3000); {% endif %}
-{% if new_client %} $("#ClientModal").modal('show'); document.getElementById("closeClientModal").focus(); setTimeout(function(){ $('#ClientModal').modal('hide'); } , 3000); {% endif %}
-{% if edit_client %} $("#ClientModal").modal('show'); document.getElementById("closeClientModal").focus(); setTimeout(function(){ $('#ClientModal').modal('hide'); } , 3000); {% endif %}
+{% if subscription_purchased %} $("#ClientModal").modal('show'); document.getElementById("closeClientModal").focus(); setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
+{% if new_client %} $("#ClientModal").modal('show'); document.getElementById("closeClientModal").focus(); setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
+{% if edit_client %} $("#ClientModal").modal('show'); document.getElementById("closeClientModal").focus(); setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
 
 // -------------------------------------------------------------------
 // avatar border color
@@ -65,7 +66,13 @@ $(document).keypress(function (e) {
     if ( e.keyCode == 13 ) {
   {% if client %}
   {% if message_code_1 or message_code_2 or message_code_3 %}
+
 // ERROR MESAGE PREVENTS "ENTER" BUTTON
+// Allow only check-out
+  {% if checked == True %}
+       $("#CheckoutModal").modal('show');
+       document.getElementById("checkout_link").focus();
+  {% endif %}
   {% else %}
 
 // if no message errors -->
@@ -75,7 +82,7 @@ $(document).keypress(function (e) {
        window.location.href = "/subscription/";
   {% elif checked == True %}
        $("#CheckoutModal").modal('show');
-       document.getElementById("checkot_ok").focus();
+       document.getElementById("checkout_link").focus();
   {% endif %}
 // endif
 
@@ -95,7 +102,7 @@ $(document).keypress(function (e) {
 <!-- MesageModal Modal START -->
 <div class="modal fade" id="ClientModal" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 9999;">
 <div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
-<div class="modal-header">
+<div class="modal-header" style="padding:9px 15px; border-bottom:1px solid #eee; background-color: #3ad16c; border-top-left-radius: 5px; border-top-right-radius: 5px;">
  <h3 style="margin-top:5px; margin-bottom:5px;">
 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Paziņojums!</h3>
 </div>
@@ -114,22 +121,22 @@ $(document).keypress(function (e) {
 <!-- MesageModal Modal END -->
 
 
-<!-- Checkot Modal START -->
+<!-- Checkout Modal START -->
 <div class="modal fade" id="CheckoutModal" tabindex="-1" role="dialog" aria-hidden="true">
 <div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
-<div class="modal-header">
-<!-- <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;!</h3> -->
+<div class="modal-header" style="padding:9px 15px; border-bottom:1px solid #eee; background-color: #cca937; border-top-left-radius: 5px; border-top-right-radius: 5px;">
+ <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Izčekot klientu ?</h3>
 </div>
-<div class="modal-body">
-<center>
+<!-- <div class="modal-body"> -->
+<!-- <center>
 <h4>Izčekot klientu?</h4>
-</center>
-</div>
+</center> -->
+<!-- </div> -->
 <div class="modal-footer">
- <a href="/lockers/checkout/">
-  <button id="checkout_ok" type="button" class="btn btn-success">Jā</button>
+ <a id="checkout_link" href="/lockers/checkout/">
+  <button type="button" class="btn btn-success" style="min-width: 100px; max-width: 100px;">Jā</button>
  </a>
-  <button id="checkot_cancel" type="button" class="btn btn-danger" data-dismiss="modal">Atcelt</button>
+  <button id="checkot_cancel" type="button" class="btn btn-danger" data-dismiss="modal" style="min-width: 100px; max-width: 100px;">Atcelt</button>
 </form>
 </div></div></div></div>
 <!-- Checkout Modal END -->
@@ -138,7 +145,7 @@ $(document).keypress(function (e) {
 <!-- ErrorMesage Modal START -->
 <div class="modal fade" id="MesageModal" tabindex="-1" role="dialog" aria-hidden="true">
 <div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
-<div class="modal-header">
+<div class="modal-header" style="padding:9px 15px; border-bottom:1px solid #eee; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #c6451d;">
  <h3 style="margin-top:5px; margin-bottom:5px;">
 {% if message_type == "error" %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;Kļūda!</h3>{% endif%}
 {% if message_type == "message" %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Paziņojums!</h3>{% endif%}

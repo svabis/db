@@ -28,10 +28,14 @@ def login(request):
             auth.login( request, user ) # authorizate user from Form
            # clear COOKIES
             response = redirect ('/')
-            response.delete_cookie('active_client')
-
-            response.delete_cookie('edit_client')
-            response.delete_cookie('new_client')
+            try:
+                response.delete_cookie('active_client')
+                response.delete_cookie('edit_client')
+                response.delete_cookie('new_client')
+                response.delete_cookie('search_client')
+# !!!! ADD COOKIES TO BE DELETED ON LOG-IN
+            except:
+                pass
             return response
 
 
@@ -47,8 +51,12 @@ def login(request):
 def logout(request):
     auth.logout(request)
     response = redirect ('/login/')
-    response.delete_cookie('active_client')
-
-    response.delete_cookie('edit_client')
-    response.delete_cookie('new_client')
+    try:
+        response.delete_cookie('active_client')
+        response.delete_cookie('edit_client')
+        response.delete_cookie('new_client')
+        response.delete_cookie('search_client')
+# !!!! ADD COOKIES TO BE DELETED ON LOG-IN
+    except:
+        pass
     return response

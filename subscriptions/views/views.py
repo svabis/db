@@ -111,4 +111,19 @@ def subscription_freeze(request):
     if args['loged_in'] == False:
         return redirect("/login/")
 
+    args.update(csrf(request)) # ADD CSRF TOKEN
+
+   # Get Active client from COOKIE
+    if "active_client" in request.COOKIES:
+        try:
+            c_id = int(request.COOKIES.get(str('active_client')))
+            cli = Klienti.objects.get( id = c_id )
+
+            subscriptions = Abonementi.objects.filter( client = cli, ended = False ).order_by('-purchase_date')
+
+            args['client'] = cli
+            args['subscriptions'] = subscriptions
+            args['sub_count'] = subscriptions.count()
+        except:
+            pass
     return render_to_response ( 'subscription_freeze.html', args )

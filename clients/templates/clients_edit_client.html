@@ -126,7 +126,7 @@ $(document).keypress(function (e) {
  <center><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"> </span><strong> Klients ir bloķēts un atrodas melnajā sarakstā!</strong></center>
  <table class="table table-hover table-striped table-condensed" style="margin-bottom: 0px;">
  <thead>
-  <tr style="background: #aaa;">
+  <tr style="background: #f28a8a;">
    <th style="vertical-align: top;">Datums</th>
    <th style="vertical-align: top;">Iemesls</th>
   </tr>
@@ -134,8 +134,8 @@ $(document).keypress(function (e) {
  <tbody>
 {% for b in bl_data %}
   <tr class="clickable-row">
-   <td>{{ b.bl_date }}</td>
-   <td>{{ b.bl_data }}</td>
+   <td class="danger">{{ b.bl_date }}</td>
+   <td class="danger">{{ b.bl_data }}</td>
   </tr>
 {% endfor %}
  </tbody>
