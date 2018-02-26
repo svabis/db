@@ -16,10 +16,7 @@ class StatusType(models.Model):
 
 
 # !!! Klienti !!!
-GENDER_CHOISE = (
-    ('V', 'Vīrietis'),
-    ('S', 'Sieviete'),
-)
+GENDER_CHOISE = ( ('V', 'Vīrietis'), ('S', 'Sieviete') )
 
 class Klienti(models.Model):
     class Meta():
@@ -69,3 +66,25 @@ class Blacklist(models.Model):
 
     def __unicode__(self):
         return u'%s' % (self.bl_user)
+
+
+# !!!!! Iesaldēšana !!!!!
+class Iesalde(models.Model):
+    class Meta():
+        db_table = "iesalde"
+
+    i_client = models.ForeignKey( Klienti )
+    i_used = models.BooleanField( default = False )
+    i_date = models.DateTimeField( default = timezone.now )
+    i_amount = models.DecimalField( max_digits = 5, decimal_places = 2 )
+
+
+# !!!!! Depozīts !!!!!
+class Deposit(models.Model):
+    class Meta():
+        db_table = "depozits"
+
+    d_client = models.ForeignKey( Klienti )
+    d_used = models.BooleanField( default = False )
+    d_date = models.DateTimeField( default = timezone.now )
+    d_amount = models.DecimalField( max_digits = 5, decimal_places = 2 )

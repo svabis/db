@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
 
 from clients.models import *
@@ -18,13 +19,25 @@ class KlientiAdmin(admin.ModelAdmin):
     list_display = ['surname', 'name', 'card_nr', 'client_blocked', 'card_blocked', 'birthday', 'phone', 'e_mail', 'status', 'society', 'status_changed', 'gender', 'reg_date', 's3_nr', 'notes']
     list_filter = ['client_blocked', 'card_blocked', 'status', 'status_changed', 'society', 'gender', 'reg_date']
     search_fields = ['name', 'surname', 'phone', 'e_mail', 'card_nr']
-#    exclude = []
-
-#'s3_nr', 'client_blocked', 'card_blocked', 'name', 'surname', 'birthday', 'phone', 'e_mail', 'client_blocked', 'status', 'sex', 'reg_date', 'notes'
 
 
+# !!!!! Iesalde !!!!!
+class IesaldeAdmin(admin.ModelAdmin):
+    list_display = ['i_client', 'i_date', 'i_used', 'i_amount']
+    list_filter = ['i_date']
 
-admin.site.register(Blacklist, BlacklistAdmin)
+
+# !!!!! Depozīts !!!!!
+class DepositAdmin(admin.ModelAdmin):
+    list_display = ['d_client', 'd_date', 'd_used', 'd_amount']
+    list_filter = ['d_date']
+
+
+
 admin.site.register(Klienti, KlientiAdmin)
 admin.site.register(StatusType, StatusTypeAdmin)
 
+admin.site.register(Iesalde, IesaldeAdmin)
+admin.site.register(Deposit, DepositAdmin)
+
+admin.site.register(Blacklist, BlacklistAdmin)

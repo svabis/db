@@ -6,13 +6,32 @@
 <table class="table table-hover table-striped table-condensed">
  <thead>
   <tr style="background: #aaa;">
-   <th style="vertical-align: top;">Cīpars</th>
+   <th style="vertical-align: top;">Abonements</th>
+   <th style="vertical-align: top;">Pirkuma laiks</th>
+   <th style="vertical-align: top;">Aktivācijas laiks</th>
+   <th style="vertical-align: top;">Derīgs līdz/Aktivēt līdz</th>
+   <th style="vertical-align: top;">Iesaldēts līdz</th>
+   <th style="vertical-align: top;">Atlikušo reižu skaits</th>
+   <th style="vertical-align: top;">Cena</th>
   </tr>
  </thead>
  <tbody>
 {% for d in data %}
-  <tr class="clickable-row">
-   <td class="text-danger">{{ d }}</td>
+  {% if d.active == False and d.ended == False and d.frozen == False %}<tr class="success">{% endif %}
+  {% if d.active == True and d.ended == False and d.frozen == False %}<tr class="warning">{% endif %}
+  {% if d.active == True and d.frozen == True and d.ended == False %}<tr class="info">{% endif %}
+  {% if d.ended == True %}<tr class="danger">{% endif %}
+   <td>{{ d }}</td>
+   <td>{{ d.purchase_date|date:"d/m/Y H:i" }}</td>
+   <td {% if d.active == False %}style="text-align: center;"{% endif %}>
+    {% if d.active %}{{ d.activation_date|date:"d/m/Y H:i" }}{% else %}<b>Nav aktivizēts</b>{% endif %}
+   </td>
+   <td>{% if d.active %}{{ d.best_before|date:"d/m/Y H:i" }}{% else %}{{ d.activate_before|date:"d/m/Y H:i" }}{% endif %}</td>
+   <td {% if d.frozen == False %}style="text-align: center;"{% endif %}>
+    {% if d.frozen %}{{ d.frozen_until_date|date:"d/m/Y H:i" }}{% else %}-{% endif %}
+   </td>
+   <td style="text-align: center;">{% if d.times_count %}{{ d.times_count }}{% else %}-{% endif %}</td>
+   <td>&euro; {{ d.price|floatformat:2 }}</td>
   </tr>
 {% endfor %}
 
