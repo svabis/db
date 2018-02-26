@@ -121,6 +121,9 @@ def subscription_freeze(request):
 
             subscriptions = Abonementi.objects.filter( client = cli, ended = False ).order_by('-purchase_date')
 
+            if subscriptions.count() == 1:
+                args['subscription'] = Abonementi.objects.get( client = cli, ended = False )
+
             args['client'] = cli
             args['subscriptions'] = subscriptions
             args['sub_count'] = subscriptions.count()

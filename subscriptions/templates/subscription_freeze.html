@@ -22,12 +22,27 @@ jQuery(document).ready(function($) {
 
 <h3>Abonementu iesaldēšana</h3>
 
+<!-- FUNKCIONĀLS NAV -->
+
+<form action="#" method=POST>{% csrf_token %}
 <div class="row">
  <div  class="col-lg-8 col-md-8 col-sm-8">
+{% if sub_count == 1 %}
   <div class="form-group" style="margin-bottom: 5px; margin-top: 30px;">
-   <label id="id_subscription" for="id_subscription">Aktīvā abonementa nosaukums:</label>
-   <input class="form-control" id="id_subscription" maxlength="16" name="subscriptione" size="15" type="text" readonly="readonly">
+   <label id="id_subscription" for="id_subscription">Abonementa nosaukums:</label>
+   <input class="form-control" id="id_subscription" maxlength="16" name="subscription" size="15" type="text" readonly="readonly" value="{{ subscription }}">
   </div>
+{% else %}
+  <div class="form-group" style="margin-bottom: 5px; margin-top: 30px;">
+   <label id="id_subscription" for="id_subscription">Pieejamie abonementi:</label>
+   <select class="form-control" id="id_subscription" name="subscription">
+ {% for s in subscriptions %}
+   <option value="s.id">{{ s }}</option>
+ {% endfor %}
+<!--   <option value="S" selected="selected">Sieviete</option> -->
+   </select>
+  </div>
+{% endif %}
  </div>
 </div>
 
@@ -56,9 +71,44 @@ $(document).ready(function(){ var date_input=$('input[name="freeze_end"]');
  date_input.datepicker(options); })
 </script>
 
-<div class="row text-right">
- <a href="#"><button type="button" class="btn btn-success">Iesaldēt</button></a>
- <a href="/client/edit/"><button type="button" class="btn btn-danger">Atcelt</button></a> 
+<script>
+var countdown;
+var duration = 14;
+function submit_changes() {
+  clearInterval(countdown);
+  $("#yes").prop('disabled', 'disabled');
+  document.querySelector("#yes").value = "Notiek apstrāde...";
+}
+function apply() {
+  $("#yes").show();
+  $("#ok_btn").hide();
+  clearInterval(countdown);
+  applyTimer();
+}
+function applyTimer() {
+  display = document.querySelector("#yes");
+  display.focus();
+  display.value ="Iesaldēt ? (15)";
+  var timer = duration, seconds = 15;
+  countdown = setInterval( function () {
+    seconds = parseInt(timer % 60, 10); 
+    display.value = "Iesaldēt ? (" + seconds + ")"; --timer;
+    if (1 > seconds) {
+      $("#yes").hide();
+      $("#ok_btn").show();
+      clearInterval(countdown);
+      document.getElementById("ok_btn").focus();
+    }
+  }
+  , 1000);
+}
+</script>
+
+<div class="row text-right" style="margin-top: 30px;">
+ <input type="button" class="btn btn-success pull-left" value="Iesaldēt ? (15)" style="display: none;" id="yes" onclick="submit_changes();">
+ <button type="button" class="btn btn-success" style="min-width: 150px; max-width: 150px;" onclick="apply();" id="ok_btn">Iesaldēt</button>
+ <a href="/client/edit/"><button type="button" class="btn btn-danger" style="min-width: 150px; max-width: 150px;">Atcelt</button></a> 
 </div>
+
 
 {% endblock %}
