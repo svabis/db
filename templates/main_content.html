@@ -51,8 +51,9 @@
 
 <!-- AVATAR MODULIS START -->
   <div class="row">
-   <div class="col-sm-6 col-md-6 col-lg-6" style="border: solid black 1px;">
+   <div class="col-sm-6 col-md-6 col-lg-6">
     <div class="row">
+     <center>
 
      {% if client %}
        {% if client.avatar != "" %}
@@ -64,6 +65,7 @@
      <img id="avatar" src="{% static 'avatar_wait.png' %}"/>
      {% endif %}
 
+     </center>
     </div>
     <div class="row" style="margin-top: 15px; height: 100px;">
 
@@ -92,30 +94,32 @@
 
 <!-- Klienta info MODULIS START -->
 
-   <div class="col-sm-6 col-md-6 col-lg-6" style="border: solid #ccc 1px;">
+   <div class="col-sm-6 col-md-6 col-lg-6">
     <div class="container-fluid" style="background: #d2dff4; border: solid #ccc 1px; margin-bottom: 10px;">
-     Informācija par klientu:<br>
+     Informācija par klientu:<br><br>
+
 {% if client %}<b>{{ client.name}} {{ client.surname }}</b>,{% endif %}<br>
 
 {% if client %}<b>{{ client.status }}</b>{% if client.society == True %} <b>(BIEDRĪBA)</b>{% endif %}{% endif %}<br><br>
 
 {% if client %}Pašlaik pieejamais abonements:<br><b>{{ active_subscription }}</b>{% endif %}<br><br>
 
-{% if client %}Atlikušo reižu skaits:<br><b>{{ active_subscription.times_count }}</b>{% endif %}<br><br>
+{% if client %}Atlikušo reižu skaits:<br>
+ {% if active_subscription.times_count == None %}<br>{% else %}<b>{{ active_subscription.times_count }}</b>{% endif %}
+{% endif %}<br><br>
 
-{% if client %}Derīguma termiņš,<br><b>{{ active_subscription.best_before }}</b>{% endif %}<br><br>
+{% if client %}Derīguma termiņš,<br>
+ {% if active_subscription.best_before == None %}<br>{% else %}<b>{{ active_subscription.best_before }}</b>{% endif %}
+{% endif %}<br><br>
 
 {% if client %}Pēdējais apmeklējums:<br>
-  {% if client and checked == True %} <b>Pašlaik atrodas klubā</b>
-  {% elif client and last_visit %} <b>{{ last_visit }}</b>
-  {% elif client %}Datu nav{% endif %}
+  {% if client and checked == True %} <b class="text-warning">Pašlaik atrodas klubā</b>
+  {% elif client and last_visit %} <b class="text-info">{{ last_visit }}</b>
+  {% elif client %}<b class="text-danger">Datu nav</b>{% endif %}
 {% endif %}<br>
 
 
     </div>
-
-{% for s in subscr %}<h4>{{ s }}</h4>{% endfor %}
-
    </div>
   </div>
 
@@ -147,7 +151,7 @@
 
 <!-- KOLONA 2 START -->
  <div class="col-sm-5 col-md-5 col-lg-5" style="border: solid red 1px;">
-  <a href="/subscription">
+  <a href="/subscription/">
    <button type="button" class="btn btn-success" style="margin-top: 8px;">Pirkt abonementu</button>
   </a>
 

@@ -94,11 +94,16 @@ def edit_client(request):
 
             args['active_tab_3'] = True
 
-# TEMPORARY DATA
-            args['frozen_amount'] = 3.2
-            args['deposit_amount'] = 0.00
+            try:
+                args['frozen_amount'] = Iesalde.objects.filter( i_client = client).order_by('-i_date')[0]
+            except:
+                args['frozen_amount'] = 0
 
-# FREEZED ABONEMNTUS ???
+            try:
+                args['deposit_amount'] = Deposit.objects.filter( i_client = client).order_by('-i_date')[0]
+            except:
+                args['deposit_amount'] = 0
+
             f_temp = Abonementi.objects.filter( client = client, ended = False )
             if f_temp.count() == 0:
                 args['freeze_disable'] = True

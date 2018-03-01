@@ -5,7 +5,10 @@ from django.core.context_processors import csrf
 
 from database.args import create_args
 
-from clients.models import StatusType
+# Klientu statusi
+from clients.models import Statusi
+
+# Setingi
 from setup.models import Settings
 
 
@@ -20,7 +23,7 @@ def settings(request):
     args['active_tab_7'] = True
 
    # Klienti StatusType's
-    args['status'] = StatusType.objects.all()
+    args['status'] = Statusi.objects.all()
 
    # Main Settings
     args['settings'] = Settings.objects.all()

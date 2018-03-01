@@ -75,14 +75,15 @@ $(document).keypress(function (e) {
   {% endif %}
   {% else %}
 
+
 // if no message errors -->
-  {% if abon_active == True and checked != True %}
-       window.location.href = "/lockers/";
-  {% elif abon_active != True %}
-       window.location.href = "/subscription/";
-  {% elif checked == True %}
+  {% if checked == True %}
        $("#CheckoutModal").modal('show');
        document.getElementById("checkout_link").focus();
+  {% elif abon_active != True %}
+       window.location.href = "/subscription/";
+  {% elif abon_active == True %}
+       window.location.href = "/lockers/";
   {% endif %}
 // endif
 

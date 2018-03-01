@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 # !!! StatusType !!!
-class StatusType(models.Model):
+class Statusi(models.Model):
     class Meta():
         db_table = "status_type"
 
@@ -41,7 +41,7 @@ class Klienti(models.Model):
     card_blocked = models.BooleanField( default=False )
     client_blocked = models.BooleanField( default=False )
 
-    status = models.ForeignKey( StatusType )
+    status = models.ForeignKey( Statusi )
     status_changed = models.BooleanField( default=False )
     society = models.BooleanField( default=False )
 
@@ -74,7 +74,6 @@ class Iesalde(models.Model):
         db_table = "iesalde"
 
     i_client = models.ForeignKey( Klienti )
-    i_used = models.BooleanField( default = False )
     i_date = models.DateTimeField( default = timezone.now )
     i_amount = models.DecimalField( max_digits = 5, decimal_places = 2 )
 
@@ -85,6 +84,5 @@ class Deposit(models.Model):
         db_table = "depozits"
 
     d_client = models.ForeignKey( Klienti )
-    d_used = models.BooleanField( default = False )
     d_date = models.DateTimeField( default = timezone.now )
     d_amount = models.DecimalField( max_digits = 5, decimal_places = 2 )

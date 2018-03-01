@@ -9,8 +9,8 @@ class BlacklistAdmin(admin.ModelAdmin):
     list_filter = ['bl_date']
     search_fields = ['bl_user']
 
-# !!!!! StatusType !!!!!
-class StatusTypeAdmin(admin.ModelAdmin):
+# !!!!! Statusi !!!!!
+class StatusiAdmin(admin.ModelAdmin):
     list_display = ['status_name', 'status_discount']
 
 
@@ -23,19 +23,19 @@ class KlientiAdmin(admin.ModelAdmin):
 
 # !!!!! Iesalde !!!!!
 class IesaldeAdmin(admin.ModelAdmin):
-    list_display = ['i_client', 'i_date', 'i_used', 'i_amount']
+    list_display = ['i_client', 'i_date', 'i_amount']
     list_filter = ['i_date']
 
 
 # !!!!! Depozīts !!!!!
 class DepositAdmin(admin.ModelAdmin):
-    list_display = ['d_client', 'd_date', 'd_used', 'd_amount']
+    list_display = ['d_client', 'd_date', 'd_amount']
     list_filter = ['d_date']
 
 
 
 admin.site.register(Klienti, KlientiAdmin)
-admin.site.register(StatusType, StatusTypeAdmin)
+admin.site.register(Statusi, StatusiAdmin)
 
 admin.site.register(Iesalde, IesaldeAdmin)
 admin.site.register(Deposit, DepositAdmin)

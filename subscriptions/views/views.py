@@ -80,7 +80,8 @@ def subscription_purchase(request):
 
    # Get Active client from COOKIE
     if "active_client" in request.COOKIES:
-        try:
+        if True:
+#        try:
             c_id = int(request.COOKIES.get(str('active_client')))
             cli = Klienti.objects.get( id = c_id )
 
@@ -94,8 +95,8 @@ def subscription_purchase(request):
                 else:
                     new_subscr = Abonementi(client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=date_temp)
                 new_subscr.save()
-        except:
-            pass
+#        except:
+#            pass
     response = redirect("/")
     response.set_cookie( key='subscription_purchased', value="True", max_age=3 )
     return response
