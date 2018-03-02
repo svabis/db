@@ -259,26 +259,41 @@ function blockCard() {
   </div>
 </div>
 
+<hr style="border-top: 1px solid green; margin-top: 8px;">
+
+<div class="row">
+ <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 5px; border: solid red 1px;">
+  <br>
+ </div>
+ <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 5px; border: solid red 1px;">
+  <br>
+ </div>
+ <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 5px; border: solid red 1px;">
+  <br>
+ </div>
+</div>
+
+<hr style="border-top: 1px solid green; margin-top: 8px; margin-bottom: 10px;">
 
 <div class="row">
 <!-- KOLONA 1 -->
-  <div class="col-sm-4 col-md-4 col-lg-4" style="margin-top: 10px;">
+  <div class="col-sm-4 col-md-4 col-lg-4">
    <div class="form-group" style="margin-bottom: 5px;">
 <!--    <label id="id_status">Aktīvais abonements:</label> -->
 <!--    <textarea class="form-control" cols="40" id="id_subscripton" name="subscripton" rows="2" style="resize:none;" readonly="readonly">Aktīva abonementa nav</textarea> -->
 <!--    <input class="form-control" type="text" id="id_subscripton" name="subscripton" readonly="readonly"> -->
    </div>
-   <div class="form-group" style="margin-bottom: 5px; margin-top: 64px;">
+   <div class="form-group" style="margin-bottom: 5px; margin-top: 40px;">
     <label id="id_status">Apdrošināšanas polise:</label>
     <input class="form-control" type="text" id="id_insurance" name="insurance" readonly="readonly">
    </div>
   </div>
 
 <!-- KOLONA 2 -->
-  <div class="col-sm-8 col-md-8 col-lg-8" style="margin-top: 25px;">
+  <div class="col-sm-8 col-md-8 col-lg-8">
 
 <!-- KOLONA 2 RINDA 1 -->
-   <div class="row" style="margin-top: 10px;">
+   <div class="row">
     <div class="col-sm-4 col-md-4 col-lg-4">
      <a href="/subscription/history/">
       <button type="button" class="btn btn-info" style="min-width: 200px; max-width: 200px;">Abonementu vēsture</button>
@@ -301,24 +316,15 @@ function blockCard() {
      <a href="#"><button type="button" class="btn btn-success" style="min-width: 100px; max-width: 100px;">Reģistrēt</button></a>
     </div>
     <div class="col-sm-6 col-md-6 col-lg-6">
-     <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 12px;">
-      <div class="form-group text-right" style="margin-bottom: 0px;">
-       <label id="id_frozen_subscription">Iesaldētā summa:</label>
-      </div>
-     </div>
-     <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 7px; padding-right: 0px;">
-      <input class="form-control" type="text" id="id_frozen_subscription" name="frozen_subscription" readonly="readonly"
-       value="{% if frozen_amount == 0 %}-{% else%}{{ frozen_amount|floatformat:2 }}{% endif %}">
-     </div>
     </div>
 {% if admin %}
-    <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 7px;">
-     <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 12px;">
+    <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 17px;">
+     <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 18px;">
       <div class="form-group text-right" style="margin-bottom: 0px;">
        <label id="id_deposit_label">Depozīts:</label>
       </div>
      </div>
-     <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 7px; padding-right: 0px;">
+     <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 12px; padding-right: 0px;">
       <div class="input-group">
        <input class="form-control" id="id_deposit" name="deposit" readonly="readonly" type="text"
         value="{% if deposit_amount == 0 %}-{% else%}{{ deposit_amount|floatformat:2 }}{% endif %}">
@@ -341,6 +347,7 @@ function deposit_money() {
   </div>
 </div>
 
+<hr style="border-top: 1px solid green; margin-top: 10px;">
 
 <div class="row">
   <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 10px;">
@@ -351,7 +358,6 @@ function deposit_money() {
    </div>
   </div>
 </div>
-
 
 <script>
 var countdown;

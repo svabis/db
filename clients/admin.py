@@ -16,15 +16,18 @@ class StatusiAdmin(admin.ModelAdmin):
 
 # !!!!! Klienti !!!!!
 class KlientiAdmin(admin.ModelAdmin):
-    list_display = ['surname', 'name', 'card_nr', 'client_blocked', 'card_blocked', 'birthday', 'phone', 'e_mail', 'status', 'society', 'status_changed', 'gender', 'reg_date', 's3_nr', 'notes']
+    list_display = ['surname', 'name', 'card_nr', 'client_blocked', 'card_blocked', 'birthday', 'phone', 'e_mail', 'status', 'society', 'status_changed', 'gender', 'reg_date',
+       'disabled', 'disabled_until', 'student', 'student_until', 'elderly', 's3_nr', 'notes']
     list_filter = ['client_blocked', 'card_blocked', 'status', 'status_changed', 'society', 'gender', 'reg_date']
     search_fields = ['name', 'surname', 'phone', 'e_mail', 'card_nr']
+
 
 
 # !!!!! Iesalde !!!!!
 class IesaldeAdmin(admin.ModelAdmin):
     list_display = ['i_client', 'i_date', 'i_amount']
     list_filter = ['i_date']
+
 
 
 # !!!!! Depozīts !!!!!

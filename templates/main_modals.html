@@ -11,12 +11,26 @@ $(document).ready(function(){
 {% if message %}
  $("#MesageModal").modal('show');
  document.getElementById("closeMesageModal").focus();
- setTimeout(function(){ $("#MesageModal").modal('hide'); } , 10000);
-{% endif %}
 
-{% if subscription_purchased %} $("#ClientModal").modal('show'); document.getElementById("closeClientModal").focus(); setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
-{% if new_client %} $("#ClientModal").modal('show'); document.getElementById("closeClientModal").focus(); setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
-{% if edit_client %} $("#ClientModal").modal('show'); document.getElementById("closeClientModal").focus(); setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
+ console.log( document.getElementById("closeMesageModal") )
+
+ setTimeout(function(){ $("#MesageModal").modal('hide'); } , 10000);{% endif %}
+
+{% if subscription_purchased %}
+ $("#ClientModal").modal('show');
+ document.getElementById("closeClientModal").focus();
+ setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
+
+{% if new_client %}
+ $("#ClientModal").modal('show');
+ document.getElementById("closeClientModal").focus();
+ setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
+
+{% if edit_client %}
+ $("#ClientModal").modal('show');
+ document.getElementById("closeClientModal").focus();
+ setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
+
 
 // -------------------------------------------------------------------
 // avatar border color

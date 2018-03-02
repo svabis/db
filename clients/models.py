@@ -30,7 +30,7 @@ class Klienti(models.Model):
 
     avatar = models.ImageField( blank = True, null=True, upload_to = "client/" )
 
-    first = models.BooleanField( default=False )
+    first = models.BooleanField( default=False ) # apmeklējis jau kaut ko
 
     birthday = models.DateField( blank = True, null = True )
     phone = models.CharField( max_length = 25, blank = True, null = True )
@@ -43,11 +43,17 @@ class Klienti(models.Model):
 
     status = models.ForeignKey( Statusi )
     status_changed = models.BooleanField( default=False )
-    society = models.BooleanField( default=False )
+    society = models.BooleanField( default=False ) # "biedrība"
 
     gender = models.CharField( max_length = 1, choices = GENDER_CHOISE )
 
-    reg_date = models.DateTimeField( default = timezone.now )
+    reg_date = models.DateTimeField( default = timezone.now ) # registration
+
+    disabled = models.BooleanField( default=False ) # invalīds
+    disabled_until = models.DateField( blank = True, null = True )
+    student = models.BooleanField( default=False ) # skolnieks/students
+    student_until = models.DateField( blank = True, null = True )
+    elderly = models.BooleanField( default=False ) # pensionārs
 
     notes = models.CharField( max_length = 500, default = '', blank = True )
 
