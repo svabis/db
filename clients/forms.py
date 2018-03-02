@@ -28,16 +28,16 @@ class KlientsForm(ModelForm):
 
 # works            'birthday': forms.DateTimeInput(attrs={'class': 'form-control'}),
 # nope           'birthday': forms.SelectDateWidget(attrs={'class': 'form-control'}),
-            'birthday': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'YYYY-MM-DD'}),
+            'birthday': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'GGGG-MM-DD'}),
 
             'reg_date': forms.DateInput(attrs={'class': 'form-control', 'readonly':'readonly'}),
-            'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'style':'resize:none;'})
+            'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'style':'resize:none;'}),
 
             'disabled': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'disabled_until': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'YYYY-MM-DD'}),
+            'disabled_until': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'GGGG-MM-DD'}),
             'student': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'student_until': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'YYYY-MM-DD'}),
-            'elderly': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'student_until': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'GGGG-MM-DD'}),
+            'elderly': forms.CheckboxInput(attrs={'class': 'form-control'})
 
 # INSURANCE ?
 
