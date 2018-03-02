@@ -41,6 +41,7 @@ class Command(BaseCommand):
 
        db = '/home/svabis/Tabulas/ZNB2.txt'
        lines = [line.rstrip('\n') for line in open(db)]
+       lines = [line.rstrip('\r\n') for line in open(db)]
 
 # 0 id << NAH
 # 2 nosaukums << NAH
@@ -56,6 +57,8 @@ class Command(BaseCommand):
 # 7 real best_before
 
        save = 0
+       client_error = []
+       abon_error = []
        error = []
 
        for i in tqdm( range(len(lines)) ):
@@ -63,26 +66,32 @@ class Command(BaseCommand):
 #       if True:
            l = lines[i].split(';')
 
-           try:
-#           if True:
-               temp_client = Klienti.objects.get( s3_nr = l[4].split('"')[1] )
-#               print temp_client
+#           try:
+           if True:
+               try:
+                   temp_client = Klienti.objects.get( s3_nr = l[4].split('"')[1] )
+               except:
+                   client_error.append(l[0])
 
-               new_abon_tips = AbonementType.objects.get( s3_nr = l[1].split(',')[0] )
-#               print new_abon_tips
+               try:
+                   new_abon_tips = AbonementType.objects.get( s3_nr = l[1].split(',')[0] )
+               except:
+                   abon_error.append(l[0])
 
+              # Laiki
                if l[6] != "":
                    activate_date = datetime.datetime.strptime( laiks(l[6])[:19], '%Y.%m.%d %H:%M:%S')
                else:
                    activate_date = datetime.datetime.strptime( laiks(l[5])[:19], '%Y.%m.%d %H:%M:%S')
 
+               print "l[7] " + str(l[7] == "") + "|" + str(l[7]) + "|"
                if l[7] != "":
                    best_before_date = datetime.datetime.strptime( laiks(l[7])[:19], '%Y.%m.%d %H:%M:%S')
                else:
                    best_before_date = activate_date + datetime.timedelta(days = 30)
 
-
-               new_subscr = Abonementi( client=temp_client,
+               try:
+                   new_subscr = Abonementi( client=temp_client,
                                         subscr=new_abon_tips,
                                         price=new_abon_tips.price,
 
@@ -93,11 +102,19 @@ class Command(BaseCommand):
                                         best_before=best_before_date,
 
                                         times_count=new_abon_tips.times_count )
-               new_subscr.save()
-               save += 1
+                   new_subscr.save()
+                   save += 1
 
-           except:
-               error.append(l[0])
+               except:
+                   error.append(l[0])
 
+       print
        print "save:\t" + str(save)
+       print
+       print "klientu error:\t" + str( len(client_error) )
+       print client_error
+       print
+       print "abon error:\t" + str( len(abon_error) )
+       print abon_error
+       print
        print "error:\t" + str( len(error) )

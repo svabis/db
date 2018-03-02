@@ -5,6 +5,17 @@
 <div id="hider"></div>
 
 <script>
+// select only one checkbox
+function selectOnlyThis(id) {
+  var chk_id_list = ['id_student', 'id_disabled', 'id_elderly']
+  var checked = document.getElementById(id).checked;
+  for (var i = 0; 3 > i; i++)
+    {
+        document.getElementById( chk_id_list[i] ).checked = false;
+    }
+    document.getElementById(id).checked = checked;
+}
+
 jQuery(document).ready(function($) {
  // IMAGE ADD BUTTON
  $("#avatar").click(function (){
@@ -265,14 +276,14 @@ function blockCard() {
  <div class="col-sm-1 col-md-1 col-lg-1" style="margin-top: 5px;"></div>
  <div class="col-sm-2 col-md-2 col-lg-2 text-center" style="margin-top: 5px;">
   <div class="form-group" style="margin-bottom: 5px;">
-   <label id="id_student" for="{{ form.student.id_for_label }}" style="margin-bottom: 1px;">Skolnieks/Students:</label>
+   <label for="{{ form.student.id_for_label }}" style="margin-bottom: 1px;">Skolnieks/Students:</label>
    {{ form.student }}
    {{ form.student.errors }}
   </div>
  </div>
  <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 5px;">
   <div class="form-group" style="margin-bottom: 5px;">
-   <label id="id_student_until" for="{{ form.student_until.id_for_label }}">Derīgs līdz:</label>
+   <label for="{{ form.student_until.id_for_label }}">Derīgs līdz:</label>
    {{ form.student_until }}
    {{ form.student_until.errors }}
   </div>
@@ -280,14 +291,14 @@ function blockCard() {
 
  <div class="col-sm-1 col-md-1 col-lg-1 text-center" style="margin-top: 5px; border-left: solid #ccc 1px;">
   <div class="form-group" style="margin-bottom: 5px;">
-   <label id="id_disabled" for="{{ form.disabled.id_for_label }}" style="margin-bottom: 1px;">Invalīds:</label>
+   <label for="{{ form.disabled.id_for_label }}" style="margin-bottom: 1px;">Invalīds:</label>
    {{ form.disabled }}
    {{ form.disabled.errors }}
   </div>
  </div>
  <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 5px;">
   <div class="form-group" style="margin-bottom: 5px;">
-   <label id="id_disabled_until" for="{{ form.disabled_until.id_for_label }}">Derīgs līdz:</label>
+   <label for="{{ form.disabled_until.id_for_label }}">Derīgs līdz:</label>
    {{ form.disabled_until }}
    {{ form.disabled_until.errors }}
   </div>
@@ -295,7 +306,7 @@ function blockCard() {
 
  <div class="col-sm-2 col-md-2 col-lg-2 text-center" style="margin-top: 5px; border-left: solid #ccc 1px;">
   <div class="form-group" style="margin-bottom: 5px;">
-   <label id="id_elderly" for="{{ form.elderly.id_for_label }}" style="margin-bottom: 1px;">Pensionārs:</label>
+   <label for="{{ form.elderly.id_for_label }}" style="margin-bottom: 1px;">Pensionārs:</label>
    {{ form.elderly }}
    {{ form.elderly.errors }}
   </div>

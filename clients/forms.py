@@ -33,11 +33,11 @@ class KlientsForm(ModelForm):
             'reg_date': forms.DateInput(attrs={'class': 'form-control', 'readonly':'readonly'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'style':'resize:none;'}),
 
-            'disabled': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'disabled': forms.CheckboxInput(attrs={'class': 'form-control', 'onclick': 'selectOnlyThis(this.id)'}),
             'disabled_until': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'GGGG-MM-DD'}),
-            'student': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'student': forms.CheckboxInput(attrs={'class': 'form-control', 'onclick': 'selectOnlyThis(this.id)'}),
             'student_until': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'GGGG-MM-DD'}),
-            'elderly': forms.CheckboxInput(attrs={'class': 'form-control'})
+            'elderly': forms.CheckboxInput(attrs={'class': 'form-control', 'onclick': 'selectOnlyThis(this.id)'})
 
 # INSURANCE ?
 

@@ -20,7 +20,7 @@ class Command(BaseCommand):
        lines = [line.rstrip('\n') for line in open(db)]
 
 # 6 s3.id
-# 7 Status
+# 7 kartiņa
 
        for i in tqdm( range(len(lines)) ):
 #       for line in lines:

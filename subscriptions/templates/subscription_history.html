@@ -10,16 +10,14 @@
    <th style="vertical-align: top;">Pirkuma laiks</th>
    <th style="vertical-align: top;">Aktivācijas laiks</th>
    <th style="vertical-align: top;">Derīgs līdz/Aktivēt līdz</th>
-   <th style="vertical-align: top;">Iesaldēts līdz</th>
    <th style="vertical-align: top;">Atlikušo reižu skaits</th>
    <th style="vertical-align: top;">Cena</th>
   </tr>
  </thead>
  <tbody>
 {% for d in data %}
-  {% if d.active == False and d.ended == False and d.frozen == False %}<tr class="success">{% endif %}
-  {% if d.active == True and d.ended == False and d.frozen == False %}<tr class="warning">{% endif %}
-  {% if d.active == True and d.frozen == True and d.ended == False %}<tr class="info">{% endif %}
+  {% if d.active == False and d.ended == False %}<tr class="success">{% endif %}
+  {% if d.active == True and d.ended == False %}<tr class="warning">{% endif %}
   {% if d.ended == True %}<tr class="danger">{% endif %}
    <td>{{ d }}</td>
    <td>{{ d.purchase_date|date:"d/m/Y H:i" }}</td>
@@ -31,9 +29,6 @@
     {% elif d.active == False and d.ended == False %}{{ d.activate_before|date:"d/m/Y H:i" }}
     {% elif d.active and d.ended %}<b style="color:red">{{ d.best_before|date:"d/m/Y H:i" }}</b>
     {% elif d.active == False and d.ended %}<b style="color:red">{{ d.activate_before|date:"d/m/Y H:i" }}</b>{% endif %}
-   </td>
-   <td {% if d.frozen == False %}style="text-align: center;"{% endif %}>
-    {% if d.frozen %}<span style="color:blue">{{ d.frozen_until_date|date:"d/m/Y H:i" }}</span>{% else %}-{% endif %}
    </td>
    <td style="text-align: center;">{% if d.times_count %}{{ d.times_count }}{% else %}-{% endif %}</td>
    <td>&euro; {{ d.price|floatformat:2 }}</td>

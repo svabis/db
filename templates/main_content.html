@@ -102,14 +102,23 @@
 
 {% if client %}<b>{{ client.status }}</b>{% if client.society == True %} <b>(BIEDRĪBA)</b>{% endif %}{% endif %}<br><br>
 
-{% if client %}Pašlaik pieejamais abonements:<br><b>{{ active_subscription }}</b>{% endif %}<br><br>
+{% if client %}
+ {% if active_subscription %}Pašlaik pieejamais abonements:<br>
+ {% else %}Nav abonementa!<br>{% endif %}
+<b>{{ active_subscription }}</b>{% endif %}<br><br>
 
-{% if client %}Atlikušo reižu skaits:<br>
- {% if active_subscription.times_count == None %}<br>{% else %}<b>{{ active_subscription.times_count }}</b>{% endif %}
+{% if client %}
+ {% if active_subscription.active == False %}Abonements jāaktivizē līdz:<br>
+   <b>{{ active_subscription.activate_before|date:"d/m/Y H:i" }}</b>
+ {% elif active_subscription %}Derīguma termiņš:<br>
+   <b>{{ active_subscription.best_before|date:"d/m/Y H:i" }}</b>
+ {% endif %}
 {% endif %}<br><br>
 
-{% if client %}Derīguma termiņš,<br>
- {% if active_subscription.best_before == None %}<br>{% else %}<b>{{ active_subscription.best_before }}</b>{% endif %}
+{% if client %}
+ {% if active_subscription.times_count == None %}<br>{% else %}
+  Atlikušās apmeklējuma reizes:<br>
+  <b>{{ active_subscription.times_count }}</b>{% endif %}
 {% endif %}<br><br>
 
 {% if client %}Pēdējais apmeklējums:<br>

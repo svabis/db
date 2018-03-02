@@ -16,6 +16,11 @@ $(document).ready(function(){
 
  setTimeout(function(){ $("#MesageModal").modal('hide'); } , 10000);{% endif %}
 
+{% if notes_updated %}
+ $("#ClientModal").modal('show');
+ document.getElementById("closeClientModal").focus();
+ setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
+
 {% if subscription_purchased %}
  $("#ClientModal").modal('show');
  document.getElementById("closeClientModal").focus();
@@ -123,6 +128,7 @@ $(document).keypress(function (e) {
 </div>
 <div class="modal-body">
 <center>
+{% if notes_updated %}<h4>Piezīmes tika rediģētas!</h4>{% endif %}
 {% if subscription_purchased %}<h4>Abonements ir iegādāts!</h4>{% endif %}
 {% if new_client %}<h4>Jauna klienta kartiņa ir izveidota!</h4>{% endif %}
 {% if edit_client %}<h4>Klienta kartiņa ir sekmīgi rediģēta!</h4>{% endif %}

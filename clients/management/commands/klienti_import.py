@@ -4,7 +4,7 @@ import re       # for regular expresions (regex)
 import datetime # for file create field
 import pytz	# to set timezone
 
-from clients.models import Klienti, StatusType
+from clients.models import * #Klienti, StatusType
 
 import datetime
 
@@ -24,7 +24,7 @@ class Command(BaseCommand):
        print datetime.datetime.now()
 
        db = '/home/svabis/Tabulas/T00801Person'
-       img_folder = '/home/svabis/Personen0/'
+       img_folder = '/home/svabis/Personen/'
        lines = [line.rstrip('\n') for line in open(db)]
 
 # 0 Person no
@@ -42,7 +42,7 @@ class Command(BaseCommand):
        start = True
        counter = 0
 
-       temp_status = StatusType.objects.all()[0]
+       temp_status = Statusi.objects.all()[0]
 
        for i in tqdm( range(len(lines)) ):
          l = lines[i].split('\t')

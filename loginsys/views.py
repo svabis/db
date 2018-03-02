@@ -17,7 +17,7 @@ def login(request):
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
     args.update(csrf(request))      # encript data
-    args['heading'] = "Sistēmas autorizācija"
+    args['heading'] = "Datubāzes autorizācija"
 
     if request.POST:        # actions if login Form is submitted
         username = request.POST.get('username', '')      # usermname <= get variable from Form (name="username"), if not leave blank

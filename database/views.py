@@ -59,6 +59,9 @@ def main(request):
    # Subscription purchased
     if "subscription_purchased" in request.COOKIES:
         args['subscription_purchased'] = True
+   # Notes updated
+    if "notes_updated" in request.COOKIES:
+        args['notes_updated'] = True
 
    # Get Active client from COOKIE
     if "active_client" in request.COOKIES:
@@ -173,6 +176,10 @@ def update_notes(request):
 
                 client.notes = new_notes
                 client.save()
+
+                response = redirect("/")
+                response.set_cookie( key='notes_updated', value="True", max_age=3 )
+                return response
         except:
             pass
 

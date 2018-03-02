@@ -10,8 +10,9 @@ import datetime
 from datetime import timedelta
 
 import pytz
-tz = pytz.timezone('EET')
+tz = pytz.timezone('UTC')
 
+# !!!!! Aktīvais abonements !!!!!
 #==============================================================
 class ActiveSubscription(object):
     exists = False # ir abonements, kuru var lietot TAGAD ?
@@ -20,10 +21,16 @@ class ActiveSubscription(object):
 
 # CONSTRUCTOR
     def __init__(self, cli):
+
+# !!!!!!!!!!!!!!!!!!
+# !!!!! FROZEN !!!!!
+# !!!!!!!!!!!!!!!!!!
+
        # 1. atlasa visus ended = False, frozen = True --> EXIT
-        subscriptions = Abonementi.objects.filter( client = cli, ended = False, frozen = True )
-        if subscriptions.count() > 0:
-            return
+#        subscriptions = Abonementi.objects.filter( client = cli, ended = False )
+#        if subscriptions.count() > 0:
+#            return
+
        # 2. atlasa visus ended = False, active = True, secība sākot no senāk pirktā
         subscriptions = Abonementi.objects.filter( client = cli, ended = False, active = True ).order_by('purchase_date')
        # 3. pēc kārtas pārbauda vai der tagad un tūlīt, ja jā --> active, exist=True
@@ -48,7 +55,7 @@ class ActiveSubscription(object):
 # Testa funkcija
     def test(self, obj):
        # 1. nosaka datetime un laiku
-        today = datetime.datetime.now()
+        today = datetime.datetime.now().replace(tzinfo=tz)
         time = datetime.time()
        # 2. nosaka weekday nummuru
         day = today.weekday()
@@ -67,18 +74,20 @@ class ActiveSubscription(object):
 
        # 5. laika limits ir, pārbauda darbadienu laiku limitus, ja ir --> uz reižu pārbaudi
         if day >= 0 and day <= 4:
-            if obj.subscr.time_limit_type.weekday1 == True:
-                if obj.subscr.time_limit_type.weekday1_start_time < time < obj.subscr.weekday1_end_time:
-                    test_times = True
-            if obj.subscr.time_limit_type.weekday2 == True:
-                if obj.subscr.time_limit_type.weekday2_start_time < time < obj.subscr.weekday2_end_time:
-                    test_times = True
+            if obj.subscr.time_limit == True:
+                if obj.subscr.time_limit_type.weekday1 == True:
+                    if obj.subscr.time_limit_type.weekday1_start_time < time < obj.subscr.weekday1_end_time:
+                        test_times = True
+                if obj.subscr.time_limit_type.weekday2 == True:
+                    if obj.subscr.time_limit_type.weekday2_start_time < time < obj.subscr.weekday2_end_time:
+                        test_times = True
 
        # 6. laika limits ir, pārbauda brīvdienu laika limitu, ja ir --> uz reižu pārbaudi
         if day == 5 or day == 6:
-            if obj.subscr.time_limit_type.weekend == True:
-                if obj.subscr.time_limit_type.weekend_start_time < time < obj.subscr.weekend_end_time:
-                    test_times = True
+            if obj.subscr.time_limit == True:
+                if obj.subscr.time_limit_type.weekend == True:
+                    if obj.subscr.time_limit_type.weekend_start_time < time < obj.subscr.weekend_end_time:
+                        test_times = True
 
        # 7. "reižu pārbaude" --> ja i reižu un reizes ir --> return True, ja nav reižu --> return True
         if test_times == True: # pārbaudam vai nav reižu abonements...
@@ -89,18 +98,25 @@ class ActiveSubscription(object):
                 return True
 
        # 7. Kaut kāda hrena dēļ neder nekur :D
-#        return False
+        return False
 
 
+
+# !!!!! Abonementu izbeidzinātājs !!!!!
 #==============================================================
 class SubscriptionEnd(object):
 
 # CONSTRUCTOR
     def __init__(self, cli):
-       # 1. nosaka datetime un laiku
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!! TEST ABONEMENT !!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!
+
+       # 1. nosaka datetime
         today = datetime.datetime.now().replace(tzinfo=tz)
        # 2. Atlasa visus kuri nav beigušies
-        subscriptions = Abonementi.objects.filter( client = cli, ended = False) #, frozen = True )
+        subscriptions = Abonementi.objects.filter( client = cli, ended = False)
        # 3. iet cauri visiem...
         for s in subscriptions:
           # ja aktivēts, tad "best_before"
@@ -114,20 +130,8 @@ class SubscriptionEnd(object):
                    s.ended = True
                    s.save()
 
-"""
-abonementu endotājs:
 
-??? vai var endot IESALDĒTU ???
-
-1. atlasa visus ended = False, frozen = False un ņem pēc kārtas -->
-
-1.1. activate == False un activate_before < dateime.datetime.now() --> KILL
-1.2. best_before < dateime.datetime.now() --> KILL
-1.3. times == True --> times_count == 0 --> KILL
-
-"""
-
-
+# !!!!! Abonementu "lietotājs" !!!!!
 #==============================================================
 class SubscriptionUse(object):
 
