@@ -120,6 +120,9 @@
 
 
     </div>
+
+{{ print_date }}
+
    </div>
   </div>
 
@@ -152,11 +155,11 @@
 <!-- KOLONA 2 START -->
  <div class="col-sm-5 col-md-5 col-lg-5" style="border: solid red 1px;">
   <a href="/subscription/">
-   <button type="button" class="btn btn-success" style="margin-top: 8px;">Pirkt abonementu</button>
+   <button type="button" class="btn btn-success" style="margin-top: 8px;" {% if client %}{% else %}disabled{% endif %}>Pirkt abonementu</button>
   </a>
 
   <a href="#">
-   <button type="button" class="btn btn-warning pull-right" style="margin-top: 8px;">Pirkt klienta karti</button>
+   <button type="button" class="btn btn-warning pull-right" style="margin-top: 8px;" {% if client %}{% else %}disabled{% endif %}>Pirkt klienta karti</button>
   </a>
 
  <!-- EDIJA KIOSKS START -->

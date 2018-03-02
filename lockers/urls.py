@@ -7,7 +7,7 @@ admin.autodiscover()
 urlpatterns = [
 # ===============================================================
 # Skapīšu izvēles skats
-    url(r'^/$', 'lockers.views.locker'),
+    url(r'^/(?P<abon_id>\d+)/$', 'lockers.views.locker'),
 
 
 # ===============================================================
@@ -20,7 +20,7 @@ urlpatterns = [
 
 # ===============================================================
 # check-in
-    url(r'^/checkin/(?P<gender>\w+)/(?P<locker_nr>\d+)/$', 'lockers.views.locker_checkin'),
+    url(r'^/checkin/(?P<gender>\w+)/(?P<locker_nr>\d+)/(?P<abon_id>\d+)/$', 'lockers.views.locker_checkin'),
 # check-out
     url(r'^/checkout/$', 'lockers.views.locker_checkout'),
 

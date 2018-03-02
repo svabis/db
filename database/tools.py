@@ -7,11 +7,16 @@ from clients.models import Klienti
 from subscriptions.models import Abonementi
 
 import datetime
+from datetime import timedelta
+
+import pytz
+tz = pytz.timezone('EET')
 
 #==============================================================
 class ActiveSubscription(object):
     exists = False # ir abonements, kuru var lietot TAGAD ?
     active = [] # TAGAD lietojamais abonements, ja ir...
+    today = datetime.datetime.now().replace(tzinfo=tz)
 
 # CONSTRUCTOR
     def __init__(self, cli):
@@ -55,7 +60,7 @@ class ActiveSubscription(object):
        # 4. nav laika limits, ja ir reižu skaita reizes, ja ir --> return True
         if obj.subscr.time_limit == False:
             if obj.subscr.times == True:
-                if obj.subscr.times_count > 0:
+                if obj.times_count > 0:
                     return True
 
         test_times = False # lai skripts veic pārbaudi uz reizēm...
@@ -78,14 +83,36 @@ class ActiveSubscription(object):
        # 7. "reižu pārbaude" --> ja i reižu un reizes ir --> return True, ja nav reižu --> return True
         if test_times == True: # pārbaudam vai nav reižu abonements...
             if obj.subscr.times == True: # ir, tad skaitam vai ir reizes...
-                if obj.subscr.times_count > 0:
+                if obj.times_count > 0:
                     return True
             else: # nav reižu abonements (bet jau iepriekš noteikts ka iekļaujās laika limitos)
                 return True
 
        # 7. Kaut kāda hrena dēļ neder nekur :D
-        return False
+#        return False
 
+
+#==============================================================
+class SubscriptionEnd(object):
+
+# CONSTRUCTOR
+    def __init__(self, cli):
+       # 1. nosaka datetime un laiku
+        today = datetime.datetime.now().replace(tzinfo=tz)
+       # 2. Atlasa visus kuri nav beigušies
+        subscriptions = Abonementi.objects.filter( client = cli, ended = False) #, frozen = True )
+       # 3. iet cauri visiem...
+        for s in subscriptions:
+          # ja aktivēts, tad "best_before"
+           if s.active:
+               if s.best_before < today:
+                   s.ended = True
+                   s.save()
+          # neaktivētam "activate_before"
+           else:
+               if s.activate_before < today:
+                   s.ended = True
+                   s.save()
 
 """
 abonementu endotājs:
@@ -99,3 +126,29 @@ abonementu endotājs:
 1.3. times == True --> times_count == 0 --> KILL
 
 """
+
+
+#==============================================================
+class SubscriptionUse(object):
+
+# CONSTRUCTOR
+    def __init__(self, abon):
+        today = datetime.datetime.now()
+       # Atrod izmantojamo Abonemetu:
+        subscription = Abonementi.objects.get( id = abon )
+
+       # Aktivē, ja nav aktivēts
+        if subscription.active == False:
+            subscription.active = True
+            subscription.activation_date = today
+            subscription.best_before = today + timedelta(days = 30)
+            subscription.save()
+
+       # Testē reizes
+        if subscription.subscr.times:
+            subscription.times_count = subscription.times_count -1
+
+            if subscription.times_count == 0:
+                subscription.ended = True
+
+            subscription.save()

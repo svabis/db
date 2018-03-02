@@ -17,7 +17,7 @@ from lockers.models import Skapji, Skapji_history
 from subscriptions.models import Abonementi
 
 # Tools
-from database.tools import ActiveSubscription
+from database.tools import ActiveSubscription, SubscriptionEnd
 
 
 # !!!!! Clear ID !!!!!
@@ -134,19 +134,22 @@ def main(request):
         except:
             args['no_visit_history'] = True
 
+
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # !!!!!   ABONEMENTU APSTRĀDES ALGORITMS   !!!!!
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        # INSERT ABONEMENTU ENDED TESTU ŠEIT...
-
-# TEMPORARY OUTPUT
-        args['subscr'] = Abonementi.objects.filter(client=client).order_by('purchase_date')
+        # ABONEMENTU ENDED TESTU ŠEIT...
+        SubscriptionEnd( client )
 
         check = ActiveSubscription( client )
         args['abon_active'] = check.exists
         if check.exists:
             args['active_subscription'] = check.active
+
+# TEMPORARY
+        args['print_date'] = check.today
+
 
     response = render_to_response ( 'main_content.html', args )
     try:

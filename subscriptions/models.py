@@ -44,6 +44,8 @@ class AbonementType(models.Model):
 
     title = models.CharField( max_length = 60, default = '' ) # nosaukums
 
+    created = models.DateTimeField( default = timezone.now ) # izveidots
+
     available = models.BooleanField( default=True ) # pašlaik pieejams
 
     short_title = models.CharField( max_length = 60, default = '' ) # saīsinātais nosaukums ar HTML tagiem priekš izvēles sadaļas
@@ -62,6 +64,8 @@ class AbonementType(models.Model):
 
     times = models.BooleanField( default=False ) # reižu limits
     times_count = models.IntegerField( blank = True, null = True ) # reižu skaits
+
+    s3_nr = models.CharField( max_length = 10, default = '' )
 
     def __unicode__(self):
         return u'%s' % (self.title)

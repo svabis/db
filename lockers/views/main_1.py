@@ -5,6 +5,9 @@ from django.core.context_processors import csrf
 
 from database.args import create_args
 
+# Tools
+from database.tools import ActiveSubscription, SubscriptionUse
+
 from setup.models import Settings
 
 from clients.models import Klienti
@@ -16,7 +19,7 @@ from datetime import datetime
 
 #============================================================
 # !!!!! SKAPĪŠU IZVĒLE !!!!!
-def locker(request):
+def locker(request, abon_id):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
@@ -47,6 +50,9 @@ def locker(request):
 
     args['dm'] = dml
     args['dw'] = dwl
+
+   # Abonementa id
+    args['abon_id'] = int(abon_id)
 
    # LOCKER COLORS FROM SETTINGS
     args['woman_locker_color'] = Settings.objects.get( key = "woman locker color" ).value
@@ -89,17 +95,17 @@ def locker(request):
 
 #============================================================
 # !!!! CHECK IN !!!!!
-def locker_checkin(request, gender, locker_nr):
-    if "active_client" in request.COOKIES:
-        c_id = int(request.COOKIES.get(str('active_client')))
-        client = Klienti.objects.get( id = c_id )
-
+def locker_checkin(request, gender, locker_nr, abon_id):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
     if args['loged_in'] == False:
         return redirect("/login/")
+
+    if "active_client" in request.COOKIES:
+        c_id = int(request.COOKIES.get(str('active_client')))
+        client = Klienti.objects.get( id = c_id )
 
     try:
        # !!!!! Test if client is not checked in already !!!!!
@@ -109,6 +115,13 @@ def locker_checkin(request, gender, locker_nr):
            # !!!!! Test if locker is available !!!!!
             locker = Skapji.objects.get( number = locker_nr, locker_type = str(gender) )
         except:
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!! ABONEMENTA TESTS !!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            SubscriptionUse( int(abon_id) )
+
             new_checkin = Skapji( number = locker_nr, locker_type = gender, client = client )
             new_checkin.save()
 

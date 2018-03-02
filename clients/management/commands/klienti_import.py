@@ -50,10 +50,11 @@ class Command(BaseCommand):
     #      start = True
 
          if start == True:
+
            gender_temp = ""
            if l[25] == "m":
                gender_temp = "V"
-           else: # == "w":
+           if l[25] == "w":
                gender_temp = "S"
 
            avatar_exist = False
@@ -103,20 +104,23 @@ class Command(BaseCommand):
               # AVATAR + BIRTHDAY
                if avatar_exist == True:
                    new_client = Klienti( avatar = avatar_temp, name = l[5], surname = l[6], birthday = time, phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status,
-                                s3_nr=l[0], reg_date=reg_date_temp )
+                                s3_nr=l[0], reg_date=reg_date_temp, first = True )
                    new_client.save()
               # BIRTHDAY
                else:
-                   new_client = Klienti( name = l[5], surname = l[6], birthday = time, phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status, s3_nr=l[0], reg_date=reg_date_temp )
+                   new_client = Klienti( name = l[5], surname = l[6], birthday = time, phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status,
+                                s3_nr=l[0], reg_date=reg_date_temp, first = True )
                    new_client.save()
            else:
               # AVATAR
                if avatar_exist == True:
-                   new_client = Klienti( avatar = avatar_temp, name = l[5], surname = l[5], phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status, s3_nr=l[0], reg_date=reg_date_temp )
+                   new_client = Klienti( avatar = avatar_temp, name = l[5], surname = l[5], phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status,
+                                s3_nr=l[0], reg_date=reg_date_temp, first = True )
                    new_client.save()
               # NO BIRTHDAY + NO AVATAR
                else:
-                   new_client = Klienti( name = l[5], surname = l[6], phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status, s3_nr=l[0], reg_date=reg_date_temp )
+                   new_client = Klienti( name = l[5], surname = l[6], phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status,
+                                s3_nr=l[0], reg_date=reg_date_temp, first = True )
                    new_client.save()
 
           # no object was created --> print line's first column

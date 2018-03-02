@@ -27,7 +27,7 @@ function locker_choise(val) {
 function checkin() {
   if (chosen != 0 && locker.length >= chosen) {
     if ( locker[chosen-1] != 1 ) {
-      window.location.href = "/lockers/checkin/{{ gender }}/" + chosen + "/";
+      window.location.href = "/lockers/checkin/{{ gender }}/" + chosen + "/{{ abon_id }}/";
     }
   }
 }
@@ -98,7 +98,7 @@ jQuery(document).ready(function($) {
  </div>
 
 {% else %}
- <a href="/lockers/checkin/{{ gender }}/{{ l.0 }}/">
+ <a href="/lockers/checkin/{{ gender }}/{{ l.0 }}/{{ abon_id }}/">
   <div class="locker" id="locker{{ forloop.counter }}">
    <h3 class="locker_text">{{ l.0 }}</h3>
   </div>

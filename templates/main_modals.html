@@ -97,7 +97,7 @@ $(document).keypress(function (e) {
   {% elif abon_active != True %}
        window.location.href = "/subscription/";
   {% elif abon_active == True %}
-       window.location.href = "/lockers/";
+       window.location.href = "/lockers/{{ active_subscription.id }}/";
   {% endif %}
 // endif
 

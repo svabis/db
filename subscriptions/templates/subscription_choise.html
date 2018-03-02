@@ -24,7 +24,7 @@ jQuery(document).ready(function($) {
 kolona 1<br>
 
 {% for a in abonementi %}
-<input type="radio" name="subscription" value="{{ a.id }}"> <b> {{ a.short_title }}</b><hr>
+<input type="radio" name="subscription" value="{{ a.id }}"> <b> {{ a.short_title|safe }}</b><hr>
 {% endfor %}
 
  </div>
@@ -34,7 +34,7 @@ kolona 1<br>
 kolona 2<br>
 
 {% for v in vienreiz %}
-<input type="radio" name="subscription" value="{{ v.id }}"> <b> {{ v.short_title }}</b><hr>
+<input type="radio" name="subscription" value="{{ v.id }}"> <b> {{ v.short_title|safe }}</b><hr>
 {% endfor %}
 <!-- <b>Klienta karte {{ card }} EUR</b> -->
 
@@ -45,7 +45,7 @@ kolona 2<br>
 kolona 3<br>
 
 {% for s in special %}
-<input type="radio" name="subscription" value="{{ s.id }}"> <b> {{ s.short_title }}</b><hr>
+<input type="radio" name="subscription" value="{{ s.id }}"> <b> {{ s.short_title|safe }}</b><hr>
 {% endfor %}
 
  </div>
@@ -57,7 +57,7 @@ kolona 3<br>
 rinda 2<br>
 
 {% for f in first_time %}
-<input type="radio" name="subscription" value="{{ f.id }}"> <b> {{ f.short_title }}</b><hr>
+<input type="radio" name="subscription" value="{{ f.id }}"> <b> {{ f.short_title|safe }}</b><hr>
 {% endfor %}
 
  </div>
