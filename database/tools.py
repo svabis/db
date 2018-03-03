@@ -21,15 +21,14 @@ class ActiveSubscription(object):
 
 # CONSTRUCTOR
     def __init__(self, cli):
+        self.today = datetime.datetime.now().replace(tzinfo=tz)
+       # 1. vai klients ir iesaldēts --> EXIT
+        if cli.frozen:
+            self.exist = False
+            self.active = []
+            return
 
-# !!!!!!!!!!!!!!!!!!
-# !!!!! FROZEN !!!!!
-# !!!!!!!!!!!!!!!!!!
-
-       # 1. atlasa visus ended = False, frozen = True --> EXIT
-#        subscriptions = Abonementi.objects.filter( client = cli, ended = False )
-#        if subscriptions.count() > 0:
-#            return
+# Iepazīšanās abonementi <-- TE
 
        # 2. atlasa visus ended = False, active = True, secība sākot no senāk pirktā
         subscriptions = Abonementi.objects.filter( client = cli, ended = False, active = True ).order_by('purchase_date')
@@ -56,7 +55,7 @@ class ActiveSubscription(object):
     def test(self, obj):
        # 1. nosaka datetime un laiku
         today = datetime.datetime.now().replace(tzinfo=tz)
-        time = datetime.time()
+        time = today.time()
        # 2. nosaka weekday nummuru
         day = today.weekday()
 
@@ -76,17 +75,17 @@ class ActiveSubscription(object):
         if day >= 0 and day <= 4:
             if obj.subscr.time_limit == True:
                 if obj.subscr.time_limit_type.weekday1 == True:
-                    if obj.subscr.time_limit_type.weekday1_start_time < time < obj.subscr.weekday1_end_time:
+                    if obj.subscr.time_limit_type.weekday1_start_time < time < obj.subscr.time_limit_type.weekday1_end_time:
                         test_times = True
                 if obj.subscr.time_limit_type.weekday2 == True:
-                    if obj.subscr.time_limit_type.weekday2_start_time < time < obj.subscr.weekday2_end_time:
+                    if obj.subscr.time_limit_type.weekday2_start_time < time < obj.subscr.time_limit_type.weekday2_end_time:
                         test_times = True
 
        # 6. laika limits ir, pārbauda brīvdienu laika limitu, ja ir --> uz reižu pārbaudi
         if day == 5 or day == 6:
             if obj.subscr.time_limit == True:
                 if obj.subscr.time_limit_type.weekend == True:
-                    if obj.subscr.time_limit_type.weekend_start_time < time < obj.subscr.weekend_end_time:
+                    if obj.subscr.time_limit_type.weekend_start_time < time < obj.subscr.time_limit_type.weekend_end_time:
                         test_times = True
 
        # 7. "reižu pārbaude" --> ja i reižu un reizes ir --> return True, ja nav reižu --> return True

@@ -4,8 +4,28 @@
 <div id="hider"></div>
 
 <script>
+function isSelected() {
+  var selekti = document.getElementsByName("subscription") //.checked = true;
+  var selektTrue = false;
+  console.log(selekti)
+  for (var i = 0, l = selekti.length; l > i; i++) {
+    console.log(selekti[i].checked)
+    if (selekti[i].checked == true) {
+      selektTrue = true;
+    }
+  }
+  if (selektTrue == true) {
+    $("#submit_buton").removeAttr('disabled');
+  } else {
+    $("#submit_buton").prop('disabled', 'disabled');
+  }
+}
+
 jQuery(document).ready(function($) {
   $(document).keyup(function (e) {
+
+    isSelected()
+
     // ESC 27
     if ( e.keyCode === 27 ) {
       window.location.href = "{{ back }}";
@@ -18,55 +38,91 @@ jQuery(document).ready(function($) {
 <h3>Abonementu veidi</h3>
 
 <form action="/subscription_payment/" method=POST>{% csrf_token %}
-<div class="row" style="border: solid black 1px;">
+<div class="row">
 <!-- RINDA 1 KOLONA 1-->
- <div class="col-lg-8 col-md-8 col-sm-8" style="border: solid black 1px;">
-kolona 1<br>
+ <div class="col-lg-8 col-md-8 col-sm-8">
+  <div class="col-lg-4 col-md-4 col-sm-4">
 
-{% for a in abonementi %}
-<input type="radio" name="subscription" value="{{ a.id }}"> <b> {{ a.short_title|safe }}</b><hr>
+<div class="btn-group" data-toggle="buttons">
+{% for a in abonementi1 %}
+ <label class="btn btn-primary btn-block" style="border-radius: 0;">
+  <input type="radio" name="subscription" value="{{ a.id }}" onchange="isSelected()"> <b> {{ a.short_title|safe }}</b>
+ </label>
+<!-- <hr style="border-top: 1px solid black;"> -->
 {% endfor %}
+</div>
 
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-4">
+
+<div class="btn-group" data-toggle="buttons">
+{% for a in abonementi2 %}
+ <label class="btn btn-primary btn-block" style="border-radius: 0;">
+  <input type="radio" name="subscription" value="{{ a.id }}" onchange="isSelected()"> <b> {{ a.short_title|safe }}</b>
+ </label>
+{% endfor %}
+</div>
+
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-4">
+
+<div class="btn-group" data-toggle="buttons">
+{% for a in abonementi3 %}
+ <label class="btn btn-primary btn-block" style="border-radius: 0;">
+  <input type="radio" name="subscription" value="{{ a.id }}" onchange="isSelected()"> <b> {{ a.short_title|safe }}</b>
+ </label>
+{% endfor %}
+</div>
+
+  </div>
  </div>
 
 <!-- RINDA 1 KOLONA 2-->
- <div class="col-lg-2 col-md-2 col-sm-2" style="border: solid black 1px;">
-kolona 2<br>
+ <div class="col-lg-4 col-md-4 col-sm-4">
 
+<div class="btn-group" data-toggle="buttons">
 {% for v in vienreiz %}
-<input type="radio" name="subscription" value="{{ v.id }}"> <b> {{ v.short_title|safe }}</b><hr>
+ <label class="btn btn-success btn-block" style="border-radius: 0;">
+  <input type="radio" name="subscription" value="{{ v.id }}" onchange="isSelected()">{{ v.short_title|safe }}
+ </label>
 {% endfor %}
-<!-- <b>Klienta karte {{ card }} EUR</b> -->
+</div>
 
  </div>
 
 <!-- RINDA 1 KOLONA 3-->
- <div class="col-lg-2 col-md-2 col-sm-2" style="border: solid black 1px;">
-kolona 3<br>
+ <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 40px;">
 
+<div class="btn-group" data-toggle="buttons">
 {% for s in special %}
-<input type="radio" name="subscription" value="{{ s.id }}"> <b> {{ s.short_title|safe }}</b><hr>
+ <label class="btn btn-warning btn-block" style="border-radius: 0;">
+  <input type="radio" name="subscription" value="{{ s.id }}" onchange="isSelected()">{{ s.short_title|safe }}
+ </label>
 {% endfor %}
+</div>
 
  </div>
 </div>
 
 <!-- RINDA 2 -->
-<div class="row" style="border: solid black 1px;">
- <div class="col-lg-12 col-md-12 col-sm-12" style="border: solid black 1px;">
-rinda 2<br>
+<div class="row">
+ <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top: 20px; margin-left: 15px;">
 
+<div class="btn-group" data-toggle="buttons">
 {% for f in first_time %}
-<input type="radio" name="subscription" value="{{ f.id }}"> <b> {{ f.short_title|safe }}</b><hr>
+ <label class="btn btn-primary" style="margin-right: 10px; border-radius: 0;">
+  <input type="radio" name="subscription" value="{{ f.id }}" onchange="isSelected()"> <b> {{ f.short_title|safe }}</b>
+ </label>
 {% endfor %}
+</div>
 
  </div>
 </div>
 
 <!-- RINDA 3 -->
 <div class="row text-right" style="margin-top: 10px;">
- <input type="submit" class="btn btn-success" value="Pirkt">
- <a href="{{ back }}"><button type="button" class="btn btn-danger">Atcelt</button></a>
+ <input id="submit_buton" type="submit" class="btn btn-success" style="min-width: 150px; max-width: 150px;" value="Pirkt" disabled>
+ <a href="{{ back }}"><button type="button" class="btn btn-danger" style="min-width: 150px; max-width: 150px;">Atcelt</button></a>
 </div>
 </form>
 

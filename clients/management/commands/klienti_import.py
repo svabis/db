@@ -39,15 +39,15 @@ class Command(BaseCommand):
 # 31 Status
 
        start = False
-       start = True
+#       start = True
        counter = 0
 
        temp_status = Statusi.objects.all()[0]
 
        for i in tqdm( range(len(lines)) ):
          l = lines[i].split('\t')
-    #     if l[0] == "1-20577":
-    #      start = True
+         if l[0] == "1-21457":
+          start = True
 
          if start == True:
 

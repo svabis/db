@@ -4,6 +4,24 @@
 <div id="hider"></div>
 
 <script>
+// select only Cash + Credit or Transfer
+function selectOnlyThis(id) {
+  var chk_id_list = ['cash_chk', 'credit_card_chk', 'transfer_chk']
+  var checked = document.getElementById(id).checked;
+  if (id == chk_id_list[0] || id == chk_id_list[1]) {
+    if (checked == true) {
+      document.getElementById( chk_id_list[2] ).checked = false;
+    }
+  }
+  if (id == chk_id_list[2]) {
+    if (checked == true) {
+      document.getElementById( chk_id_list[0] ).checked = false;
+      document.getElementById( chk_id_list[1] ).checked = false;
+    }
+  }
+}
+
+
 jQuery(document).ready(function($) {
 // ESC keypress event
  $(document).keyup(function (e) {
@@ -36,20 +54,13 @@ jQuery(document).ready(function($) {
  </div>
 </div>
 
-<!-- RINDA 2-->
+<!--
 <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
  <div class="col-lg-7 col-md-7 col-sm-7" style="padding-right: 0px; padding-left: 0px;">
+  <div class="col-lg-6 col-md-6 col-sm-6"></div>
   <div class="col-lg-3 col-md-3 col-sm-3">
    <div class="form-group text-right" style="margin-bottom: 0px; margin-top: 5px;">
     <label>Depozīts:</label>
-   </div>
-  </div>
-  <div class="col-lg-3 col-md-3 col-sm-3">
-    <input type="text" class="form-control" id="id_frozen_subscription" readonly="readonly">
-  </div>
-  <div class="col-lg-3 col-md-3 col-sm-3">
-   <div class="form-group text-right" style="margin-bottom: 0px; margin-top: 5px;">
-    <label>Iesaldētā summa:</label>
    </div>
   </div>
   <div class="col-lg-3 col-md-3 col-sm-3">
@@ -71,16 +82,14 @@ jQuery(document).ready(function($) {
 
 <hr style="border-top: 1px solid green;">
 
-<!-- RINDA 3 -->
 <div class="row">
  <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;"></div>
 
- <!-- KOLONA AR APMAKSAS VEIDU CHECKBOX'IEM -->
  <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;">
   <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;">
-   <input class="form-control" id="cash_chk" name="cash_chk" type="checkbox">
-   <input class="form-control" id="credit_card_chk" name="credit_card_chk" type="checkbox">
-   <input class="form-control" id="transfer_chk" name="transfer_chk" type="checkbox">
+   <input class="form-control" id="cash_chk" name="cash_chk" type="checkbox" onchange="selectOnlyThis(id);">
+   <input class="form-control" id="credit_card_chk" name="credit_card_chk" type="checkbox" onchange="selectOnlyThis(id);">
+   <input class="form-control" id="transfer_chk" name="transfer_chk" type="checkbox" onchange="selectOnlyThis(id);">
   </div>
   <div class="col-lg-9 col-md-9 col-sm-9" style="margin-top: 10px;">
    <label style="margin-top: 10px;">Skaidrā naudā</label>
@@ -89,7 +98,6 @@ jQuery(document).ready(function($) {
   </div>
  </div>
 
- <!-- KOLONA AR DĀVANU KARTE UN APDROŠINĀTĀJS CHECKBOX'IEM -->
  <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;">
   <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;">
    <input class="form-control" id="gift_card_chk" name="gift_card_chk" type="checkbox">
@@ -102,7 +110,6 @@ jQuery(document).ready(function($) {
 
  </div>
 
- <!-- KOLONA AR DĀVANU KARTES UN APDROŠINĀŠANAS SUMMĀM -->
  <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;">
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Dāvanu kartes vērtība:</label>
@@ -117,7 +124,6 @@ jQuery(document).ready(function($) {
 
 <hr style="border-top: 1px solid green; margin-top: 8px;">
 
-<!-- RINDA 4 -->
 <div class="row" style="margin-top:10px;">
  <div class="col-lg-5 col-md-5 col-sm-5">
   <div class="form-group">
@@ -134,7 +140,6 @@ jQuery(document).ready(function($) {
    <option value="s.id.2">Atlaides veids 2</option>
    <option value="s.id.3">Atlaides veids 3</option>
    <option value="s.id.4">Atlaides veids 4</option>
-<!--   <option value="S" selected="selected">Sieviete</option> -->
    </select>
   </div>
  </div>
@@ -146,7 +151,6 @@ jQuery(document).ready(function($) {
 
 <hr style="border-top: 1px solid green; margin-top: 8px;">
 
-<!-- RINDA 5 -->
 <div class="row" style="margin-top:20px;">
  <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 5px;"> </div>
  <div class="col-lg-5 col-md-5 col-sm-5" style=" margin-top: 5px;">
@@ -158,6 +162,8 @@ jQuery(document).ready(function($) {
   <input type="text" class="form-control" id="id_total_price" name="id_total_price" readonly="readonly">
  </div>
 </div>
+
+-->
 
 <hr style="border-top: 1px solid green; margin-top: 8px;">
 

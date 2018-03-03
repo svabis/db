@@ -4,7 +4,7 @@ import re       # for regular expresions (regex)
 import datetime # for file create field
 import pytz	# to set timezone
 
-from clients.models import Klienti, StatusType
+from clients.models import Klienti, Statusi
 
 from slugify import slugify
 import datetime
@@ -24,8 +24,8 @@ class Command(BaseCommand):
        print datetime.datetime.now()
 
        db = '/home/svabis/Tabulas/T00801Person'
-       img_folder = '/home/svabis/Personen0/'
-#       img_folder = '/home/svabis/Personen/'
+#       img_folder = '/home/svabis/Personen0/'
+       img_folder = '/home/svabis/Personen/'
        tz = pytz.timezone('UTC')
        lines = [line.rstrip('\n') for line in open(db)]
 
@@ -44,7 +44,7 @@ class Command(BaseCommand):
        error = 0
        gender_error = []
 
-       temp_status = StatusType.objects.all()[0]
+       temp_status = Statusi.objects.all()[0]
 
        for i in tqdm( range(len(lines)) ):
            l = lines[i].split('\t')
@@ -80,7 +80,10 @@ class Command(BaseCommand):
 
            counter += 1
 
+       print "gender error:"
        print gender_error
+       print len(gender_error)
+       print
 
        print str(error) + "/" + str(counter)
        print datetime.datetime.now()

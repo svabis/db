@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils import timezone
 
+from django.contrib.auth.models import User
 
 # !!! StatusType !!!
 class Statusi(models.Model):
@@ -32,8 +33,13 @@ class Klienti(models.Model):
 
     first = models.BooleanField( default=False ) # apmeklējis jau kaut ko
 
+    frozen = models.BooleanField( default=False ) # iesaldēts
+    frozen_from = models.DateField( blank = True, null = True )
+    frozen_until = models.DateField( blank = True, null = True )
+
+
     birthday = models.DateField( blank = True, null = True )
-    phone = models.CharField( max_length = 25, blank = True, null = True )
+    phone = models.CharField( max_length = 30, blank = True, null = True )
     e_mail = models.EmailField ( blank = True, null = True )
 
     card_nr = models.CharField( max_length = 16, default = '', blank = True )
@@ -66,7 +72,9 @@ class Blacklist(models.Model):
     class Meta():
         db_table = "blacklist"
 
-    bl_user = models.ForeignKey( Klienti )
+#    bl_user = models.ForeignKey( User )
+
+    bl_client = models.ForeignKey( Klienti )
     bl_date = models.DateTimeField( default = timezone.now )
     bl_data = models.CharField( max_length = 300 )
 
@@ -74,20 +82,12 @@ class Blacklist(models.Model):
         return u'%s' % (self.bl_user)
 
 
-# !!!!! Iesaldēšana !!!!!
-class Iesalde(models.Model):
-    class Meta():
-        db_table = "iesalde"
-
-    i_client = models.ForeignKey( Klienti )
-    i_date = models.DateTimeField( default = timezone.now )
-    i_amount = models.DecimalField( max_digits = 5, decimal_places = 2 )
-
-
 # !!!!! Depozīts !!!!!
 class Deposit(models.Model):
     class Meta():
         db_table = "depozits"
+
+    d_user = models.ForeignKey( User, default = 1 )
 
     d_client = models.ForeignKey( Klienti )
     d_date = models.DateTimeField( default = timezone.now )

@@ -5,7 +5,7 @@ from subscriptions.models import *
 
 # !!!!! Abonementu_tipi !!!!!
 class AbonementTypeAdmin(admin.ModelAdmin):
-    list_display = ['title', 'created', 'available', 'position', 'price', 'special', 'first_time', 'best_before', 'time_limit', 'time_limit_type', 'times', 'times_count', 's3_nr']
+    list_display = ['title', 'created', 'available', 'position', 'position1', 'discount', 'price', 'special', 'first_time', 'best_before', 'time_limit', 'time_limit_type', 'times', 'times_count', 's3_nr']
     list_filter = ['created', 'position', 'available', 'special', 'first_time', 'best_before', 'time_limit', 'times', 'times_count']
 #    search_fields = []
 #    exclude = []
@@ -13,8 +13,8 @@ class AbonementTypeAdmin(admin.ModelAdmin):
 
 # !!!!! Abonementi !!!!!
 class AbonementiAdmin(admin.ModelAdmin):
-    list_display = ['purchase_date', 'client', 'subscr', 'price', 'active', 'ended', 'activation_date', 'activate_before', 'best_before', 'times_count']
-    list_filter = ['purchase_date', 'active', 'ended', 'activation_date', 'activate_before', 'best_before']
+    list_display = ['purchase_date', 'user', 'client', 'subscr', 'price', 'active', 'ended', 'activation_date', 'activate_before', 'best_before', 'times_count']
+    list_filter = ['purchase_date', 'active', 'ended', 'activation_date', 'activate_before', 'best_before', 'user']
 #    search_fields = ['client']
 #    exclude = []
 

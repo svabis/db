@@ -35,6 +35,7 @@ function checkin() {
 jQuery(document).ready(function($) {
 // Keyboard Input
   $(document).keypress(function (e) {
+    e.preventDefault();
     if ($(e.target).is('input')) {
       if ( e.keyCode !== 27 || e.keyCode !== 13 || e.keyCode !== 8 )
         return;
@@ -59,6 +60,7 @@ jQuery(document).ready(function($) {
     }
    // BACKSPACE
     if ( e.keyCode === 8 ) {
+      e.preventDefault();
       if (input.value != '') {
         input.value = input.value.substring(0, input.value.length - 1);
       }

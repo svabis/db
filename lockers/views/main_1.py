@@ -116,14 +116,17 @@ def locker_checkin(request, gender, locker_nr, abon_id):
             locker = Skapji.objects.get( number = locker_nr, locker_type = str(gender) )
         except:
 
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!! ABONEMENTA TESTS !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+           # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+           # !!!!! ABONEMENTA Atkārtots TESTS !!!!!
+           # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            check = ActiveSubscription( client )
+            if check.exists:
+                if check.active.id == int(abon_id):
 
-            SubscriptionUse( int(abon_id) )
+                    SubscriptionUse( int(abon_id) )
 
-            new_checkin = Skapji( number = locker_nr, locker_type = gender, client = client )
-            new_checkin.save()
+                    new_checkin = Skapji( number = locker_nr, locker_type = gender, client = client )
+                    new_checkin.save()
 
     return redirect ('/')
 

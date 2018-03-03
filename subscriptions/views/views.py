@@ -25,6 +25,15 @@ def subscription(request, back=False):
     if args['loged_in'] == False:
         return redirect("/login/")
 
+   # Get Active client from COOKIE
+    if "active_client" in request.COOKIES:
+#        if True:
+        try:
+            c_id = int(request.COOKIES.get(str('active_client')))
+            cli = Klienti.objects.get( id = c_id )
+        except:
+            cli = False
+
     args.update(csrf(request)) # ADD CSRF TOKEN
 
    # "return path" from this view
@@ -37,13 +46,22 @@ def subscription(request, back=False):
 #    card_cost = int(Settings.objects.get( key = "client card price" ).value)
 #    args['card'] = card_cost
 
-    args['abonementi'] = AbonementType.objects.filter( position = 1, available = True )
-
-    args['vienreiz'] = AbonementType.objects.filter( position = 2, available = True )
+    args['abonementi1'] = AbonementType.objects.filter( position = 1, position1 = 1, available = True )
+    args['abonementi2'] = AbonementType.objects.filter( position = 1, position1 = 2, available = True )
+    args['abonementi3'] = AbonementType.objects.filter( position = 1, position1 = 3, available = True )
 
     args['special'] = AbonementType.objects.filter( position = 3, available = True )
 
-    args['first_time'] = AbonementType.objects.filter(  position = 4, available = True )
+    if cli != False:
+        if cli.first:
+            args['first_time'] = AbonementType.objects.filter(  position = 4, available = True ).exclude( first_time = True )
+        else:
+            args['first_time'] = AbonementType.objects.filter(  position = 4, available = True )
+
+        if Abonementi.objects.filter( client=cli, ended = False ).count() > 0:
+            args['vienreiz'] = AbonementType.objects.filter( position = 2, available = True )
+        else:
+            args['vienreiz'] = AbonementType.objects.filter( position = 2, available = True ).exclude( position1 = 0 )
 
     return render_to_response ( 'subscription_choise.html', args )
 
@@ -63,7 +81,12 @@ def subscription_payment(request):
    # Get Subscription Type from "Pirkt Abonementu" choise
     if request.POST:
         subscr_nr = int(request.POST.get('subscription', ''))
-        args['chosen_subscr'] = AbonementType.objects.get( id = subscr_nr )
+        chosen_sub = AbonementType.objects.get( id = subscr_nr )
+        args['chosen_subscr'] = chosen_sub
+
+       # Ja nav "speciālais" abonements...
+        if chosen_sub.discount == True:
+             args['atlaide'] = True
 
     return render_to_response ( 'subscription_payment.html', args )
 
@@ -91,7 +114,8 @@ def subscription_purchase(request):
 
                 date_temp = datetime.now() + timedelta(days=30)
                 if chosen_subscr.times:
-                    new_subscr = Abonementi(client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=date_temp, times_count=chosen_subscr.times_count)
+                    new_subscr = Abonementi(client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=date_temp,
+                                            times_count=chosen_subscr.times_count)
                 else:
                     new_subscr = Abonementi(client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=date_temp)
                 new_subscr.save()

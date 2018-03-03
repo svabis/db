@@ -2,6 +2,9 @@
 from django.db import models
 from django.utils import timezone
 
+# Django useri
+from django.contrib.auth.models import User
+
 from datetime import datetime
 
 from clients.models import Klienti # abonementa īpašnieks
@@ -42,14 +45,18 @@ class AbonementType(models.Model):
     class Meta():
         db_table = "abonementu_tipi"
 
-    title = models.CharField( max_length = 60, default = '' ) # nosaukums
+    title = models.CharField( max_length = 100, default = '' ) # nosaukums
 
     created = models.DateTimeField( default = timezone.now ) # izveidots
 
     available = models.BooleanField( default=True ) # pašlaik pieejams
 
-    short_title = models.CharField( max_length = 60, default = '' ) # saīsinātais nosaukums ar HTML tagiem priekš izvēles sadaļas
+    discount = models.BooleanField( default=True ) # atlaide
+
+    short_title = models.CharField( max_length = 100, default = '' ) # saīsinātais nosaukums ar HTML tagiem priekš izvēles sadaļas
+
     position = models.IntegerField( blank = True, null = True ) # novietojums izvēles sadaļā
+    position1 = models.IntegerField( blank = True, null = True ) # novietojums izvēles sadaļā
 
     price = models.DecimalField( max_digits = 5, decimal_places = 2 ) # cena
 
@@ -75,6 +82,8 @@ class AbonementType(models.Model):
 class Abonementi(models.Model):
     class Meta():
         db_table = "abonementi"
+
+    user = models.ForeignKey( User, default = 1 ) # abonementa īpašnieks
 
     active = models.BooleanField( default = False ) # aktivējot mainās uz True
     ended = models.BooleanField( default = False ) # ja beidzās, tad mainās uz True

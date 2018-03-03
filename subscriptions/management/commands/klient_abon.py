@@ -62,11 +62,8 @@ class Command(BaseCommand):
        error = []
 
        for i in tqdm( range(len(lines)) ):
-#       i=0
-#       if True:
            l = lines[i].split(';')
 
-#           try:
            if True:
                try:
                    temp_client = Klienti.objects.get( s3_nr = l[4].split('"')[1] )
@@ -84,12 +81,9 @@ class Command(BaseCommand):
                else:
                    activate_date = datetime.datetime.strptime( laiks(l[5])[:19], '%Y.%m.%d %H:%M:%S')
 
-               print "l[7] " + str(l[7] == "") + "|" + str(l[7]) + "|"
-               if l[7] != "":
-                   best_before_date = datetime.datetime.strptime( laiks(l[7])[:19], '%Y.%m.%d %H:%M:%S')
-               else:
-                   best_before_date = activate_date + datetime.timedelta(days = 30)
+               best_before_date = activate_date + datetime.timedelta( days = 30*new_abon_tips.best_before )
 
+              # veido abonementu
                try:
                    new_subscr = Abonementi( client=temp_client,
                                         subscr=new_abon_tips,
@@ -104,7 +98,6 @@ class Command(BaseCommand):
                                         times_count=new_abon_tips.times_count )
                    new_subscr.save()
                    save += 1
-
                except:
                    error.append(l[0])
 

@@ -11,6 +11,20 @@
   <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
   {% block javascript %}{% endblock %}
 
+<script>
+// Disable Backspase for navigation 'BACK'
+$(function(){
+    var rx = /INPUT|SELECT|TEXTAREA/i;
+    $(document).bind("keydown keypress", function(e){
+        if( e.which == 8 ){ // 8 == backspace
+            if(!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly ){
+                e.preventDefault();
+            }
+        }
+    });
+});
+</script>
+
   <style>
   .navbar-xs .navbar-default .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu { background-color: #ccc; }
   .navbar-default { background-color: #ccc; border-bottom: 1px solid #ddd !important; }

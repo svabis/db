@@ -87,7 +87,7 @@ def edit_client(request):
             client = Klienti.objects.get( id = c_id )
             args['client'] = client
 
-            args['bl_data'] = Blacklist.objects.filter( bl_user = client )
+            args['bl_data'] = Blacklist.objects.filter( bl_client = client )
 
             form = KlientsForm( instance = client )
             args['form'] = form
@@ -95,12 +95,7 @@ def edit_client(request):
             args['active_tab_3'] = True
 
             try:
-                args['frozen_amount'] = Iesalde.objects.filter( i_client = client).order_by('-i_date')[0]
-            except:
-                args['frozen_amount'] = 0
-
-            try:
-                args['deposit_amount'] = Deposit.objects.filter( i_client = client).order_by('-i_date')[0]
+                args['deposit_amount'] = Deposit.objects.filter( d_client = client).order_by('-d_date')[0]
             except:
                 args['deposit_amount'] = 0
 
