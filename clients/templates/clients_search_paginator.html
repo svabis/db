@@ -2,6 +2,17 @@
 {% load staticfiles %}
 
 {% block search %}
+<script>
+jQuery(document).ready(function($) {
+  $(document).keyup(function (e) {
+    // ESC 27
+    if ( e.keyCode === 27 ) {
+      window.location.href = "/";
+    }
+  });
+});
+</script>
+
 <h3>Meklēšanas rezultāti...</h3>
 
 <div class="row">

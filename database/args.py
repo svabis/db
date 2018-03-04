@@ -34,7 +34,7 @@ def create_args(request):
         args['access'] = True
     else:
         args['access'] = False
-    args['access'] = True
+#    args['access'] = True
 
     args['loged_in'] = True
     args['admin'] = False

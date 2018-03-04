@@ -33,7 +33,11 @@ jQuery(document).ready(function($) {
 });
 </script>
 
-<h3>Abonementu pirkšana</h3>
+<h3>Abonementu apmaksa</h3>
+
+ <div class="alert alert-success" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><strong> &nbsp;&nbsp;&nbsp;{{ client_notes }}</strong>
+ </div>
 
 <form id="forma" action="/subscription_purchase/" method=POST>{% csrf_token %}
 <input type="hidden" name="subscription" value="{{ chosen_subscr.id }}">
@@ -54,7 +58,6 @@ jQuery(document).ready(function($) {
  </div>
 </div>
 
-<!--
 <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
  <div class="col-lg-7 col-md-7 col-sm-7" style="padding-right: 0px; padding-left: 0px;">
   <div class="col-lg-6 col-md-6 col-sm-6"></div>
@@ -162,8 +165,6 @@ jQuery(document).ready(function($) {
   <input type="text" class="form-control" id="id_total_price" name="id_total_price" readonly="readonly">
  </div>
 </div>
-
--->
 
 <hr style="border-top: 1px solid green; margin-top: 8px;">
 

@@ -5,6 +5,9 @@ from django.core.context_processors import csrf
 
 from database.args import create_args
 
+# Django useri
+from django.contrib.auth.models import User
+
 from setup.models import Settings
 
 from subscriptions.models import *
@@ -78,6 +81,16 @@ def subscription_payment(request):
 
     args.update(csrf(request)) # ADD CSRF TOKEN
 
+   # Get Active client from COOKIE
+    if "active_client" in request.COOKIES:
+        try:
+            c_id = int(request.COOKIES.get(str('active_client')))
+            cli = Klienti.objects.get( id = c_id )
+
+            args['client_notes'] = cli.notes
+        except:
+            pass
+
    # Get Subscription Type from "Pirkt Abonementu" choise
     if request.POST:
         subscr_nr = int(request.POST.get('subscription', ''))
@@ -112,7 +125,11 @@ def subscription_purchase(request):
                 subscr_nr = int(request.POST.get('subscription', ''))
                 chosen_subscr = AbonementType.objects.get( id = subscr_nr )
 
-                date_temp = datetime.now() + timedelta(days=30)
+                if chosen_subscr.first_time == True:
+                    cli.first = True
+                    cli.save()
+
+                date_temp = datetime.now() + timedelta( days=30 )
                 if chosen_subscr.times:
                     new_subscr = Abonementi(client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=date_temp,
                                             times_count=chosen_subscr.times_count)

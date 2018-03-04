@@ -62,7 +62,7 @@
        <img id="avatar" src="{% static 'avatar_none.png' %}"/>
        {% endif %}
      {% else %}
-     <img id="avatar" src="{% static 'avatar_wait.png' %}"/>
+      <img id="avatar" src="{% static 'avatar_wait.png' %}"/>
      {% endif %}
 
      </center>
@@ -80,22 +80,21 @@
      {% endif %}
 
     </div>
-    <div class="row">
-     <center>
-      <a href="/lockers/history/">
-       <button type="button" class="btn btn-info" style="border: solid #888 1px;">Apmeklējumu vēsture</button>
-      </a>
-     </center>
-    </div>
    </div>
 <!-- AVATAR MODULIS END -->
 
 
 
-<!-- Klienta info MODULIS START -->
+<!-- Klienta info MODULIS START  -->
+
+<!--
+zils #d2dff4
+sarkans #f2dede
+zalš #dff0d8
+-->
 
    <div class="col-sm-6 col-md-6 col-lg-6">
-    <div class="container-fluid" style="background: #d2dff4; border: solid #ccc 1px; margin-bottom: 10px;">
+    <div id="klienta-dati" class="container-fluid" style="background: #d2dff4; border: solid #ccc 1px; margin-bottom: 10px;">
      Informācija par klientu:<br><br>
 
 {% if client %}<b>{{ client.name}} {{ client.surname }}</b>,{% endif %}<br>
@@ -124,13 +123,32 @@
 {% if client %}Pēdējais apmeklējums:<br>
   {% if client and checked == True %} <b class="text-warning">Pašlaik atrodas klubā</b>
   {% elif client and last_visit %} <b class="text-info">{{ last_visit }}</b>
-  {% elif client %}<b class="text-danger">Datu nav</b>{% endif %}
+  {% elif client %}<b class="text-danger">Datu nav</b>{% endif %}<br>
 {% endif %}<br>
 
 
     </div>
    </div>
   </div>
+
+{% if client %}
+    <div class="row">
+     <div class="col-sm-6 col-md-6 col-lg-6">
+     <center>
+      <a href="/lockers/history/">
+       <button type="button" class="btn btn-info" style="border: solid #888 1px;">Apmeklējumu vēsture</button>
+      </a>
+     </center>
+     </div>
+     <div class="col-sm-6 col-md-6 col-lg-6">
+      <center>
+       <a href="/subscription/history/">
+        <button type="button" class="btn btn-warning" style="min-width: 200px; max-width: 200px;">Abonementu vēsture</button>
+       </a>
+      </center>
+     </div>
+    </div>
+{% endif %}
 
 <!-- Klienta info MODULIS END -->
 
@@ -163,6 +181,15 @@
   <a href="/subscription/">
    <button type="button" class="btn btn-success" style="margin-top: 8px;" {% if client %}{% else %}disabled{% endif %}>Pirkt abonementu</button>
   </a>
+
+<!--
+<h3>message: {{ message }}</h3>
+<h3>message type: {{ message_type }}</h3>
+<h3>message_code_1: {{ message_code_1 }}</h3>
+<h3>message_code_2: {{ message_code_2 }}</h3>
+<h3>message_code_3: {{ message_code_3 }}</h3>
+<h3>message_code_4: {{ message_code_4 }}</h3>
+-->
 
 <!--
   <a href="#">

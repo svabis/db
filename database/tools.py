@@ -144,7 +144,7 @@ class SubscriptionUse(object):
         if subscription.active == False:
             subscription.active = True
             subscription.activation_date = today
-            subscription.best_before = today + timedelta(days = 30)
+            subscription.best_before = today + timedelta( days = 30*subscription.subscr.best_before )
             subscription.save()
 
        # Testē reizes

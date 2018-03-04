@@ -89,10 +89,12 @@ def main(request):
             client = False
 
 
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!! COOKIE "mesages displayed" !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    try:
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!!    "mesages displayed"    !!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    if client != False:
+#    try:
       # Karte bloķēta
         if client.card_blocked == True:
             args['message'] = True
@@ -107,15 +109,15 @@ def main(request):
 
        # Klienta status ir mainījies
         if client.status_changed == True:
+            args['message'] = True
+            args['message_type'] = "message"
+            args['message_code_4'] = True
            # save changes (status changed)
             client.status_changed = False
             client.save()
 
-            args['message'] = True
-            args['message_type'] = "message"
-            args['message_code_4'] = True
-    except:
-        pass
+#    except:
+#        pass
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     if client != False:
