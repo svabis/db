@@ -1,9 +1,17 @@
 {% extends 'main_head.html' %}
 {% load staticfiles %}
+
+{% block javascript %}
+<script src="{% static 'payment_engine.js' %}"></script>
+{% endblock %}
+
 {% block subscription %}
 <div id="hider"></div>
 
 <script>
+// BACK TO MAIN --> ESC
+jQuery(document).ready(function($) { $(document).keyup(function (e) { if ( e.keyCode === 27 ) { window.location.href = "/"; } }); });
+
 // select only Cash + Credit or Transfer
 function selectOnlyThis(id) {
   var chk_id_list = ['cash_chk', 'credit_card_chk', 'transfer_chk']
@@ -21,27 +29,43 @@ function selectOnlyThis(id) {
   }
 }
 
-
-jQuery(document).ready(function($) {
-// ESC keypress event
- $(document).keyup(function (e) {
-  // ESC 27
-  if ( e.keyCode === 27 ) {
-    window.location.href = "/";
+function giftCard() {
+  var giftInput = document.getElementById("id_gift_card_ammount");
+  var giftChekbox = document.getElementById("gift_card_chk");
+  if ( giftInput.value == "" ) {
+    giftChekbox.checked = false;
+  } else {
+    giftChekbox.checked = true;
   }
- });
-});
+}
+
 </script>
 
 <h3>Abonementu apmaksa</h3>
 
- <div class="alert alert-success" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><strong> &nbsp;&nbsp;&nbsp;{{ client_notes }}</strong>
- </div>
-
 <form id="forma" action="/subscription_purchase/" method=POST>{% csrf_token %}
-<input type="hidden" name="subscription" value="{{ chosen_subscr.id }}">
+
 <div class="row">
+ {% if client.notes != "" %}
+  <div class="form-group" style="margin-bottom: 5px;">
+   <label for="id_notes">Piezīmes:</label>
+   <textarea class="form-control" cols="40" id="id_notes" maxlength="150" name="notes" rows="5" style="resize:none;">{{ client.notes }}</textarea>
+  </div>
+ {% else %}
+  <input type="hidden" name="notes" value="">
+ {% endif %}
+
+ {% if client.society %}
+  <div class="alert alert-danger" role="alert" style="padding-top: 0px; padding-botom: 0px;">
+   <h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><strong> &nbsp;&nbsp;&nbsp;Biedrība</strong></h3>
+  </div>
+ {% endif %}
+<!-- </div> -->
+
+<hr style="border-top: 1px solid green; margin-top: 0px;">
+
+<input type="hidden" name="subscription" value="{{ chosen_subscr.id }}">
+<!-- <div class="row"> -->
 <!-- RINDA 1 -->
  <div class="col-lg-9 col-md-9 col-sm-9">
   <div class="form-group" style="margin-bottom: 5px;">
@@ -51,33 +75,50 @@ jQuery(document).ready(function($) {
  </div>
 
  <div class="col-lg-3 col-md-3 col-sm-3">
-  <div class="form-group" style="margin-bottom: 5px;">
-   <label>Cena:</label>
-   <input type="text" class="form-control" id="id_subscripton_price" readonly="readonly" value="&euro; {{ chosen_subscr.price|floatformat:2 }}">
+  <div class="row">
+   <div class="col-lg-7 col-md-7 col-sm-7">
+    <div class="form-group" style="margin-bottom: 5px; padding-left: 10px;">
+     <label>Cena:</label>
+     <input type="text" class="form-control" id="id_subscripton_price" readonly="readonly" value="&euro; {{ chosen_subscr.price|floatformat:2 }}">
+    </div>
+   </div>
+   <div class="col-lg-5 col-md-5 col-sm-5" style="padding-right: 2px; padding-left: 0px;">
+    <div class="form-group" style="margin-bottom: 5px;">
+     <label>Cena ar atlaidi:</label>
+     <input type="text" class="form-control" id="id_subscripton_price_status_discount" readonly="readonly">
+    </div>
+   </div>
   </div>
  </div>
-</div>
+
 
 <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
  <div class="col-lg-7 col-md-7 col-sm-7" style="padding-right: 0px; padding-left: 0px;">
-  <div class="col-lg-6 col-md-6 col-sm-6"></div>
   <div class="col-lg-3 col-md-3 col-sm-3">
    <div class="form-group text-right" style="margin-bottom: 0px; margin-top: 5px;">
-    <label>Depozīts:</label>
+    <label>Depozīta atlikums:</label>
    </div>
   </div>
   <div class="col-lg-3 col-md-3 col-sm-3">
-    <input type="text" class="form-control" id="id_frozen_subscription" readonly="readonly">
+    <input type="text" class="form-control" name="deposit_remain" id="deposit_remain" readonly="readonly">
+  </div>
+  <div class="col-lg-3 col-md-3 col-sm-3">
+   <div class="form-group text-right" style="margin-bottom: 0px; margin-top: 5px;">
+    <label>No depozīta:</label>
+   </div>
+  </div>
+  <div class="col-lg-3 col-md-3 col-sm-3">
+    <input type="text" class="form-control" name="deposit_used" id="deposit_used" readonly="readonly">
   </div>
  </div>
 
- <div class="col-lg-5 col-md-5 col-sm-5" style="padding-right: 0px; padding-left: 0px;">
-  <div class="col-lg-5 col-md-5 col-sm-5">
+ <div class="col-lg-5 col-md-5 col-sm-5" style="padding-right: 0px; padding-left: 0px; border: solid yellow 1px;"">
+  <div class="col-lg-5 col-md-5 col-sm-5" style="border: solid black 1px;">
    <div class="form-group text-right" style="margin-bottom: 0px; margin-top: 5px;">
     <label>Summa apmaksai:</label>
    </div>
   </div>
-  <div class="col-lg-7 col-md-7 col-sm-7" style="padding-left: 7px;">
+  <div class="col-lg-7 col-md-7 col-sm-7" style="padding-left: 7px; border: solid red 1px;">
     <input type="text" class="form-control" id="id_price_to_pay" name="id_price_to_pay" readonly="readonly">
   </div>
  </div>
@@ -116,7 +157,7 @@ jQuery(document).ready(function($) {
  <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;">
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Dāvanu kartes vērtība:</label>
-   <input type="text" class="form-control" id="id_gift_card_ammount" name="id_gift_card_ammount">
+   <input type="text" class="form-control" id="id_gift_card_ammount" name="id_gift_card_ammount" onchange="giftCard();">
   </div>
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Sedz apdrošinātājs:</label>

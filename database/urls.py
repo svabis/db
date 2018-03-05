@@ -5,12 +5,12 @@ from django.contrib import admin
 # FOR STATIC AND MEDIA FILE ACCESS
 from django.conf import settings
 
-# !!!!! DISABLED UNTIL USER LOGIN CREATED !!!!!
 # LOGIN to Django only for authenticated users
-#from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 
-#admin.site.login = login_required(admin.site.login)
-# !!!!! DISABLED UNTIL USER LOGIN CREATED !!!!!
+admin.autodiscover()
+admin.site.login = login_required(admin.site.login)
+
 
 urlpatterns = [
 # STATIC AND MEDIA

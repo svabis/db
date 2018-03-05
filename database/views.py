@@ -108,7 +108,7 @@ def main(request):
             args['message_code_3'] = True
 
        # Klienta status ir mainījies
-        if client.status_changed == True:
+        if client.status_changed != False: #True:
             args['message'] = True
             args['message_type'] = "message"
             args['message_code_4'] = True

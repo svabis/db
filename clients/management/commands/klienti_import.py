@@ -46,10 +46,10 @@ class Command(BaseCommand):
 
        for i in tqdm( range(len(lines)) ):
          l = lines[i].split('\t')
-         if l[0] == "1-21457":
-          start = True
+         if l[0] == "1-4666":
+#          start = True
 
-         if start == True:
+#         if start == True:
 
            gender_temp = ""
            if l[25] == "m":
@@ -114,7 +114,7 @@ class Command(BaseCommand):
            else:
               # AVATAR
                if avatar_exist == True:
-                   new_client = Klienti( avatar = avatar_temp, name = l[5], surname = l[5], phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status,
+                   new_client = Klienti( avatar = avatar_temp, name = l[5], surname = l[6], phone=phone_temp, e_mail=l[16],  gender = gender_temp, status=temp_status,
                                 s3_nr=l[0], reg_date=reg_date_temp, first = True )
                    new_client.save()
               # NO BIRTHDAY + NO AVATAR

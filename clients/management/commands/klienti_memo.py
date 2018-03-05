@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
 import os       # for work with filesystem
 import re       # for regular expresions (regex)
-import datetime # for file create field
-import pytz	# to set timezone
 
 from clients.models import Klienti, Statusi
-
-import datetime
 
 # progress bar
 from tqdm import tqdm
 
-#from slugify import slugify
 
 # IMPORT DJANGO STUFF
 from django.core.files import File	# for file opening
@@ -24,35 +19,31 @@ class Command(BaseCommand):
 # 0 Person no
 # 31 Status
 
-#       db = '/home/svabis/Tabulas/T00801Person'
        st = '/home/svabis/Tabulas/T00808Memo'
 
-       print datetime.datetime.now()
-#       memo = []
+       counter = 0
 
        lines = [line.rstrip('\n') for line in open(st)]
-       print len(lines)
 
-#       for line in lines:
        for i in tqdm( range( len(lines) ) ):
          l = lines[i].split('\t')
-#         l = line.split('\t')
-         temp = l[8].rstrip('\\x0d\\x0a')
-         temp = temp.replace('\\x0d\\x0a', '\n')
 
-         counter = 0
+         if l[5] == "1-4666":
+           temp = l[8].rstrip('\\x0d\\x0a')
+           temp = temp.replace('\\x0d\\x0a', '\n')
 
-         try:
-             k = Klienti.objects.get( s3_nr = l[5] )
-             k.notes = temp
-             k.save()
-             counter += 1
-         except:
-             print l
-#             memo.append( l )
-#             pass
+#           if True:
+           try:
+               k = Klienti.objects.get( s3_nr = l[5] )
+#               if k.notes != temp:
+               k.notes = temp
+               k.save()
+#                   counter += 1
 
-#       for m in memo:
-#           print m
+           except:
+               pass
+#               print l
+#               memo.append( l )
 
-       print datetime.datetime.now()
+       print "save:\t" + str( counter )
+    #   print "errors:\t" + str( len(memo) )

@@ -16,7 +16,7 @@ from django.core.files import File	# for file opening
 # IMPORT DJANGO STUFF
 from django.core.management.base import BaseCommand, CommandError
 
-d = datetime.datetime( 1899, 12, 30, 0, 0 ).date()
+#d = datetime.datetime( 1899, 12, 30, 0, 0 ).date()
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -44,12 +44,9 @@ class Command(BaseCommand):
                kli = Klienti.objects.get( s3_nr = l[0] )
 
                if l[8] != "":
-#               try:
-                   time = d + datetime.timedelta( days = int(l[8].split('.')[0]) )
-#                   time = datetime.datetime.strptime( l[8][:10], '%d/%m/%Y')
-
-                   kli.birthday = time
+                   kli.surname = l[6]
                    kli.save()
+
                    counter += 1
            except:
                pass

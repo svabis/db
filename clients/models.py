@@ -64,7 +64,7 @@ class Klienti(models.Model):
     notes = models.CharField( max_length = 500, default = '', blank = True )
 
     def __unicode__(self):
-        return u'%s' % (self.name)
+        return self.name + " " + self.surname
 
 
 # !!!!! Blacklist !!!!!

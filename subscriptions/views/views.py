@@ -87,7 +87,7 @@ def subscription_payment(request):
             c_id = int(request.COOKIES.get(str('active_client')))
             cli = Klienti.objects.get( id = c_id )
 
-            args['client_notes'] = cli.notes
+            args['client'] = cli
         except:
             pass
 
@@ -114,6 +114,8 @@ def subscription_purchase(request):
     if args['loged_in'] == False:
         return redirect("/login/")
 
+    system_user = args['username']
+
    # Get Active client from COOKIE
     if "active_client" in request.COOKIES:
         if True:
@@ -131,10 +133,10 @@ def subscription_purchase(request):
 
                 date_temp = datetime.now() + timedelta( days=30 )
                 if chosen_subscr.times:
-                    new_subscr = Abonementi(client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=date_temp,
+                    new_subscr = Abonementi( user=system_user, client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=date_temp,
                                             times_count=chosen_subscr.times_count)
                 else:
-                    new_subscr = Abonementi(client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=date_temp)
+                    new_subscr = Abonementi( user=system_user, client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=date_temp)
                 new_subscr.save()
 #        except:
 #            pass

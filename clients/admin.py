@@ -19,7 +19,7 @@ class KlientiAdmin(admin.ModelAdmin):
     list_display = ['surname', 'name', 'card_nr', 'client_blocked', 'card_blocked', 'birthday', 'phone', 'e_mail', 'status', 'society', 'status_changed', 'gender', 'reg_date',
        'disabled', 'disabled_until', 'student', 'student_until', 'elderly', 's3_nr', 'notes', 'frozen', 'frozen_from', 'frozen_until']
     list_filter = ['client_blocked', 'card_blocked', 'frozen', 'status', 'status_changed', 'society', 'gender', 'reg_date']
-    search_fields = ['name', 'surname', 'phone', 'e_mail', 'card_nr']
+    search_fields = ['name', 'surname', 'phone', 'e_mail', 'card_nr', 's3_nr']
 
 
 
