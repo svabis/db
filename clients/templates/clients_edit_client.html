@@ -62,7 +62,6 @@ $(document).keypress(function (e) {
 
   if (card_start == true) {
     if (symb != "?") { temp_string += symb; char_count++; event.preventDefault(); }
-//    if (char_count != 7) { temp_string += symb; char_count++; event.preventDefault(); }
     else {
       document.getElementsByName('card_nr')[0].value = temp_string;
       temp_string = ""; char_count = 0; card_start = false;
@@ -93,12 +92,13 @@ $(document).keypress(function (e) {
  <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>&nbsp;Pievienot klientam depozītu</h3>
 </div>
 <div class="modal-body">
+<style>.input-numeral { text-align: right; }</style>
  <center>
-  <input type="text" class="form-control" name="deposit_add">
+  <input type="text" class="form-control input-numeral" id="deposit_add" name="deposit_add" onkeypress="return (event.charCode >= 48 && 57 >= event.charCode)">
  </center>
 </div>
 <div class="modal-footer">
- <input class="btn btn-danger pull-left" id="deposit_ok" type="submit" value="Pievienot depozītu ok">
+ <input class="btn btn-danger pull-left" id="deposit_ok" type="submit" value="Pievienot depozītu" style="">
  <button id="deposit_apply" type="button" class="btn btn-danger">Pievienot depozītu</button>
  <button id="deposit_cancel" type="button" class="btn btn-success" data-dismiss="modal">Atcelt</button>
 </div></div></div>
@@ -366,8 +366,7 @@ function blockCard() {
      </div>
      <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 12px; padding-right: 0px;">
       <div class="input-group">
-       <input class="form-control" id="id_deposit" name="deposit" readonly="readonly" type="text"
-        value="{% if deposit_amount == 0 %}-{% else%}{{ deposit_amount|floatformat:2 }}{% endif %}">
+       <input class="form-control" id="id_deposit" name="deposit" readonly="readonly" type="text" value="{{ deposit_amount.d_amount|floatformat:2 }}">
        <span class="input-group-btn">
         <button class="btn btn-warning" type="button" onclick="deposit_money();">
         <span class="glyphicon glyphicon-euro" aria-hidden="true"></span></button>

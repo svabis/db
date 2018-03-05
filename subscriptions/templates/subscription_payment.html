@@ -9,6 +9,35 @@
 <div id="hider"></div>
 
 <script>
+$(document).ready(function () {
+  var deposit_total = Number( {{ deposit }} );
+  var subscription_initial = Number( {{ chosen_subscr.price }} );
+  var discount = Number( 10 );
+  var subscription_discount = Number( subscription_initial ) -  (Number( subscription_initial )/100) * discount;
+  document.getElementById("id_subscripton_price").value = "\u20AC " + subscription_initial.toFixed(2);
+  document.getElementById("id_subscripton_price_status_discount").value = "\u20AC " + subscription_discount.toFixed(2);
+
+  var deposit_temp = deposit_total - subscription_discount;
+  if ( deposit_temp > 0 ) {
+    var deposit_remain = deposit_temp;
+    var deposit_used = deposit_total - deposit_temp;
+  } else {
+    var deposit_remain = Number( 0 );
+    var deposit_used = deposit_total;
+  }
+  document.getElementById("deposit_remain").value = "\u20AC " + deposit_remain.toFixed(2);
+  document.getElementById("deposit_used").value = "\u20AC " + deposit_used.toFixed(2);
+
+  var price_after_deposit_used = Number(subscription_discount - deposit_used);
+  document.getElementById("id_price_to_pay").value = "\u20AC " + price_after_deposit_used.toFixed(2);
+
+
+  //"deposit_remain"
+  //"deposit_used"
+
+});
+
+
 // BACK TO MAIN --> ESC
 jQuery(document).ready(function($) { $(document).keyup(function (e) { if ( e.keyCode === 27 ) { window.location.href = "/"; } }); });
 
@@ -112,13 +141,13 @@ function giftCard() {
   </div>
  </div>
 
- <div class="col-lg-5 col-md-5 col-sm-5" style="padding-right: 0px; padding-left: 0px; border: solid yellow 1px;"">
-  <div class="col-lg-5 col-md-5 col-sm-5" style="border: solid black 1px;">
+ <div class="col-lg-5 col-md-5 col-sm-5" style="padding-right: 0px; padding-left: 0px;"">
+  <div class="col-lg-5 col-md-5 col-sm-5">
    <div class="form-group text-right" style="margin-bottom: 0px; margin-top: 5px;">
     <label>Summa apmaksai:</label>
    </div>
   </div>
-  <div class="col-lg-7 col-md-7 col-sm-7" style="padding-left: 7px; border: solid red 1px;">
+  <div class="col-lg-7 col-md-7 col-sm-7" style="padding-left: 7px;">
     <input type="text" class="form-control" id="id_price_to_pay" name="id_price_to_pay" readonly="readonly">
   </div>
  </div>

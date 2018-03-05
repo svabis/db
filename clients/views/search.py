@@ -38,24 +38,26 @@ def search(request, pageid = 1):
     if request.POST:
         post = True # Triger search from POST
         to_find = request.POST.get('search', '')
+        to_find_s = to_find.split(" ")
         if len( to_find ) < 3: # IF SEARCH STRING IS LESS THAN 3 SYMBOLS --> redirect main
             return redirect ('/')
 
         rez_obj = Klienti.objects.filter(
-           Q( name__icontains = to_find ) |
-           Q( surname__icontains = to_find ) |
-           Q( e_mail__icontains = to_find ) |
-           Q( phone__icontains = to_find ) ).order_by( search_order )
+               Q( name__icontains = to_find ) |
+               Q( surname__icontains = to_find ) |
+               Q( e_mail__icontains = to_find ) |
+               Q( phone__icontains = to_find ) ).order_by( search_order )
 
    # Search from COOKIE
     else:
         to_find = request.COOKIES.get(str('search_client'))
+        to_find_s = to_find.split(" ")
 
         rez_obj = Klienti.objects.filter(
-           Q( name__icontains = to_find ) |
-           Q( surname__icontains = to_find ) |
-           Q( e_mail__icontains = to_find ) |
-           Q( phone__icontains = to_find ) ).order_by( search_order )
+               Q( name__icontains = to_find ) |
+               Q( surname__icontains = to_find ) |
+               Q( e_mail__icontains = to_find ) |
+               Q( phone__icontains = to_find ) ).order_by( search_order )
 
    # Paginate Search results
     if int(pageid) < 1: # negative page number --> 404

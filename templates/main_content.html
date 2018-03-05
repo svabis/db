@@ -97,9 +97,9 @@ zalš #dff0d8
     <div id="klienta-dati" class="container-fluid" style="background: #d2dff4; border: solid #ccc 1px; margin-bottom: 10px;">
      Informācija par klientu:<br><br>
 
-{% if client %}<b>{{ client.name}} {{ client.surname }}</b>,{% endif %}<br>
+{% if client %}<h4 style="margin-bottom: 0px;">{{ client.name}} {{ client.surname }}</h4>{% endif %}
 
-{% if client %}<b>{{ client.status }}</b>{% if client.society == True %} <b>(BIEDRĪBA)</b>{% endif %}{% endif %}<br><br>
+{% if client %}<h3 style="margin-top: 0px;"><strong>{{ client.status }}</strong>{% if client.society == True %} <strong>(BIEDRĪBA)</strong>{% endif %}</h3>{% endif %}<br>
 
 {% if client %}
  {% if active_subscription %}Pašlaik pieejamais abonements:<br>
@@ -107,24 +107,24 @@ zalš #dff0d8
 <b>{{ active_subscription }}</b>{% endif %}<br><br>
 
 {% if client %}
- {% if active_subscription.active == False %}Abonements jāaktivizē līdz:<br>
-   <b>{{ active_subscription.activate_before|date:"d/m/Y H:i" }}</b>
- {% elif active_subscription %}Derīguma termiņš:<br>
-   <b>{{ active_subscription.best_before|date:"d/m/Y H:i" }}</b>
+ {% if active_subscription.active == False %}Abonements jāaktivizē līdz:
+   <h3 class="text-danger" style="margin-top: 0px;">{{ active_subscription.activate_before|date:"d/m/Y H:i" }}</h3>
+ {% elif active_subscription %}Derīguma termiņš:
+   <h3 class="text-danger" style="margin-top: 0px;">{{ active_subscription.best_before|date:"d/m/Y H:i" }}</h3>
  {% endif %}
-{% endif %}<br><br>
+{% endif %}<br>
 
 {% if client %}
  {% if active_subscription.times_count == None %}<br>{% else %}
-  Atlikušās apmeklējuma reizes:<br>
-  <b>{{ active_subscription.times_count }}</b>{% endif %}
-{% endif %}<br><br>
-
-{% if client %}Pēdējais apmeklējums:<br>
-  {% if client and checked == True %} <b class="text-warning">Pašlaik atrodas klubā</b>
-  {% elif client and last_visit %} <b class="text-info">{{ last_visit }}</b>
-  {% elif client %}<b class="text-danger">Datu nav</b>{% endif %}<br>
+  Atlikušās apmeklējuma reizes:
+  <h3 class="text-danger" style="margin-top: 0px;">&nbsp;&nbsp;&nbsp;{{ active_subscription.times_count }}</h3>{% endif %}
 {% endif %}<br>
+
+{% if client %}Pēdējais apmeklējums:
+  {% if client and checked == True %} <h4 class="text-warning" style="margin-top: 0px;">Pašlaik atrodas klubā</h4>
+  {% elif client and last_visit %} <h4 class="text-info" style="margin-top: 0px;">{{ last_visit }}</h4>
+  {% elif client %}<h4 class="text-danger" style="margin-top: 0px;">Datu nav</h4>{% endif %}
+{% endif %}
 
 
     </div>

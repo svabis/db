@@ -23,15 +23,17 @@ function timerIncrement() {
     }
 }
 
-function clearID() {
-  window.location.href = "/clear_id/";
-}
+// clearID
+function clearID() { window.location.href = "/clear_id/"; }
+
+// Checkout
+function checkOut() { window.location.href = "/lockers/checkout/"; }
 
 $(document).ready(function(){
 {% if message %}
  $("#MesageModal").modal('show');
  document.getElementById("closeMesageModal").focus();
- setTimeout(function(){ $("#MesageModal").modal('hide'); } , 10000);{% endif %}
+ setTimeout(function(){ $("#MesageModal").modal('hide'); } , 5000);{% endif %}
 
 {% if notes_updated %}
  $("#ClientModal").modal('show');
@@ -84,8 +86,7 @@ var card_string = "{{ card_string }}";
 var temp_string = ""; var char_count = 0; var card_start = false;
 
 $(document).keypress(function (e) {
-  if ($(e.target).is('textarea')) {
-//    if ( e.keyCode === 13 ) {
+  if ($(e.target).is('textarea, input')) {
     if ( e.keyCode === 32 ) {
       return;
     }
@@ -94,7 +95,6 @@ $(document).keypress(function (e) {
   if ($(e.target).is('input')) {
     if ( e.keyCode === 13 ) {
       return;
-//      e.preventDefault();
     }
   }
 
@@ -119,8 +119,10 @@ $(document).keypress(function (e) {
 // ERROR MESAGE PREVENTS "ENTER" BUTTON
 // Allow only check-out
   {% if checked == True %}
-       $("#CheckoutModal").modal('show');
-       document.getElementById("checkout_link").focus();
+     $("#CheckoutModal").modal('show');
+     $("#CheckoutModal").on('shown.bs.modal', function(event) {
+       $("#checkout_button").focus();
+     });
   {% endif %}
   {% else %}
 
@@ -128,7 +130,9 @@ $(document).keypress(function (e) {
 // if no message errors -->
   {% if checked == True %}
        $("#CheckoutModal").modal('show');
-       document.getElementById("checkout_link").focus();
+       $("#CheckoutModal").on('shown.bs.modal', function(event) {
+         $("#checkout_button").focus();
+       });
   {% elif abon_active != True %}
        window.location.href = "/subscription/";
   {% elif abon_active == True %}
@@ -177,11 +181,10 @@ $(document).keypress(function (e) {
  <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Izčekot klientu ?</h3>
 </div>
 <div class="modal-footer">
- <a id="checkout_link" href="/lockers/checkout/">
-  <button type="button" class="btn btn-success" style="min-width: 100px; max-width: 100px;">Jā</button>
- </a>
+<!-- <a id="checkout_link" href="/lockers/checkout/"> -->
+  <button id="checkout_button" type="button" class="btn btn-success" style="min-width: 100px; max-width: 100px;" onclick="checkOut();">Jā</button>
+<!-- </a> -->
   <button id="checkot_cancel" type="button" class="btn btn-danger" data-dismiss="modal" style="min-width: 100px; max-width: 100px;">Atcelt</button>
-</form>
 </div></div></div></div>
 <!-- Checkout Modal END -->
 

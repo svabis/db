@@ -6,7 +6,7 @@ from django.core.context_processors import csrf
 #from django.db.models import Q # search in multiple columns
 
 from clients.forms import KlientsForm
-from clients.models import Klienti, Blacklist
+from clients.models import Klienti, Blacklist, Deposit
 
 from subscriptions.models import Abonementi
 
@@ -95,7 +95,7 @@ def edit_client(request):
             args['active_tab_3'] = True
 
             try:
-                args['deposit_amount'] = Deposit.objects.filter( d_client = client).order_by('-d_date')[0]
+                args['deposit_amount'] = Deposit.objects.filter( d_client = client ).order_by('-d_date')[0]
             except:
                 args['deposit_amount'] = 0
 
@@ -103,8 +103,7 @@ def edit_client(request):
             if f_temp.count() == 0:
                 args['freeze_disable'] = True
         except:
-           # COMMENT
-            return redirect ("/")
+            pass
     else:
         return redirect ("/")
 
