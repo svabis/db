@@ -22,6 +22,10 @@ from database.tools import ActiveSubscription, SubscriptionEnd
 
 # !!!!! Clear ID !!!!!
 def clear_id(request):
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
     response = redirect ('/')
     response.delete_cookie('active_client')
 
@@ -168,6 +172,10 @@ def main(request):
 #===============================================================================
 # !!!!! Update Client Notes !!!!!
 def update_notes(request):
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
    # Get Active client from COOKIE
     if "active_client" in request.COOKIES:
         try:

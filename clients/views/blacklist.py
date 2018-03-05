@@ -19,6 +19,10 @@ from clients.models import Klienti, Blacklist
 #==================================================================
 # !!!!! Blacklist Add !!!!!
 def add_to_blacklist(request):
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
    # Get Active client from COOKIE
     if "active_client" in request.COOKIES:
         try:
@@ -40,6 +44,10 @@ def add_to_blacklist(request):
 #==================================================================
 #!!!!!! Blacklist remove !!!!!
 def remove_from_blacklist(request):
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
    # Get Active client from COOKIE
     if "active_client" in request.COOKIES:
         try:
@@ -56,6 +64,10 @@ def remove_from_blacklist(request):
 #==================================================================
 # !!!!! Deposit Add !!!!!
 def add_deposit(request):
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
    # Get Active client from COOKIE
     if "active_client" in request.COOKIES:
         try:
