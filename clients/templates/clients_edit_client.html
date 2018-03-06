@@ -82,6 +82,22 @@ $(document).keypress(function (e) {
       }
     }
 });
+
+// DEPOZĪTS
+var deposit_cash_amount;
+function deposit() {
+  deposit_cash_amount = document.getElementById("deposit_add").value;
+  deposit_cash_amount = deposit_cash_amount.replace(",", ".");
+  deposit_cash_amount = deposit_cash_amount.replace(/[^\d.-]/g, '');
+  deposit_cash_amount = Number( Number( deposit_cash_amount ).toFixed(2) );
+  document.getElementById("deposit_add").value = "\u20AC " + deposit_cash_amount.toFixed(2);
+
+  if ( deposit_cash_amount != "" ) {
+    $("#deposit_ok").show();
+  } else {
+    $("#deposit_ok").hide();
+  }
+}
 </script>
 
 <!-- Deposit Modal START -->
@@ -92,14 +108,13 @@ $(document).keypress(function (e) {
  <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>&nbsp;Pievienot klientam depozītu</h3>
 </div>
 <div class="modal-body">
-<style>.input-numeral { text-align: right; }</style>
+<!-- <style>.input-numeral { text-align: right; }</style> -->
  <center>
-  <input type="text" class="form-control input-numeral" id="deposit_add" name="deposit_add" onkeypress="return (event.charCode >= 48 && 57 >= event.charCode)">
+  <input type="text" class="form-control input-numeral" id="deposit_add" name="deposit_add" onchange="deposit();">
  </center>
 </div>
 <div class="modal-footer">
- <input class="btn btn-danger pull-left" id="deposit_ok" type="submit" value="Pievienot depozītu" style="">
- <button id="deposit_apply" type="button" class="btn btn-danger">Pievienot depozītu</button>
+ <input class="btn btn-danger" id="deposit_ok" type="submit" value="Pievienot depozītu" style="display: none;">
  <button id="deposit_cancel" type="button" class="btn btn-success" data-dismiss="modal">Atcelt</button>
 </div></div></div>
  </form>

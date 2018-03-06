@@ -2,6 +2,14 @@
 from django.db import models
 
 
+class Apdrosinataji(models.Model):
+    class Meta():
+        db_table = "apdrosinataji"
+
+    visible = models.BooleanField( default=False )
+    title = models.CharField( max_length = 40, default = '' )
+
+
 class Settings(models.Model):
     class Meta():
         db_table = "settings"

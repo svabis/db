@@ -9,11 +9,15 @@ from datetime import datetime
 
 from clients.models import Klienti # abonementa īpašnieks
 
+from setup.models import Apdrosinataji
+
+# ???
 def default_start_time():
     now = datetime.now()
     start = now.replace(hour=8, minute=0, second=0, microsecond=0)
     return start
 
+# =========================================================================
 # !!! TIMELIMIT_TYPE !!!
 class TimelimitType(models.Model):
     class Meta():
@@ -40,6 +44,7 @@ class TimelimitType(models.Model):
         return u'%s' % (self.title)
 
 
+# =========================================================================
 # !!! SUBSCRIPTION_TYPES !!!
 class AbonementType(models.Model):
     class Meta():
@@ -60,7 +65,8 @@ class AbonementType(models.Model):
 
     price = models.DecimalField( max_digits = 5, decimal_places = 2 ) # cena
 
-    special = models.BooleanField( default=False ) # īpašie abonementi
+    special = models.BooleanField( default=False ) # speciālie abonementi
+    extra = models.BooleanField( default=False ) # īpašie abonementi
 
     first_time = models.BooleanField( default=False ) # iepazīšanās
 
@@ -78,6 +84,7 @@ class AbonementType(models.Model):
         return u'%s' % (self.title)
 
 
+# =========================================================================
 # !!! SUBSCRIPTION_TYPES !!!
 class Abonementi(models.Model):
     class Meta():
@@ -87,9 +94,6 @@ class Abonementi(models.Model):
 
     active = models.BooleanField( default = False ) # aktivējot mainās uz True
     ended = models.BooleanField( default = False ) # ja beidzās, tad mainās uz True
-
-#    frozen = models.BooleanField( default = False ) # iesaldēts
-#    frozen_until_date = models.DateTimeField( blank = True, null = True ) # iesaldēts līdz
 
     client = models.ForeignKey( Klienti ) # abonementa īpašnieks
 
@@ -108,3 +112,45 @@ class Abonementi(models.Model):
 
     def __unicode__(self):
         return u'%s' % (self.subscr)
+
+
+# =========================================================================
+# !!! pirkums !!!
+class Abonementu_Apmaksa(models.Model):
+    class Meta():
+        db_table = "abonementi_pirkums"
+
+    date = models.DateTimeField( default = timezone.now ) # pirkuma datums
+    user = models.ForeignKey( User, default = 1 ) # abonementa īpašnieks
+
+#---
+    client = models.ForeignKey( Klienti ) # abonementa īpašnieks
+    subscr = models.ForeignKey( Abonementi ) # iegādātais abonements
+
+#---
+    full_price = models.DecimalField( max_digits = 5, decimal_places = 2 ) # pilnā cena
+    discount_price = models.DecimalField( max_digits = 5, decimal_places = 2 ) # cena ar atlaidi
+
+#---
+    deposit = models.BooleanField( default = False ) # depozīts ir izmantots
+    from_deposit = models.DecimalField( max_digits = 5, decimal_places = 2 ) # summa no depozīta
+
+#---
+    gift_card = models.BooleanField( default = False ) # dāvanu karte ir izmantota
+    from_gift_card = models.DecimalField( max_digits = 5, decimal_places = 2 ) # summa no dāvanu kartes
+
+#---
+    insurance = models.ForeignKey( Apdrosinataji, blank=True, null=True ) # apdrošinātājs
+    insurance_cash = models.DecimalField( max_digits = 5, decimal_places = 2 ) # sedz apdrošinātājs
+
+#---
+    cash = models.BooleanField( default = False ) # skaidra nauda
+    card = models.BooleanField( default = False ) # kredītkarte
+    transfer = models.BooleanField( default = False ) # pārskaitījums
+
+#---
+    addiitonal_discount = models.BooleanField( default = False ) # papildus atlaide
+    total_ammount = models.DecimalField( max_digits = 5, decimal_places = 2 ) # gala cena
+
+    def __unicode__(self):
+        return u'%s' % (self.date)

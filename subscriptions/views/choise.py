@@ -51,6 +51,8 @@ def subscription(request, back=False):
 
     args['special'] = AbonementType.objects.filter( position = 3, available = True )
 
+    args['extra'] = AbonementType.objects.filter( extra = True, available = True )
+
     if cli != False:
         if cli.first:
             args['first_time'] = AbonementType.objects.filter(  position = 4, available = True ).exclude( first_time = True )

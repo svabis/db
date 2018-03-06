@@ -65,11 +65,11 @@ def subscription_payment(request):
         sed_discount = 0
         if cli.student == True:
             if isinstance( cli.student_until, date ) == True:
-                if cli.student_until < today_date:
+                if cli.student_until > today_date:
                     sed_discount = True
         if cli.disabled == True:
-            if isinstance( cli.student_until, date ) == True:
-                if cli.disabled_until < today_date:
+            if isinstance( cli.disabled_until, date ) == True:
+                if cli.disabled_until > today_date:
                     sed_discount = True
         if cli.elderly == True:
             sed_discount = True
@@ -78,13 +78,13 @@ def subscription_payment(request):
             sed_discount = 10
 
        # chose highest discount
-        status_discount = cli.status.status_discount
-        if status_discount >= sed_discount:
+        if float(cli.status.status_discount) > float(sed_discount):
             args['initial_discount'] = cli.status.status_discount
         else:
             args['initial_discount'] = sed_discount
 
     return render_to_response ( 'subscription_payment.html', args )
+
 
 
 #============================================================

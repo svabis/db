@@ -21,12 +21,13 @@ def add_deposit(request):
             c_id = int(request.COOKIES.get(str('active_client')))
             client = Klienti.objects.get( id = c_id )
             if request.POST:
-                amount = int( request.POST.get('deposit_add', '') )
+                amount = float( request.POST.get('deposit_add', '').split(" ")[1] )
 
                 try:
-                    last_amount = Deposit.objects.filter( d_client = client).order_by('-d_date')[0].d_amount
+                    last_amount = float( Deposit.objects.filter( d_client = client).order_by('-d_date')[0].d_amount )
                 except:
-                    last_amount = 0
+                    last_amount = float(0)
+
                 temp = Deposit( d_user = args['username'], d_client = client, d_amount = last_amount + amount )
                 temp.save()
         except:
