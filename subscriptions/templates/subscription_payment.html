@@ -9,32 +9,58 @@
 <div id="hider"></div>
 
 <script>
-$(document).ready(function () {
-  var deposit_total = Number( {{ deposit }} );
-  var subscription_initial = Number( {{ chosen_subscr.price }} );
-  var discount = Number( 10 );
-  var subscription_discount = Number( subscription_initial ) -  (Number( subscription_initial )/100) * discount;
-  document.getElementById("id_subscripton_price").value = "\u20AC " + subscription_initial.toFixed(2);
-  document.getElementById("id_subscripton_price_status_discount").value = "\u20AC " + subscription_discount.toFixed(2);
+// variables for calculation
+var subscription_discount, deposit_temp, deposit_remain, deposit_used, price_after_deposit_used;
+var gift_card, giftChekbox;
+var insurance_amount;
 
-  var deposit_temp = deposit_total - subscription_discount;
-  if ( deposit_temp > 0 ) {
-    var deposit_remain = deposit_temp;
-    var deposit_used = deposit_total - deposit_temp;
+var deposit_total = Number( {{ deposit }} );
+var subscription_initial = Number( {{ subscr_price }} );
+var discount = Number( {{ initial_discount }} );
+
+function consoleOutput() {
+  console.log("========================");
+  console.log("-DEPOZĪTS-");
+  console.log( deposit_total );
+  console.log("-PILNĀ CENA-");
+  console.log( subscription_initial );
+  console.log("-cena ar atlaidi-");
+  console.log( subscription_discount );
+  console.log("-depzīta atlikums-");
+  console.log( deposit_remain );
+  console.log("-izmantots no depozīta-");
+  console.log( deposit_used );
+  console.log("-cena pēc depozīta-");
+  console.log( price_after_deposit_used );
+  console.log("========================");
+}
+
+$(document).ready(function () {
+  if ( true == {{ discount_available }} ) {
+    subscription_discount = Number( (Number( subscription_initial - ( ( subscription_initial / 100 ) * discount ) )).toFixed(2) );
+    document.getElementById("id_subscripton_price").value = "\u20AC " + subscription_initial.toFixed(2);
+    document.getElementById("id_subscripton_price_status_discount").value = discount + " %";
   } else {
-    var deposit_remain = Number( 0 );
-    var deposit_used = deposit_total;
+    subscription_discount = Number( subscription_initial );
+    document.getElementById("id_subscripton_price").value = "\u20AC " + subscription_initial.toFixed(2);
+    document.getElementById("id_subscripton_price_status_discount").value = "nav";
+  }
+  deposit_temp = Number( ( deposit_total - subscription_discount ).toFixed(2) );
+  if ( deposit_temp > 0 ) {
+    deposit_remain = deposit_temp;
+    deposit_used = Number( ( deposit_total - deposit_temp ).toFixed(2) );
+  } else {
+    deposit_remain = Number( 0 );
+    deposit_used = deposit_total;
   }
   document.getElementById("deposit_remain").value = "\u20AC " + deposit_remain.toFixed(2);
   document.getElementById("deposit_used").value = "\u20AC " + deposit_used.toFixed(2);
 
-  var price_after_deposit_used = Number(subscription_discount - deposit_used);
+  price_after_deposit_used = Number( ( subscription_discount - deposit_used ).toFixed(2) );
   document.getElementById("id_price_to_pay").value = "\u20AC " + price_after_deposit_used.toFixed(2);
 
-
-  //"deposit_remain"
-  //"deposit_used"
-
+ // OUTPUT
+  consoleOutput();
 });
 
 
@@ -59,15 +85,29 @@ function selectOnlyThis(id) {
 }
 
 function giftCard() {
-  var giftInput = document.getElementById("id_gift_card_ammount");
-  var giftChekbox = document.getElementById("gift_card_chk");
-  if ( giftInput.value == "" ) {
+  gift_card = document.getElementById("id_gift_card_ammount").value;
+  giftChekbox = document.getElementById("gift_card_chk");
+
+  gift_card = gift_card.replace(",", ".");
+  gift_card = gift_card.replace(/[^\d.-]/g, '');
+  gift_card = Number( Number( gift_card ).toFixed(2) );
+  document.getElementById("id_gift_card_ammount").value = "\u20AC " + gift_card.toFixed(2);
+
+  if ( gift_card == "" ) {
     giftChekbox.checked = false;
   } else {
     giftChekbox.checked = true;
   }
 }
 
+function insurance() {
+  insurance_amount = document.getElementById("id_insurance_ammount").value;
+  insurance_amount = insurance_amount.replace(",", ".");
+  insurance_amount = insurance_amount.replace(/[^\d.-]/g, '');
+  insurance_amount = Number( Number( gift_card ).toFixed(2) );
+  document.getElementById("id_insurance_ammount").value = "\u20AC " + insurance_amount.toFixed(2);
+
+}
 </script>
 
 <h3>Abonementu apmaksa</h3>
@@ -106,14 +146,14 @@ function giftCard() {
  <div class="col-lg-3 col-md-3 col-sm-3">
   <div class="row">
    <div class="col-lg-7 col-md-7 col-sm-7">
-    <div class="form-group" style="margin-bottom: 5px; padding-left: 10px;">
+    <div class="form-group" style="margin-bottom: 5px; padding-left: 7px;">
      <label>Cena:</label>
      <input type="text" class="form-control" id="id_subscripton_price" readonly="readonly" value="&euro; {{ chosen_subscr.price|floatformat:2 }}">
     </div>
    </div>
-   <div class="col-lg-5 col-md-5 col-sm-5" style="padding-right: 2px; padding-left: 0px;">
+   <div class="col-lg-5 col-md-5 col-sm-5" style="padding-right: 1px; padding-left: 0px;">
     <div class="form-group" style="margin-bottom: 5px;">
-     <label>Cena ar atlaidi:</label>
+     <label>Atlaide:</label>
      <input type="text" class="form-control" id="id_subscripton_price_status_discount" readonly="readonly">
     </div>
    </div>
@@ -190,7 +230,7 @@ function giftCard() {
   </div>
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Sedz apdrošinātājs:</label>
-   <input type="text" class="form-control" id="id_insurance_ammount" name="id_insurance_ammount">
+   <input type="text" class="form-control" id="id_insurance_ammount" name="id_insurance_ammount" onchange="insurance();">
   </div>
  </div>
 </div>
@@ -198,15 +238,10 @@ function giftCard() {
 <hr style="border-top: 1px solid green; margin-top: 8px;">
 
 <div class="row" style="margin-top:10px;">
- <div class="col-lg-5 col-md-5 col-sm-5">
-  <div class="form-group">
-   <label>Atlaides pamatojums:</label>
-   <input type="text" class="form-control" id="id_discount_reason" name="id_discount_reason">
-  </div>
- </div>
+ <div class="col-lg-5 col-md-5 col-sm-5"></div>
  <div class="col-lg-4 col-md-4 col-sm-4">
   <div class="form-group">
-   <label>Atlaides veids:</label>
+   <label>Papildu atlaide:</label>
    <select class="form-control" id="id_discount" name="id_discount">
    <option value="none" selected="selected">-------</option>
    <option value="s.id.1">Atlaides veids 1</option>

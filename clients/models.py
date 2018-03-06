@@ -72,7 +72,7 @@ class Blacklist(models.Model):
     class Meta():
         db_table = "blacklist"
 
-#    bl_user = models.ForeignKey( User )
+    bl_user = models.ForeignKey( User, default = 1 )
 
     bl_client = models.ForeignKey( Klienti )
     bl_date = models.DateTimeField( default = timezone.now )

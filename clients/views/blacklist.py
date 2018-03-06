@@ -23,7 +23,7 @@ def add_to_blacklist(request):
             if request.POST:
                 reason = request.POST.get('blacklist_reason', '')
 
-                new_bl = Blacklist( bl_client = client, bl_data = reason )
+                new_bl = Blacklist( bl_user = args['username'], bl_client = client, bl_data = reason )
                 new_bl.save()
 
                 client.client_blocked = True
