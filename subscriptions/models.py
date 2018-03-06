@@ -132,11 +132,8 @@ class Abonementu_Apmaksa(models.Model):
     discount_price = models.DecimalField( max_digits = 5, decimal_places = 2 ) # cena ar atlaidi
 
 #---
-    deposit = models.BooleanField( default = False ) # depozīts ir izmantots
     from_deposit = models.DecimalField( max_digits = 5, decimal_places = 2 ) # summa no depozīta
-
 #---
-    gift_card = models.BooleanField( default = False ) # dāvanu karte ir izmantota
     from_gift_card = models.DecimalField( max_digits = 5, decimal_places = 2 ) # summa no dāvanu kartes
 
 #---
@@ -149,8 +146,8 @@ class Abonementu_Apmaksa(models.Model):
     transfer = models.BooleanField( default = False ) # pārskaitījums
 
 #---
-    addiitonal_discount = models.BooleanField( default = False ) # papildus atlaide
-    total_ammount = models.DecimalField( max_digits = 5, decimal_places = 2 ) # gala cena
+#    additonal_discount = models.BooleanField( default = False ) # papildus atlaide
+    final_price = models.DecimalField( max_digits = 5, decimal_places = 2 ) # gala cena
 
     def __unicode__(self):
         return u'%s' % (self.date)

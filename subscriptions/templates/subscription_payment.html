@@ -58,15 +58,10 @@ function insurance() {
   insurance_amount = insurance_amount.replace(/[^\d.-]/g, '');
   insurance_amount = Number( Number( insurance_amount ).toFixed(2) );
 
-
-
-// ADD INSURANCE DROPLIST
-
-
+// ADD INSURANCE DROPLIST TOGLE
 
   calculateAll();
 }
-
 
 // KALKULATORS
 function calculateAll() {
@@ -98,9 +93,10 @@ function calculateAll() {
   document.getElementById("id_subscripton_price").value = "\u20AC " + subscription_initial.toFixed(2);
   document.getElementById("deposit_remain").value = "\u20AC " + deposit_remain.toFixed(2);
   document.getElementById("deposit_used").value = "\u20AC " + deposit_used.toFixed(2);
-  document.getElementById("id_price_to_pay").value = "\u20AC " + price_after_deposit_used.toFixed(2);
+  document.getElementById("id_price_to_pay").value = "\u20AC " + subscription_discount.toFixed(2); // price_after_deposit_used.toFixed(2);
   document.getElementById("id_gift_card_ammount").value = "\u20AC " + gift_card.toFixed(2);
   document.getElementById("id_insurance_ammount").value = "\u20AC " + insurance_amount.toFixed(2);
+  document.getElementById("id_total_price").value = "\u20AC " + price_after_deposit_used.toFixed(2);
 }
 </script>
 
@@ -210,8 +206,9 @@ function calculateAll() {
    <label>Apdrošinātājs:</label>
    <select class="form-control" id="insurance_comp" name="insurance_comp">
     <option value="none" selected="selected">-------</option>
-    <option value="s.id.1">Apdrošinātājs 1</option>
-    <option value="s.id.2">Apdrošinātājs 2</option>
+    {% for i in insurance %}
+    <option value="i.id">{{ i }}</option>
+    {% endfor %}
    </select>
   </div>
  </div>
@@ -230,6 +227,7 @@ function calculateAll() {
 
 <hr style="border-top: 1px solid green; margin-top: 8px;">
 
+<!--
 <div class="row" style="margin-top:10px;">
  <div class="col-lg-5 col-md-5 col-sm-5"></div>
  <div class="col-lg-4 col-md-4 col-sm-4">
@@ -251,6 +249,7 @@ function calculateAll() {
 </div>
 
 <hr style="border-top: 1px solid green; margin-top: 8px;">
+-->
 
 <div class="row" style="margin-top:20px;">
  <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 5px;"> </div>

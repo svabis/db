@@ -2,6 +2,7 @@
 from django.db import models
 
 
+# !!!!! Apdrošinātāji !!!!!
 class Apdrosinataji(models.Model):
     class Meta():
         db_table = "apdrosinataji"
@@ -9,7 +10,10 @@ class Apdrosinataji(models.Model):
     visible = models.BooleanField( default=False )
     title = models.CharField( max_length = 40, default = '' )
 
+    def __unicode__(self):
+        return u'%s' % (self.title)
 
+# !!!!! Settingi !!!!!
 class Settings(models.Model):
     class Meta():
         db_table = "settings"

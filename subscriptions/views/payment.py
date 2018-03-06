@@ -8,7 +8,7 @@ from database.args import create_args
 # Django useri
 from django.contrib.auth.models import User
 
-from setup.models import Settings
+from setup.models import Settings, Apdrosinataji
 
 from subscriptions.models import *
 
@@ -29,6 +29,8 @@ def subscription_payment(request):
         return redirect("/login/")
 
     args.update(csrf(request)) # ADD CSRF TOKEN
+
+    args['insurance'] = Apdrosinataji.objects.filter( visible = True )
 
    # Get Active client from COOKIE
     if "active_client" in request.COOKIES:
@@ -110,15 +112,17 @@ def subscription_purchase(request):
                 subscr_nr = int( request.POST.get('subscription', '') )
                 chosen_subscr = AbonementType.objects.get( id = subscr_nr )
 
+                discount_price = request.POST.get('id_price_to_pay', '').split(" ")[1]
+
 #                if True:
                 try:
-                    temp = Deposit.objects.filter( d_client = cli ).order_by('-d_date')[0].d_amount
-                    remain_deposit = request.POST.get('deposit_remain', '').split(" ")[1]
+                    was_deposited = float( Deposit.objects.filter( d_client = cli ).order_by('-d_date')[0].d_amount )
+                    remain_deposit = float( request.POST.get('deposit_remain', '').split(" ")[1] )
 
                     new_deposit = Deposit( d_user = args['username'], d_client = cli, d_amount = remain_deposit )
                     new_deposit.save()
                 except:
-                    pass
+                    deposit_used = False
 
                 notes = cli.notes
                 new_notes = request.POST.get('notes', '')
@@ -138,6 +142,18 @@ def subscription_purchase(request):
                 else:
                     new_subscr = Abonementi( user=system_user, client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=date_temp)
                 new_subscr.save()
+
+               # PREPARING TO CREATE PURCHASE OBJECT
+                if deposit_used == True:
+                    from_deposit = was_deposited - remain_deposit
+                else:
+                    from_deposit = 0
+
+                gift_card = float( request.POST.get('id_gift_card_ammount', '').split(" ")[1] )
+
+               # full
+                new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=chosen_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
+                                                   from_deposit=from_deposit, from_gift_card=gift_card, 
         except:
             pass
 
