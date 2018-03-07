@@ -1,10 +1,6 @@
 {% extends 'main_head.html' %}
 {% load staticfiles %}
 
-{% block javascript %}
-<script src="{% static 'payment_engine.js' %}"></script>
-{% endblock %}
-
 {% block subscription %}
 <div id="hider"></div>
 
@@ -41,6 +37,13 @@ function selectOnlyThis(id) {
       document.getElementById( chk_id_list[0] ).checked = false;
       document.getElementById( chk_id_list[1] ).checked = false;
     }
+  }
+  var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  var checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked);
+  if ( checkedOne == true ) {
+    $("#ok_btn").prop('disabled', false);
+  } else {
+    $("#ok_btn").prop('disabled', 'disabled');
   }
 }
 
@@ -97,6 +100,18 @@ function calculateAll() {
   document.getElementById("id_gift_card_ammount").value = "\u20AC " + gift_card.toFixed(2);
   document.getElementById("id_insurance_ammount").value = "\u20AC " + insurance_amount.toFixed(2);
   document.getElementById("id_total_price").value = "\u20AC " + price_after_deposit_used.toFixed(2);
+
+  if ( price_after_deposit_used != 0 ) {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    var checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked);
+    if ( checkedOne == true ) {
+      $("#ok_btn").prop('disabled', false);
+    } else {
+      $("#ok_btn").prop('disabled', 'disabled');
+    }
+  } else {
+    $("#ok_btn").prop('disabled', false);
+  }
 }
 </script>
 
@@ -108,7 +123,7 @@ function calculateAll() {
  {% if client.notes != "" %}
   <div class="form-group" style="margin-bottom: 5px;">
    <label for="id_notes">Piezīmes:</label>
-   <textarea class="form-control" cols="40" id="id_notes" maxlength="150" name="notes" rows="5" style="resize:none;">{{ client.notes }}</textarea>
+   <textarea class="form-control input-lg" cols="40" id="id_notes" maxlength="150" name="notes" rows="5" style="resize:none;">{{ client.notes }}</textarea>
   </div>
  {% else %}
   <input type="hidden" name="notes" value="">
@@ -129,7 +144,7 @@ function calculateAll() {
  <div class="col-lg-9 col-md-9 col-sm-9">
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Izvēlētā abonementa nosaukums:</label>
-   <input type="text" class="form-control" id="id_subscripton" readonly="readonly" value="{{ chosen_subscr }}">
+   <input type="text" class="form-control input-lg" id="id_subscripton" readonly="readonly" value="{{ chosen_subscr }}">
   </div>
  </div>
 
@@ -138,13 +153,13 @@ function calculateAll() {
    <div class="col-lg-7 col-md-7 col-sm-7">
     <div class="form-group" style="margin-bottom: 5px; padding-left: 7px;">
      <label>Cena:</label>
-     <input type="text" class="form-control" id="id_subscripton_price" readonly="readonly" value="&euro; {{ chosen_subscr.price|floatformat:2 }}">
+     <input type="text" class="form-control input-lg" id="id_subscripton_price" readonly="readonly" value="&euro; {{ chosen_subscr.price|floatformat:2 }}">
     </div>
    </div>
    <div class="col-lg-5 col-md-5 col-sm-5" style="padding-right: 1px; padding-left: 0px;">
     <div class="form-group" style="margin-bottom: 5px;">
      <label>Atlaide:</label>
-     <input type="text" class="form-control" id="id_subscripton_price_status_discount" readonly="readonly">
+     <input type="text" class="form-control input-lg" id="id_subscripton_price_status_discount" readonly="readonly">
     </div>
    </div>
   </div>
@@ -159,7 +174,7 @@ function calculateAll() {
    </div>
   </div>
   <div class="col-lg-3 col-md-3 col-sm-3">
-    <input type="text" class="form-control" name="deposit_remain" id="deposit_remain" readonly="readonly">
+    <input type="text" class="form-control input-lg" name="deposit_remain" id="deposit_remain" readonly="readonly">
   </div>
   <div class="col-lg-3 col-md-3 col-sm-3">
    <div class="form-group text-right" style="margin-bottom: 0px; margin-top: 5px;">
@@ -167,18 +182,18 @@ function calculateAll() {
    </div>
   </div>
   <div class="col-lg-3 col-md-3 col-sm-3">
-    <input type="text" class="form-control" name="deposit_used" id="deposit_used" readonly="readonly">
+    <input type="text" class="form-control input-lg" name="deposit_used" id="deposit_used" readonly="readonly">
   </div>
  </div>
 
  <div class="col-lg-5 col-md-5 col-sm-5" style="padding-right: 0px; padding-left: 0px;"">
   <div class="col-lg-5 col-md-5 col-sm-5">
    <div class="form-group text-right" style="margin-bottom: 0px; margin-top: 5px;">
-    <label>Summa apmaksai:</label>
+    <label>Summa ar atlaidi:</label>
    </div>
   </div>
   <div class="col-lg-7 col-md-7 col-sm-7" style="padding-left: 7px;">
-    <input type="text" class="form-control" id="id_price_to_pay" name="id_price_to_pay" readonly="readonly">
+    <input type="text" class="form-control input-lg" id="id_price_to_pay" name="id_price_to_pay" readonly="readonly">
   </div>
  </div>
 </div>
@@ -195,19 +210,19 @@ function calculateAll() {
    <input class="form-control" id="transfer_chk" name="transfer_chk" type="checkbox" onchange="selectOnlyThis(id);">
   </div>
   <div class="col-lg-9 col-md-9 col-sm-9" style="margin-top: 10px;">
-   <label style="margin-top: 10px;">Skaidrā naudā</label><br>
-   <label style="margin-top: 13px;">Kredītkarte</label><br>
-   <label style="margin-top: 13px;">Pārskaitījums</label>
+   <label for="cash_chk" style="margin-top: 10px;">Skaidrā naudā</label><br>
+   <label for="credit_card_chk" style="margin-top: 13px;">Kredītkarte</label><br>
+   <label for="transfer_chk" style="margin-top: 13px;">Pārskaitījums</label>
   </div>
  </div>
 
- <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 74px;">
+ <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 86px;">
   <div class="form-group">
    <label>Apdrošinātājs:</label>
-   <select class="form-control" id="insurance_comp" name="insurance_comp">
-    <option value="none" selected="selected">-------</option>
+   <select class="form-control input-lg" id="insurance_comp" name="insurance_comp">
+    <option value="" selected="selected">-------</option>
     {% for i in insurance %}
-    <option value="i.id">{{ i }}</option>
+    <option value="{{ i.id }}">{{ i }}</option>
     {% endfor %}
    </select>
   </div>
@@ -216,11 +231,11 @@ function calculateAll() {
  <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;">
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Dāvanu kartes vērtība:</label>
-   <input type="text" class="form-control" id="id_gift_card_ammount" name="id_gift_card_ammount" onchange="giftCard();">
+   <input type="text" class="form-control input-lg" id="id_gift_card_ammount" name="id_gift_card_ammount" onchange="giftCard();">
   </div>
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Sedz apdrošinātājs:</label>
-   <input type="text" class="form-control" id="id_insurance_ammount" name="id_insurance_ammount" onchange="insurance();">
+   <input type="text" class="form-control input-lg" id="id_insurance_ammount" name="id_insurance_ammount" onchange="insurance();">
   </div>
  </div>
 </div>
@@ -233,7 +248,7 @@ function calculateAll() {
  <div class="col-lg-4 col-md-4 col-sm-4">
   <div class="form-group">
    <label>Papildu atlaide:</label>
-   <select class="form-control" id="id_discount" name="id_discount">
+   <select class="form-control input-lg" id="id_discount" name="id_discount">
    <option value="none" selected="selected">-------</option>
    <option value="s.id.1">Atlaides veids 1</option>
    <option value="s.id.2">Atlaides veids 2</option>
@@ -244,7 +259,7 @@ function calculateAll() {
  </div>
  <div class="col-lg-3 col-md-3 col-sm-3">
   <label>Atlaide:</label>
-  <input type="text" class="form-control" id="id_discount_amount" name="id_discount_amount" readonly="readonly">
+  <input type="text" class="form-control input-lg" id="id_discount_amount" name="id_discount_amount" readonly="readonly">
  </div>
 </div>
 
@@ -259,7 +274,7 @@ function calculateAll() {
   </div>
  </div>
  <div class="col-lg-3 col-md-3 col-sm-3">
-  <input type="text" class="form-control" id="id_total_price" name="id_total_price" readonly="readonly">
+  <input type="text" class="form-control input-lg" id="id_total_price" name="id_total_price" readonly="readonly">
  </div>
 </div>
 
@@ -302,8 +317,8 @@ function applyTimer() {
 
 <div class="row text-right" style="margin-top: 30px;">
  <input type="button" class="btn btn-success pull-left" value="apmaksāt ? (15)" style="display: none;" id="yes" onclick="submit_changes();">
- <button type="button" class="btn btn-success" style="min-width: 150px; max-width: 150px;" onclick="apply();" id="ok_btn">Apmaksāt</button>
- <a href="/client/edit/"><button type="button" class="btn btn-danger" style="min-width: 150px; max-width: 150px;">Atcelt</button></a> 
+ <button type="button" class="btn btn-success" style="min-width: 190px; max-width: 190px;" onclick="apply();" id="ok_btn" disabled>Apmaksāt</button>
+ <a href="/client/edit/"><button type="button" class="btn btn-danger" style="min-width: 190px; max-width: 190px;">Atcelt</button></a> 
 </div>
 
 </form>

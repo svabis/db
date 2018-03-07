@@ -43,6 +43,8 @@ def search(request, pageid = 1):
             return redirect ('/')
 
         rez_obj = Klienti.objects.filter(
+               Q( s3_nr__icontains = to_find ) |
+               Q( id__icontains = to_find ) |
                Q( name__icontains = to_find ) |
                Q( surname__icontains = to_find ) |
                Q( e_mail__icontains = to_find ) |
@@ -54,6 +56,8 @@ def search(request, pageid = 1):
         to_find_s = to_find.split(" ")
 
         rez_obj = Klienti.objects.filter(
+               Q( s3_nr__icontains = to_find ) |
+               Q( id__icontains = to_find ) |
                Q( name__icontains = to_find ) |
                Q( surname__icontains = to_find ) |
                Q( e_mail__icontains = to_find ) |

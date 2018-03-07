@@ -25,7 +25,7 @@ class KlientiAdmin(admin.ModelAdmin):
 
 # !!!!! Depozīts !!!!!
 class DepositAdmin(admin.ModelAdmin):
-    list_display = ['d_user', 'd_client', 'd_date', 'd_amount']
+    list_display = ['d_user', 'd_client', 'd_date', 'd_reason', 'd_added', 'd_remain']
     list_filter = ['d_user', 'd_date']
 
 

@@ -88,7 +88,11 @@ WSGI_APPLICATION = 'database.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+
         'NAME': 'vf_database', 'USER': 'root', 'PASSWORD': 'hlu8Jmhq', 'HOST': 'localhost',
+
+#        'NAME': 'test_db', 'USER': 'root', 'PASSWORD': 'hlu8Jmhq', 'HOST': 'localhost',
+
         'PORT': '3306',
     }
 }

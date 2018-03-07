@@ -5,7 +5,8 @@ from subscriptions.models import *
 
 # !!!!! Abonementu_tipi !!!!!
 class AbonementTypeAdmin(admin.ModelAdmin):
-    list_display = ['title', 'created', 'available', 'position', 'position1', 'discount', 'price', 'special', 'extra', 'first_time', 'best_before', 'time_limit', 'time_limit_type', 'times', 'times_count', 's3_nr']
+    list_display = ['title', 'created', 'available', 'position', 'position1', 'discount', 'price', 'special', 'extra', 'first_time', 'activate_before',
+                    'best_before', 'time_limit', 'time_limit_type', 'times', 'times_count', 's3_nr']
     list_filter = ['created', 'position', 'available', 'special', 'first_time', 'best_before', 'time_limit', 'times', 'times_count']
 #    search_fields = []
 #    exclude = []
@@ -25,6 +26,13 @@ class TimelimitTypeAdmin(admin.ModelAdmin):
     list_filter = ['title', 'weekday1', 'weekday2', 'weekend']
 
 
+# !!!!!!!! Abonementu pirkumi !!!!!!!!
+class Abonementu_ApmaksaAdmin(admin.ModelAdmin):
+    list_display = ['date', 'user', 'client', 'subscr', 'full_price', 'discount_price', 'from_deposit', 'from_gift_card', 'insurance', 'insurance_cash', 'cash', 'card', 'transfer', 'final_price']
+
+
+
 admin.site.register(AbonementType, AbonementTypeAdmin)
+admin.site.register(Abonementu_Apmaksa, Abonementu_ApmaksaAdmin)
 admin.site.register(Abonementi, AbonementiAdmin)
 admin.site.register(TimelimitType, TimelimitTypeAdmin)

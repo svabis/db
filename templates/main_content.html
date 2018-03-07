@@ -2,10 +2,10 @@
 {% load staticfiles %}
 
 {% block javascript %}
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script src="{% static 'angulars.js' %}"></script>
-<script src="{% static 'pas_ef.js' %}"></script>
-<link rel="stylesheet" href="{% static 'css.css' %}" />
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script> -->
+<!-- <script src="{% static 'angulars.js' %}"></script> -->
+<!-- <script src="{% static 'pas_ef.js' %}"></script> -->
+<!-- <link rel="stylesheet" href="{% static 'css.css' %}" /> -->
 {% endblock %}
 
 {% block main_content %}
@@ -161,7 +161,7 @@ zalš #dff0d8
    <form id="search" action="/update_notes/" method=POST>{% csrf_token %}
     <div class="form-group" style="margin-bottom: 5px;">
      <label id="id_notes" for="id_notes">Piezīmes:</label>
-     <textarea class="form-control" cols="40" id="id_notes" maxlength="150" name="notes" rows="4" style="resize:none;">{{ client.notes }}</textarea>
+     <textarea class="form-control" cols="40" id="id_notes" maxlength="1000" name="notes" rows="4" style="resize:none;">{{ client.notes }}</textarea>
     </div>
     {% if client %}
     <input type="submit" id="ok_btn" class="btn btn-success pull-right" value="Saglabāt piezīmju izmaiņas">
@@ -177,10 +177,42 @@ zalš #dff0d8
 
 
 <!-- KOLONA 2 START -->
- <div class="col-sm-5 col-md-5 col-lg-5" style="border: solid red 1px;">
+ <div class="col-sm-5 col-md-5 col-lg-5" style="border: solid #ccc 1px;">
+
+{% if client %}
   <a href="/subscription/">
    <button type="button" class="btn btn-success" style="margin-top: 8px;" {% if client %}{% else %}disabled{% endif %}>Pirkt abonementu</button>
   </a>
+{% endif %}
+
+  <div class="alert alert-info" role="alert" style="padding-top: 0px; padding-botom: 0px; margin-top: 18px;">
+   <h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><strong>&nbsp;&nbsp;&nbsp;Meklēt klientu iespējams pēc:</strong></h3>
+   <h5><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9658;&nbsp;ID (redzams lodziņā ID)</strong><br>
+   <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9658;&nbsp;vecās sistēmas ID (piem: 1-1111)</strong><br>
+   <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9658;&nbsp;vārds</strong><br>
+   <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9658;&nbsp;uzvārds</strong><br>
+   <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9658;&nbsp;e-pasts</strong><br>
+   <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9658;&nbsp;telefons</strong></h5>
+  </div>
+
+  <div class="alert alert-success" role="alert" style="padding-top: 0px; padding-botom: 0px; margin-top: 20px;">
+   <h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+   <strong>&nbsp;&nbsp;&nbsp;Liekam Klientiem statusus !<br><center>no jaunās un vecās sistēmas piezīmēm !</center></strong></h3>
+  </div>
+
+  <div class="alert alert-warning" role="alert" style="padding-top: 0px; padding-botom: 0px; border-color: #ccc;">
+   <h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h3>
+   <h5><strong>&nbsp;&nbsp;&nbsp;1. Pārbaudam klienta abonementu, ja ir tad ok...</strong></h5>
+   <h5><strong>&nbsp;&nbsp;&nbsp;2. Skatamies "Abonementu vēsture", varbūt ir abonements, bet cilvēks ieradies nelaikā.</strong></h5>
+   <h5><strong>&nbsp;&nbsp;&nbsp;3. Pārbaudam klientu vecajā sistēmā. Ja ir abonements, tad čekojam TUR.</strong></h5>
+  </div>
+
+  <div class="alert alert-danger" role="alert" style="padding-top: 0px; padding-botom: 0px;">
+   <h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h3>
+   <h5><strong><center>Jaunus abonementus klientiem pērkam jaunajā sistēmā.</center></strong></h5>
+   <h5><strong><center>Ja cilvēks ir iegājis ar jauno abonementu,</center></strong></h5>
+   <h5><strong><center>tad OBLIGĀTI ČEKOJAM IEKŠĀ.</center></strong></h5>
+  </div>
 
 <!--
 <h3>message: {{ message }}</h3>
@@ -236,9 +268,6 @@ zalš #dff0d8
    <button type="button" class="btn btn-success pull-right">Apmaksāt</button>
   </a>
 -->
-
-<br><br><br><br><br><br>
-<br><br><br><br><br><br>
 
  </div>
 <!-- KOLONA 2 END -->

@@ -103,8 +103,8 @@ def subscription_purchase(request):
 
    # Get Active client from COOKIE
     if "active_client" in request.COOKIES:
-#        if True:
-        try:
+        if True:
+#        try:
             c_id = int(request.COOKIES.get(str('active_client')))
             cli = Klienti.objects.get( id = c_id )
 
@@ -116,13 +116,13 @@ def subscription_purchase(request):
 
 #                if True:
                 try:
-                    was_deposited = float( Deposit.objects.filter( d_client = cli ).order_by('-d_date')[0].d_amount )
+                    temp = float( Deposit.objects.filter( d_client = cli ).order_by('-d_date')[0].d_amount ) # to test deposit if was
                     remain_deposit = float( request.POST.get('deposit_remain', '').split(" ")[1] )
 
                     new_deposit = Deposit( d_user = args['username'], d_client = cli, d_amount = remain_deposit )
                     new_deposit.save()
                 except:
-                    deposit_used = False
+                    pass
 
                 notes = cli.notes
                 new_notes = request.POST.get('notes', '')
@@ -135,27 +135,38 @@ def subscription_purchase(request):
                     cli.save()
 
                # create Abonementi object
-                date_temp = datetime.now() + timedelta( days=30 )
+                temp_date = datetime.now() + timedelta( days=30*chosen_subscr.activate_before )
                 if chosen_subscr.times:
-                    new_subscr = Abonementi( user=system_user, client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=date_temp,
+                    new_subscr = Abonementi( user=system_user, client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=temp_date,
                                             times_count=chosen_subscr.times_count)
                 else:
-                    new_subscr = Abonementi( user=system_user, client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=date_temp)
+                    new_subscr = Abonementi( user=system_user, client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=temp_date)
                 new_subscr.save()
 
                # PREPARING TO CREATE PURCHASE OBJECT
-                if deposit_used == True:
-                    from_deposit = was_deposited - remain_deposit
-                else:
-                    from_deposit = 0
 
+                from_deposit = float( request.POST.get('deposit_used', '').split(" ")[1] )
                 gift_card = float( request.POST.get('id_gift_card_ammount', '').split(" ")[1] )
+                cash_chk = request.POST.get('cash_chk', '')
+                credit_card_chk = request.POST.get('credit_card_chk', '')
+                transfer_chk = request.POST.get('transfer_chk', '')
+                final = float( request.POST.get('id_total_price').split(" ")[1] )
 
-               # full
-                new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=chosen_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
-                                                   from_deposit=from_deposit, from_gift_card=gift_card, 
-        except:
-            pass
+                insurance_comp = request.POST.get('insurance_comp', '')
+                insurance_cash = float( request.POST.get('id_insurance_ammount').split(" ")[1] )
+
+                if insurance_comp == "":
+                    new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
+                                                   from_deposit=from_deposit, from_gift_card=gift_card, insurance_cash=insurance_cash,
+                                                   cash=cash_chk, card=credit_card_chk, transfer=transfer_chk, final_price=final )
+                else:
+                    insurance_comp = Apdrosinataji.objects.get( id = int(insurance_comp) )
+                    new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
+                                                   from_deposit=from_deposit, from_gift_card=gift_card, insurance=insurance_comp, insurance_cash=insurance_cash,
+                                                   cash=cash_chk, card=credit_card_chk, transfer=transfer_chk, final_price=final )
+                new_purchase.save()
+#        except:
+#            pass
 
     response = redirect("/")
     response.set_cookie( key='subscription_purchased', value="True", max_age=3 )

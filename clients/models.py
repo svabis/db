@@ -61,7 +61,7 @@ class Klienti(models.Model):
     student_until = models.DateField( blank = True, null = True )
     elderly = models.BooleanField( default=False ) # pensionārs
 
-    notes = models.CharField( max_length = 500, default = '', blank = True )
+    notes = models.CharField( max_length = 1000, default = '', blank = True )
 
     def __unicode__(self):
         return self.name + " " + self.surname
@@ -91,4 +91,8 @@ class Deposit(models.Model):
 
     d_client = models.ForeignKey( Klienti )
     d_date = models.DateTimeField( default = timezone.now )
-    d_amount = models.DecimalField( max_digits = 5, decimal_places = 2 )
+
+    d_reason = models.CharField( max_length = 150, default = '', blank = True )
+    d_added = models.DecimalField( max_digits = 5, decimal_places = 2 )
+
+    d_remain = models.DecimalField( max_digits = 5, decimal_places = 2, default = 0 )

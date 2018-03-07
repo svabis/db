@@ -3,6 +3,7 @@
 {% block main_view %}
 
 <script>
+{% if client %}
 // detect idle state keyboard & mouse
 var idleTime = 0;
 $(document).ready(function () {
@@ -22,6 +23,7 @@ function timerIncrement() {
        clearID();
     }
 }
+{% endif %}
 
 // clearID
 function clearID() { window.location.href = "/clear_id/"; }
@@ -33,27 +35,27 @@ $(document).ready(function(){
 {% if message %}
  $("#MesageModal").modal('show');
  document.getElementById("closeMesageModal").focus();
- setTimeout(function(){ $("#MesageModal").modal('hide'); } , 5000);{% endif %}
+ setTimeout(function(){ $("#MesageModal").modal('hide'); } , 2000);{% endif %}
 
 {% if notes_updated %}
  $("#ClientModal").modal('show');
  document.getElementById("closeClientModal").focus();
- setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
+ setTimeout(function(){ $("#ClientModal").modal('hide'); } , 1000); {% endif %}
 
 {% if subscription_purchased %}
  $("#ClientModal").modal('show');
  document.getElementById("closeClientModal").focus();
- setTimeout(function(){ $("#ClientModal").modal('hide'); } , 2000); {% endif %}
+ setTimeout(function(){ $("#ClientModal").modal('hide'); } , 1000); {% endif %}
 
 {% if new_client %}
  $("#ClientModal").modal('show');
  document.getElementById("closeClientModal").focus();
- setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
+ setTimeout(function(){ $("#ClientModal").modal('hide'); } , 1000); {% endif %}
 
 {% if edit_client %}
  $("#ClientModal").modal('show');
  document.getElementById("closeClientModal").focus();
- setTimeout(function(){ $("#ClientModal").modal('hide'); } , 3000); {% endif %}
+ setTimeout(function(){ $("#ClientModal").modal('hide'); } , 1000); {% endif %}
 
 
 // -------------------------------------------------------------------
