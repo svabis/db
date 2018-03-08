@@ -35,7 +35,9 @@ $(document).ready(function(){
 {% if message %}
  $("#MesageModal").modal('show');
  document.getElementById("closeMesageModal").focus();
- setTimeout(function(){ $("#MesageModal").modal('hide'); } , 2000);{% endif %}
+
+ {% if message_code_5 %}{% else %}
+ setTimeout(function(){ $("#MesageModal").modal('hide'); } , 2000);{% endif %}{% endif %}
 
 {% if notes_updated %}
  $("#ClientModal").modal('show');
@@ -62,6 +64,11 @@ $(document).ready(function(){
 // avatar border color
 {% if client %}
 
+{% if message_code_5 %}
+document.getElementById("avatar").style.borderColor = "#0480be";
+//document.getElementById("klienta-dati").style.background = "#dff0d8";
+{% else %}
+
 // ja: aktīvs abonements, nav iečekots, kļūdu kartiņā nav -->
 {% if abon_active and checked == False and message_type != "error" %}
 document.getElementById("avatar").style.borderColor = "green";
@@ -76,6 +83,8 @@ document.getElementById("klienta-dati").style.background = "#dff0d8";
 {% else %}
 document.getElementById("avatar").style.borderColor = "red";
 document.getElementById("klienta-dati").style.background = "#f2dede";
+{% endif %}
+
 {% endif %}
 
 {% endif %}
@@ -195,7 +204,12 @@ $(document).keypress(function (e) {
 <!-- ErrorMesage Modal START -->
 <div class="modal fade" id="MesageModal" tabindex="-1" role="dialog" aria-hidden="true">
 <div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
+{% if message_code_5 %}
+<div class="modal-header" style="padding:9px 15px; border-bottom:1px solid #eee; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #0480be;">
+{% else %}
 <div class="modal-header" style="padding:9px 15px; border-bottom:1px solid #eee; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #c6451d;">
+{% endif %}
+
  <h3 style="margin-top:5px; margin-bottom:5px;">
 {% if message_type == "error" %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;Kļūda!</h3>{% endif%}
 {% if message_type == "message" %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Paziņojums!</h3>{% endif%}
@@ -207,6 +221,8 @@ $(document).keypress(function (e) {
 {% if message_code_3 %}<h4>Klients ir bloķēts un atrodas melnajā sarakstā!</h4>{% endif %}
 
 {% if message_code_4 %}<h4>Klienta status ir izmainīts uz <b>{{ client.status }}</b> !</h4>{% endif %}
+
+{% if message_code_5 %}<h2>Aktīva iesalde !</h2>{% endif %}
 </center>
 </div>
 <div class="modal-footer">

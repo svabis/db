@@ -39,5 +39,6 @@ class Abonementu_IesaldeAdmin(admin.ModelAdmin):
 
 admin.site.register(AbonementType, AbonementTypeAdmin)
 admin.site.register(Abonementu_Apmaksa, Abonementu_ApmaksaAdmin)
+admin.site.register(Abonementu_Iesalde, Abonementu_IesaldeAdmin)
 admin.site.register(Abonementi, AbonementiAdmin)
 admin.site.register(TimelimitType, TimelimitTypeAdmin)

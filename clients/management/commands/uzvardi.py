@@ -49,9 +49,13 @@ class Command(BaseCommand):
           # Klients
            try:
                k = Klienti.objects.get( s3_nr = l[0] )
-               k.name = l[5]
-               k.surname = l[6]
-               k.save()
+#               k.name = l[5]
+#               k.surname = l[6]
+#               k.save()
+
+               if k.name == k.surname:
+                   name_error.append( l[0] )
+
 #               if str(k.name) != l[5]:
 #                   name_error.append(  l[0] )
 #               if str(k.surname) != l[6]:

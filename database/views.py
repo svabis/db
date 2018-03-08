@@ -111,6 +111,12 @@ def main(request):
             args['message_type'] = "message"
             args['message_code_3'] = True
 
+       # Aktīva iesalde
+        if client.frozen == True:
+            args['message'] = True
+            args['message_type'] = "message"
+            args['message_code_5'] = True
+
        # Klienta status ir mainījies
         if client.status_changed != False: #True:
             args['message'] = True

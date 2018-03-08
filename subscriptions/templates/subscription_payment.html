@@ -55,6 +55,8 @@ function calculateAll() {
 
   price_after_deposit_used = Number( ( subscription_discount - deposit_used ).toFixed(2) );
 
+console.log(deposit_total);
+
   if ( price_after_deposit_used - gift_card - insurance_amount == 0 ) {
 //    console.log("1. depozīts + D + I nosedz pilnībā");
     price_after_deposit_used = Number( 0 );
@@ -65,17 +67,19 @@ function calculateAll() {
     } else {
 //      console.log("2.3. papildina ar rezervi, rezerve D + I iet klāt depozītam");
       deposit_total_temp = Number( Math.abs(( subscription_discount - deposit_used - gift_card - insurance_amount )).toFixed(2) );
-//      console.log(deposit_total_temp);
 
-      deposit_temp = Number( ( deposit_total + deposit_total_temp - subscription_discount ).toFixed(2) );
-      if ( Number(deposit_temp) > Number (0) ) {
-        deposit_remain = deposit_temp;
-        deposit_used = Number( ( deposit_total + deposit_total_temp - deposit_temp ).toFixed(2) );
+      if ( ( subscription_discount == deposit_used ) && ( deposit_remain > Number(0) ) ) {
+//         console.log("2.3.1 depozīts nosedz cenu un/vai vēl paliek pāri");
+         deposit_remain = deposit_remain + deposit_total_temp;
       } else {
-        deposit_remain = Number( 0 );
-        deposit_used = Number( deposit_total + deposit_total_temp );
-      }
+//         console.log("2.3.2 depozīts nenosedz cenu");
 
+         if ( ( subscription_discount - deposit_used ) == Number(0) ) {
+           deposit_remain = deposit_remain + deposit_total_temp;
+         } else {
+           deposit_remain = deposit_total - deposit_used + deposit_total_temp;
+         }
+      }
       price_after_deposit_used = Number( 0 );
     }
   }

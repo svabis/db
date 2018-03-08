@@ -27,22 +27,28 @@ jQuery(document).ready(function($) {
 <form action="#" method=POST>{% csrf_token %}
 <div class="row">
  <div  class="col-lg-8 col-md-8 col-sm-8">
-{% if sub_count == 1 %}
-  <div class="form-group" style="margin-bottom: 5px; margin-top: 30px;">
-   <label id="id_subscription" for="id_subscription">Abonementa nosaukums:</label>
-   <input class="form-control" id="id_subscription" maxlength="16" name="subscription" size="15" type="text" readonly="readonly" value="{{ subscription }}">
-  </div>
-{% else %}
-  <div class="form-group" style="margin-bottom: 5px; margin-top: 30px;">
-   <label id="id_subscription" for="id_subscription">Pieejamie abonementi:</label>
-   <select class="form-control" id="id_subscription" name="subscription">
- {% for s in subscriptions %}
-   <option value="s.id">{{ s }}</option>
- {% endfor %}
-<!--   <option value="S" selected="selected">Sieviete</option> -->
-   </select>
-  </div>
-{% endif %}
+activated: {{ active }}<br><br>
+
+activate_befor:<br>
+{% for a in activate %}
+{{ a }}<br>
+{% endfor %}
+<b>{{ activatemax }}</b><br>
+
+best_before:<br>
+{% for b in best %}
+{{ b }}<br>
+{% endfor %}
+<b>{{ bestmax }}</b>
+
+<br><br>
+
+{% for m in maxm %}
+{{ m }}<br>
+{% endfor %}
+
+<h3>{{ max_date }}</h3>
+
  </div>
 </div>
 
@@ -50,12 +56,12 @@ jQuery(document).ready(function($) {
  <div  class="col-lg-4 col-md-5 col-sm-6">
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Iesaldēt no:</label>
-   <input class="form-control" id="id_freeze_start" maxlength="16" name="freeze_start" size="15" type="text">
+   <input class="form-control" id="id_freeze_start" maxlength="16" name="freeze_start" size="15" type="text" value="{{ today|date:"Y-m-d" }}">
   </div>
 
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Iesaldēt līdz:</label>
-   <input class="form-control" id="id_freeze_end" maxlength="16" name="freeze_end" size="15" type="text">
+   <input class="form-control" id="id_freeze_end" maxlength="16" name="freeze_end" size="15" type="text" value="{{ max_date|date:"Y-m-d" }}">
   </div>
  </div>
 </div>
@@ -63,11 +69,11 @@ jQuery(document).ready(function($) {
 <script>
 $(document).ready(function(){ var date_input=$('input[name="freeze_start"]');
  var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
- var options={ format: 'dd/mm/yyyy', container: container, todayHighlight: true, autoclose: true, weekStart: 1, };
+ var options={ format: 'yyyy-mm-dd', container: container, todayHighlight: true, autoclose: true, weekStart: 1, };
  date_input.datepicker(options); })
 $(document).ready(function(){ var date_input=$('input[name="freeze_end"]');
  var container=$('.form-group form').length>0 ? $('.bootstrap-iso form').parent() : "body";
- var options={ format: 'dd/mm/yyyy', container: container, todayHighlight: true, autoclose: true, weekStart: 1, };
+ var options={ format: 'yyyy-mm-dd', container: container, todayHighlight: true, autoclose: true, weekStart: 1, };
  date_input.datepicker(options); })
 </script>
 
