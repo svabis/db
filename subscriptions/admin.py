@@ -28,9 +28,14 @@ class TimelimitTypeAdmin(admin.ModelAdmin):
 
 # !!!!!!!! Abonementu pirkumi !!!!!!!!
 class Abonementu_ApmaksaAdmin(admin.ModelAdmin):
-    list_display = ['date', 'user', 'client', 'subscr', 'full_price', 'discount_price', 'from_deposit', 'from_gift_card', 'insurance', 'insurance_cash', 'cash', 'card', 'transfer', 'final_price']
+    list_display = ['date', 'user', 'client', 'subscr', 'full_price', 'discount_price', 'from_deposit', 'from_gift_card', 'insurance', 'insurance_cash', 'transfer', 'final_price']
+    list_filter = ['date', 'user', 'transfer']
 
 
+# !!!!!!!! Abonementu iesalde !!!!!!!!
+class Abonementu_IesaldeAdmin(admin.ModelAdmin):
+    list_display = ['date', 'user', 'client', 'subscr', 'activate_before', 'best_before']
+    list_filter = ['date', 'user']
 
 admin.site.register(AbonementType, AbonementTypeAdmin)
 admin.site.register(Abonementu_Apmaksa, Abonementu_ApmaksaAdmin)

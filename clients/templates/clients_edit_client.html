@@ -85,14 +85,16 @@ $(document).keypress(function (e) {
 
 // DEPOZĪTS
 var deposit_cash_amount;
+var deposit_reason;
 function deposit() {
+  deposit_reason = document.getElementById("deposit_reason").value
   deposit_cash_amount = document.getElementById("deposit_add").value;
   deposit_cash_amount = deposit_cash_amount.replace(",", ".");
   deposit_cash_amount = deposit_cash_amount.replace(/[^\d.-]/g, '');
   deposit_cash_amount = Number( Number( deposit_cash_amount ).toFixed(2) );
   document.getElementById("deposit_add").value = "\u20AC " + deposit_cash_amount.toFixed(2);
 
-  if ( deposit_cash_amount != "" ) {
+  if ( deposit_cash_amount != "" && deposit_reason.length > 4 ) {
     $("#deposit_ok").show();
   } else {
     $("#deposit_ok").hide();
@@ -110,6 +112,9 @@ function deposit() {
 <div class="modal-body">
 <!-- <style>.input-numeral { text-align: right; }</style> -->
  <center>
+  <label for="deposit_reason">Pamatojums:</label>
+  <input type="text" class="form-control" id="deposit_reason" name="deposit_reason" onchange="deposit();">
+  <label for="deposit_add">Summa:</label>
   <input type="text" class="form-control input-numeral" id="deposit_add" name="deposit_add" onchange="deposit();">
  </center>
 </div>
@@ -332,17 +337,7 @@ function blockCard() {
 
 <div class="row">
 <!-- KOLONA 1 -->
-  <div class="col-sm-4 col-md-4 col-lg-4">
-   <div class="form-group" style="margin-bottom: 5px;">
-<!--    <label id="id_status">Aktīvais abonements:</label> -->
-<!--    <textarea class="form-control" cols="40" id="id_subscripton" name="subscripton" rows="2" style="resize:none;" readonly="readonly">Aktīva abonementa nav</textarea> -->
-<!--    <input class="form-control" type="text" id="id_subscripton" name="subscripton" readonly="readonly"> -->
-   </div>
-<!--   <div class="form-group" style="margin-bottom: 5px; margin-top: 40px;"> -->
-<!--    <label id="id_status">Apdrošināšanas polise:</label> -->
-<!--    <input class="form-control" type="text" id="id_insurance" name="insurance" readonly="readonly"> -->
-<!--   </div> -->
-  </div>
+  <div class="col-sm-4 col-md-4 col-lg-4"></div>
 
 <!-- KOLONA 2 -->
   <div class="col-sm-8 col-md-8 col-lg-8">
@@ -380,7 +375,7 @@ function blockCard() {
      </div>
      <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 12px; padding-right: 0px;">
       <div class="input-group">
-       <input class="form-control" id="id_deposit" name="deposit" readonly="readonly" type="text" value="{{ deposit_amount.d_amount|floatformat:2 }}">
+       <input class="form-control" id="id_deposit" name="deposit" readonly="readonly" type="text" value="{{ deposit_amount.d_remain|floatformat:2 }}">
        <span class="input-group-btn">
         <button class="btn btn-warning" type="button" onclick="deposit_money();">
         <span class="glyphicon glyphicon-euro" aria-hidden="true"></span></button>

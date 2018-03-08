@@ -46,7 +46,7 @@ class Command(BaseCommand):
 
        for i in tqdm( range(len(lines)) ):
          l = lines[i].split('\t')
-         if l[0] == "1-4666":
+         if l[0] == "1-12255":
 #          start = True
 
 #         if start == True:

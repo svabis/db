@@ -22,13 +22,14 @@ def add_deposit(request):
             client = Klienti.objects.get( id = c_id )
             if request.POST:
                 amount = float( request.POST.get('deposit_add', '').split(" ")[1] )
+                reason = request.POST.get('deposit_reason', '')
 
                 try:
-                    last_amount = float( Deposit.objects.filter( d_client = client).order_by('-d_date')[0].d_amount )
+                    last_amount = float( Deposit.objects.filter( d_client = client).order_by('-d_date')[0].d_remain )
                 except:
                     last_amount = float(0)
 
-                temp = Deposit( d_user = args['username'], d_client = client, d_amount = last_amount + amount )
+                temp = Deposit( d_user = args['username'], d_client = client, d_reason = reason, d_added = amount, d_remain = last_amount + amount )
                 temp.save()
         except:
             pass

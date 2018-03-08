@@ -39,6 +39,7 @@ class Command(BaseCommand):
        error = 0
        klient_error = []
        surname_error = []
+       name_error = []
 
        temp_status = Statusi.objects.all()[0]
 
@@ -48,24 +49,22 @@ class Command(BaseCommand):
           # Klients
            try:
                k = Klienti.objects.get( s3_nr = l[0] )
-           except:
-               klient_error.append( l[0] )
-
-          # uzvārds
-           try:
+               k.name = l[5]
                k.surname = l[6]
                k.save()
-               if str(k.surname) != str(l[6]):
-                   surname_error.append( k )
-                   
+#               if str(k.name) != l[5]:
+#                   name_error.append(  l[0] )
+#               if str(k.surname) != l[6]:
+#                   surname_error.append( l[0] )
            except:
-               error += 1
+               klient_error.append( l[0] )
 
            counter += 1
 
        print "counter:\t" + str( counter )
        print "klient_error:\t" + str( len(klient_error) )
        print klient_error
-       print
-       print "surname_error:\t" + str( len(surname_error) )
+       print "uzvardu_error:\t" + str( len(surname_error) )
        print surname_error
+       print "vardu_error:\t" + str( len(name_error) )
+       print name_error

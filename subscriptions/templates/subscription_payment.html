@@ -6,56 +6,29 @@
 
 <script>
 // variables for calculation
- var subscription_discount, deposit_temp, deposit_remain, deposit_used, price_after_deposit_used;
+ var subscription_discount, deposit_temp, deposit_remain, deposit_used, price_after_deposit_used, price_after_deposit_used_temp;
 
  var gift_card = Number( 0 );
 
  var insurance_amount = Number( 0 ); var insurance_select;
 
  var deposit_total = Number( {{ deposit }} );
+ var deposit_total_temp;
  var subscription_initial = Number( {{ subscr_price }} );
  var discount = Number( {{ initial_discount }} );
 
-$(document).ready(function () {
-  calculateAll();  
-});
+$(document).ready(function () { calculateAll(); });
 
 // BACK TO MAIN --> ESC
 jQuery(document).ready(function($) { $(document).keyup(function (e) { if ( e.keyCode === 27 ) { window.location.href = "/"; } }); });
 
-// select only Cash + Credit or Transfer
-function selectOnlyThis(id) {
-  var chk_id_list = ['cash_chk', 'credit_card_chk', 'transfer_chk']
-  var checked = document.getElementById(id).checked;
-  if (id == chk_id_list[0] || id == chk_id_list[1]) {
-    if (checked == true) {
-      document.getElementById( chk_id_list[2] ).checked = false;
-    }
-  }
-  if (id == chk_id_list[2]) {
-    if (checked == true) {
-      document.getElementById( chk_id_list[0] ).checked = false;
-      document.getElementById( chk_id_list[1] ).checked = false;
-    }
-  }
-  var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  var checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked);
-  if ( checkedOne == true ) {
-    $("#ok_btn").prop('disabled', false);
-  } else {
-    $("#ok_btn").prop('disabled', 'disabled');
-  }
-}
-
-function giftCard() {
+// KALKULATORS
+function calculateAll() {
   gift_card = document.getElementById("id_gift_card_ammount").value;
   gift_card = gift_card.replace(",", ".");
   gift_card = gift_card.replace(/[^\d.-]/g, '');
   gift_card = Number( Number( gift_card ).toFixed(2) );
-  calculateAll();
-}
 
-function insurance() {
   insurance_amount = document.getElementById("id_insurance_ammount").value;
   insurance_amount = insurance_amount.replace(",", ".");
   insurance_amount = insurance_amount.replace(/[^\d.-]/g, '');
@@ -63,11 +36,6 @@ function insurance() {
 
 // ADD INSURANCE DROPLIST TOGLE
 
-  calculateAll();
-}
-
-// KALKULATORS
-function calculateAll() {
   if ( true == {{ discount_available }} ) {
     subscription_discount = Number( (Number( subscription_initial - ( ( subscription_initial / 100 ) * discount ) )).toFixed(2) );
     document.getElementById("id_subscripton_price_status_discount").value = discount + " %";
@@ -76,22 +44,41 @@ function calculateAll() {
     document.getElementById("id_subscripton_price_status_discount").value = "nav";
   }
 
-  // if gift_card + insurance > subscription price
-  if ( ( gift_card + insurance_amount ) > subscription_discount ) {
-    gift_card = Number( 0 );
-    insurance_amount = Number( 0 );
-  }
-
-  deposit_temp = Number( ( deposit_total - ( subscription_discount - gift_card - insurance_amount ) ).toFixed(2) );
-  if ( deposit_temp > 0 ) {
+  deposit_temp = Number( ( deposit_total - subscription_discount ).toFixed(2) );
+  if ( Number(deposit_temp) > Number (0) ) {
     deposit_remain = deposit_temp;
     deposit_used = Number( ( deposit_total - deposit_temp ).toFixed(2) );
   } else {
     deposit_remain = Number( 0 );
-    deposit_used = deposit_total;
+    deposit_used = Number( deposit_total );
   }
 
-  price_after_deposit_used = Number( ( subscription_discount - deposit_used - gift_card - insurance_amount ).toFixed(2) );
+  price_after_deposit_used = Number( ( subscription_discount - deposit_used ).toFixed(2) );
+
+  if ( price_after_deposit_used - gift_card - insurance_amount == 0 ) {
+//    console.log("1. depozīts + D + I nosedz pilnībā");
+    price_after_deposit_used = Number( 0 );
+  } else {
+    if ( price_after_deposit_used - gift_card - insurance_amount > 0 ) {
+//      console.log("2. nepietiek no depozīta");
+      price_after_deposit_used = Number( ( subscription_discount - deposit_used - gift_card - insurance_amount ).toFixed(2) );
+    } else {
+//      console.log("2.3. papildina ar rezervi, rezerve D + I iet klāt depozītam");
+      deposit_total_temp = Number( Math.abs(( subscription_discount - deposit_used - gift_card - insurance_amount )).toFixed(2) );
+//      console.log(deposit_total_temp);
+
+      deposit_temp = Number( ( deposit_total + deposit_total_temp - subscription_discount ).toFixed(2) );
+      if ( Number(deposit_temp) > Number (0) ) {
+        deposit_remain = deposit_temp;
+        deposit_used = Number( ( deposit_total + deposit_total_temp - deposit_temp ).toFixed(2) );
+      } else {
+        deposit_remain = Number( 0 );
+        deposit_used = Number( deposit_total + deposit_total_temp );
+      }
+
+      price_after_deposit_used = Number( 0 );
+    }
+  }
 
   document.getElementById("id_subscripton_price").value = "\u20AC " + subscription_initial.toFixed(2);
   document.getElementById("deposit_remain").value = "\u20AC " + deposit_remain.toFixed(2);
@@ -100,18 +87,6 @@ function calculateAll() {
   document.getElementById("id_gift_card_ammount").value = "\u20AC " + gift_card.toFixed(2);
   document.getElementById("id_insurance_ammount").value = "\u20AC " + insurance_amount.toFixed(2);
   document.getElementById("id_total_price").value = "\u20AC " + price_after_deposit_used.toFixed(2);
-
-  if ( price_after_deposit_used != 0 ) {
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    var checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked);
-    if ( checkedOne == true ) {
-      $("#ok_btn").prop('disabled', false);
-    } else {
-      $("#ok_btn").prop('disabled', 'disabled');
-    }
-  } else {
-    $("#ok_btn").prop('disabled', false);
-  }
 }
 </script>
 
@@ -204,16 +179,6 @@ function calculateAll() {
  <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;"></div>
 
  <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;">
-  <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;">
-   <input class="form-control" id="cash_chk" name="cash_chk" type="checkbox" onchange="selectOnlyThis(id);">
-   <input class="form-control" id="credit_card_chk" name="credit_card_chk" type="checkbox" onchange="selectOnlyThis(id);">
-   <input class="form-control" id="transfer_chk" name="transfer_chk" type="checkbox" onchange="selectOnlyThis(id);">
-  </div>
-  <div class="col-lg-9 col-md-9 col-sm-9" style="margin-top: 10px;">
-   <label for="cash_chk" style="margin-top: 10px;">Skaidrā naudā</label><br>
-   <label for="credit_card_chk" style="margin-top: 13px;">Kredītkarte</label><br>
-   <label for="transfer_chk" style="margin-top: 13px;">Pārskaitījums</label>
-  </div>
  </div>
 
  <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 86px;">
@@ -231,11 +196,11 @@ function calculateAll() {
  <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;">
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Dāvanu kartes vērtība:</label>
-   <input type="text" class="form-control input-lg" id="id_gift_card_ammount" name="id_gift_card_ammount" onchange="giftCard();">
+   <input type="text" class="form-control input-lg" id="id_gift_card_ammount" name="id_gift_card_ammount" onchange="calculateAll();">
   </div>
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Sedz apdrošinātājs:</label>
-   <input type="text" class="form-control input-lg" id="id_insurance_ammount" name="id_insurance_ammount" onchange="insurance();">
+   <input type="text" class="form-control input-lg" id="id_insurance_ammount" name="id_insurance_ammount" onchange="calculateAll();">
   </div>
  </div>
 </div>
@@ -267,8 +232,16 @@ function calculateAll() {
 -->
 
 <div class="row" style="margin-top:20px;">
- <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 5px;"> </div>
- <div class="col-lg-5 col-md-5 col-sm-5" style=" margin-top: 5px;">
+ <div class="col-lg-4 col-md-4 col-sm-4"></div>
+ <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 0px;">
+  <div class="col-lg-3 col-md-3 col-sm-3">
+   <input class="form-control" id="transfer_chk" name="transfer_chk" type="checkbox" onchange="selectOnlyThis(id);">
+  </div>
+  <div class="col-lg-9 col-md-9 col-sm-9">
+   <label for="transfer_chk" style="margin-top: 10px;">Pārskaitījums</label>
+  </div>
+ </div>
+ <div class="col-lg-2 col-md-2 col-sm-2" style=" margin-top: 5px;">
   <div class="form-group text-right" style="margin-top: 5px;">
    <label>Summa apmaksai kopā:</label>
   </div>
@@ -317,7 +290,7 @@ function applyTimer() {
 
 <div class="row text-right" style="margin-top: 30px;">
  <input type="button" class="btn btn-success pull-left" value="apmaksāt ? (15)" style="display: none;" id="yes" onclick="submit_changes();">
- <button type="button" class="btn btn-success" style="min-width: 190px; max-width: 190px;" onclick="apply();" id="ok_btn" disabled>Apmaksāt</button>
+ <button type="button" class="btn btn-success" style="min-width: 190px; max-width: 190px;" onclick="apply();" id="ok_btn">Apmaksāt</button>
  <a href="/client/edit/"><button type="button" class="btn btn-danger" style="min-width: 190px; max-width: 190px;">Atcelt</button></a> 
 </div>
 

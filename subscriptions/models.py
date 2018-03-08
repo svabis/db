@@ -70,7 +70,7 @@ class AbonementType(models.Model):
 
     first_time = models.BooleanField( default=False ) # iepazīšanās
 
-    activate_before = models.IntegerField( blank = True, null = True, default = 1 ) # derīgs līdz (mēneši)
+    activate_before = models.IntegerField( blank = True, null = True, default = 1 ) # aktivēt līdz (mēneši)
     best_before = models.IntegerField( blank = True, null = True ) # derīgs līdz (mēneši)
 
     time_limit = models.BooleanField( default=False ) # laika limits (rīti, darbadienas u.t.t.)
@@ -122,7 +122,7 @@ class Abonementu_Apmaksa(models.Model):
         db_table = "abonementi_pirkums"
 
     date = models.DateTimeField( default = timezone.now ) # pirkuma datums
-    user = models.ForeignKey( User, default = 1 ) # abonementa īpašnieks
+    user = models.ForeignKey( User, default = 1 ) # sistēmas lietotājs
 #---
     client = models.ForeignKey( Klienti ) # abonementa īpašnieks
     subscr = models.ForeignKey( Abonementi ) # iegādātais abonements
@@ -137,8 +137,8 @@ class Abonementu_Apmaksa(models.Model):
     insurance = models.ForeignKey( Apdrosinataji, blank=True, null=True ) # apdrošinātājs
     insurance_cash = models.DecimalField( max_digits = 5, decimal_places = 2 ) # sedz apdrošinātājs
 #---
-    cash = models.BooleanField( default = False ) # skaidra nauda
-    card = models.BooleanField( default = False ) # kredītkarte
+#    cash = models.BooleanField( default = False ) # skaidra nauda
+#    card = models.BooleanField( default = False ) # kredītkarte
     transfer = models.BooleanField( default = False ) # pārskaitījums
 #---
 #    additonal_discount = models.BooleanField( default = False ) # papildus atlaide
@@ -146,3 +146,20 @@ class Abonementu_Apmaksa(models.Model):
 
     def __unicode__(self):
         return u'%s' % (self.date)
+
+
+# =========================================================================
+# !!! iesalde !!!
+class Abonementu_Iesalde(models.Model):
+    class Meta():
+        db_table = "abonementi_iesalde"
+
+    date = models.DateTimeField( default = timezone.now ) # operācijas datums
+    user = models.ForeignKey( User, default = 1 ) # abonementa īpašnieks
+#---
+    client = models.ForeignKey( Klienti ) # abonementa īpašnieks
+    subscr = models.ForeignKey( Abonementi ) # iegādātais abonements
+#---
+    activate_before = models.DateTimeField( blank = True, null = True ) # derīgs aktivācijai līdz
+    best_before = models.DateTimeField( blank = True, null = True ) # derīgs līdz
+
