@@ -143,7 +143,7 @@ zalš #dff0d8
      <div class="col-sm-6 col-md-6 col-lg-6">
       <center>
        <a href="/subscription/history/">
-        <button type="button" class="btn btn-warning" style="min-width: 200px; max-width: 200px;">Abonementu vēsture</button>
+        <button type="button" class="btn btn-warning" style="min-width: 200px; max-width: 200px;">Abonementu vēsture <span class="badge"> {{ sub_count }}</span></button>
        </a>
       </center>
      </div>
@@ -181,9 +181,13 @@ zalš #dff0d8
 
 {% if client %}
   <a href="/subscription/">
-   <button type="button" class="btn btn-success" style="margin-top: 8px;" {% if client %}{% else %}disabled{% endif %}>Pirkt abonementu</button>
+   <button type="button" class="btn btn-success" style="margin-top: 8px;" {% if client %}{% if client.frozen %}disabled{% endif %}{% else %}disabled{% endif %}>Pirkt abonementu</button>
   </a>
 {% endif %}
+
+  <div class="alert alert-success" role="alert" style="padding-top: 0px; padding-botom: 0px;  margin-top: 18px;">
+   <h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> &nbsp;&nbsp;&nbsp;Iesalde - sadaļā "Rediģēt" !</h3>
+  </div>
 
   <div class="alert alert-info" role="alert" style="padding-top: 0px; padding-botom: 0px; margin-top: 18px;">
    <h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><strong>&nbsp;&nbsp;&nbsp;Meklēt klientu iespējams pēc:</strong></h3>
@@ -207,12 +211,7 @@ zalš #dff0d8
    <h5><strong>&nbsp;&nbsp;&nbsp;3. Pārbaudam klientu vecajā sistēmā. Ja ir abonements, tad čekojam TUR.</strong></h5>
   </div>
 
-  <div class="alert alert-danger" role="alert" style="padding-top: 0px; padding-botom: 0px;">
-   <h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h3>
-   <h5><strong><center>Jaunus abonementus klientiem pērkam jaunajā sistēmā.</center></strong></h5>
-   <h5><strong><center>Ja cilvēks ir iegājis ar jauno abonementu,</center></strong></h5>
-   <h5><strong><center>tad OBLIGĀTI ČEKOJAM IEKŠĀ.</center></strong></h5>
-  </div>
+  <div style="margin-top: 60px;"></div>
 
 <!--
 <h3>message: {{ message }}</h3>

@@ -1,0 +1,1 @@
+mysqldump -u root -phlu8Jmhq vf_database > /home/svabis/vf_db_backup/vf_db_`date +%F`.sql

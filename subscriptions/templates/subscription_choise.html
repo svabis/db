@@ -97,6 +97,9 @@ jQuery(document).ready(function($) {
   <input type="radio" name="subscription" value="{{ s.id }}" onchange="isSelected()">{{ s.short_title|safe }}
  </label>
 {% endfor %}
+</div>
+<div style="margin-top: 20px;"></div>
+<div class="btn-group" data-toggle="buttons">
 {% for e in extra %}
  <label class="btn btn-danger btn-block" style="border-radius: 0;">
   <input type="radio" name="subscription" value="{{ e.id }}" onchange="isSelected()">{{ e.short_title|safe }}

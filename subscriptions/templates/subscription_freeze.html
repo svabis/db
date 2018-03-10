@@ -24,46 +24,58 @@ jQuery(document).ready(function($) {
 
 <!-- FUNKCIONĀLS NAV -->
 
-<form action="#" method=POST>{% csrf_token %}
+<form id="freeze_form" action="/subscription_freeze/" method=POST>{% csrf_token %}
 <div class="row">
+
+<hr style="border-top: 1px solid green;">
+
+ <div class="row alert alert-danger" role="alert" style="padding-top: 0px; padding-botom: 0px; ">
+  <div class="col-lg-2 col-md-2 col-sm-2"  style="margin-top: 30px;">
+   <center><h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h3></center>
+  </div>
+  <div class="col-lg-10 col-md-10 col-sm-10" style="margin-top: 10px;">
+   <h5><strong><center>Uz doto momentu vienīgais ierobežojums ir uz "Iesaldēt līdz"!</center></strong></h5>
+   <h5><strong><center>Atcelt iesaldi klientam pagaidām nav iespējams, ja ir vajadzība - zvans, vai e-pasts Aleksandram</center></strong></h5>
+   <h5><strong><center>Atcelšanas iespēja ir saistīta ar atpakaļejošiem datumiem... Rīt būs...</center></strong></h5>
+  </div>
+ </div>
+
+<hr style="border-top: 1px solid green;">
+
  <div  class="col-lg-8 col-md-8 col-sm-8">
-activated: {{ active }}<br><br>
+  <h3>klients: {{ client }}</h3><br>
 
-activate_befor:<br>
-{% for a in activate %}
-{{ a }}<br>
-{% endfor %}
-<b>{{ activatemax }}</b><br>
+{% if client.frozen == True %}<h4 class="text-danger">Aktīva ieslalde: Jā</h4>{% endif %}
+{% if client.frozen == False %}<h4>Aktīva ieslalde: Nav</h4>{% endif %}
 
-best_before:<br>
-{% for b in best %}
-{{ b }}<br>
-{% endfor %}
-<b>{{ bestmax }}</b>
-
-<br><br>
-
-{% for m in maxm %}
-{{ m }}<br>
-{% endfor %}
-
-<h3>{{ max_date }}</h3>
+{% if client.frozen_from != None %}<h4>Ieslalde no: {{ client.frozen_from }}</h4>{% endif %}
+{% if client.frozen_until != None %}<h4>Ieslalde līdz: {{ client.frozen_until }}</h4>{% endif %}
+{% if days %}<h3 class="text-danger">abonementi pagarināti par {{ days }} dienām</h3>{% endif %}
 
  </div>
+ <div  class="col-lg-4 col-md-4 col-sm-4"></div>
+
 </div>
 
 <div class="row" style="margin-top: 30px;">
- <div  class="col-lg-4 col-md-5 col-sm-6">
+<hr style="border-top: 1px solid green;">
+ <div  class="col-lg-6 col-md-6 col-sm-6">
   <div class="form-group" style="margin-bottom: 5px;">
-   <label>Iesaldēt no:</label>
-   <input class="form-control" id="id_freeze_start" maxlength="16" name="freeze_start" size="15" type="text" value="{{ today|date:"Y-m-d" }}">
+   <label>Iesaldēt no: <b class="text-danger">(šodiena: {{ today|date:"Y-m-d" }})</b></label>
+{% if start_error %}<br><b class="text-danger">Datuma formāts ievadīts nekorekti!</b>{% endif %}
+   <input class="form-control" id="id_freeze_start" maxlength="10" name="freeze_start" size="10" type="text" placeholder="GGGG-MM-DD">
   </div>
 
   <div class="form-group" style="margin-bottom: 5px;">
-   <label>Iesaldēt līdz:</label>
-   <input class="form-control" id="id_freeze_end" maxlength="16" name="freeze_end" size="15" type="text" value="{{ max_date|date:"Y-m-d" }}">
+   <label>Iesaldēt līdz: <b class="text-danger">(vēlākais: {{ max_date|date:"Y-m-d" }})</b></label>
+{% if end_error %}<br><b class="text-danger">Datuma formāts ievadīts nekorekti!</b>{% endif %}
+{% if end_limit %}<br><b class="text-danger">Datums ievadīts vēlāk nekā beidzās abonementu darbība!</b>{% endif %}
+   <input class="form-control" id="id_freeze_end" maxlength="10" name="freeze_end" size="10" type="text" placeholder="GGGG-MM-DD">
   </div>
  </div>
+ <div  class="col-lg-6 col-md-6 col-sm-6"></div>
+
+
 </div>
 
 <script>
@@ -84,6 +96,7 @@ function submit_changes() {
   clearInterval(countdown);
   $("#yes").prop('disabled', 'disabled');
   document.querySelector("#yes").value = "Notiek apstrāde...";
+  $("#freeze_form").submit()
 }
 function apply() {
   $("#yes").show();
@@ -111,10 +124,13 @@ function applyTimer() {
 </script>
 
 <div class="row text-right" style="margin-top: 30px;">
+
+<hr style="border-top: 1px solid green;">
+
  <input type="button" class="btn btn-success pull-left" value="Iesaldēt ? (15)" style="display: none;" id="yes" onclick="submit_changes();">
  <button type="button" class="btn btn-success" style="min-width: 150px; max-width: 150px;" onclick="apply();" id="ok_btn">Iesaldēt</button>
  <a href="/client/edit/"><button type="button" class="btn btn-danger" style="min-width: 150px; max-width: 150px;">Atcelt</button></a> 
 </div>
-
+</form>
 
 {% endblock %}

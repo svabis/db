@@ -154,6 +154,8 @@ def main(request):
 # !!!!!   ABONEMENTU APSTRĀDES ALGORITMS   !!!!!
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+        args['sub_count'] = Abonementi.objects.filter( client = client, ended = False ).count()
+
         # ABONEMENTU ENDED TESTU ŠEIT...
         SubscriptionEnd( client )
 

@@ -84,7 +84,7 @@ $(function(){
 </span> &nbsp;Atskaites</a></li><li class="divider-vertical"></li>
 {% endif%}
 
-  {% if active_tab_6 %}<li class="active">{% else %}<li>{% endif %}<a href="http://pieraksts.vfabrika.lv/reception/" target="_blank"><span class="glyphicon glyphicon-calendar" aria-hidden="true">
+  {% if active_tab_6 %}<li class="active">{% else %}<li>{% endif %}<a href="http://pieraksts.vfabrika.lv/reception/" target="_blank" onclick="focusID();"><span class="glyphicon glyphicon-calendar" aria-hidden="true">
 </span> &nbsp;Plānotājs</a></li><li class="divider-vertical"></li>
 
 {% if admin %}
@@ -96,7 +96,7 @@ $(function(){
 
  <ul class="nav navbar-nav navbar-right">
 {% if django %}
-  <li><a href="/admin/" target="_blank" style="color: #CC0000;"><span class="glyphicon glyphicon-cog" aria-hidden="true" style="color: #CC0000;"></span></a></li>
+  <li><a href="/admin/" target="_blank" style="color: #CC0000;" onclick="focusID();"><span class="glyphicon glyphicon-cog" aria-hidden="true" style="color: #CC0000;"></span></a></li>
 {% endif %}
 
 {% if help %}

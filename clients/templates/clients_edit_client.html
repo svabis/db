@@ -1,6 +1,11 @@
 {% extends 'main_head.html' %}
 {% load staticfiles %}
 
+{% block javascript %}
+<script type="text/javascript" src="{% static 'bootstrap/js/datepicker.js' %}"></script>
+<link rel="stylesheet" href="{% static 'bootstrap/css/datepicker.css' %}"/>
+{% endblock %}
+
 {% block edit_client %}
 <div id="hider"></div>
 
@@ -203,6 +208,13 @@ function deposit() {
      {{ form.birthday }}
      {{ form.birthday.errors }}
    </div>
+<script>
+$(document).ready(function(){ var date_input=$('input[name="birthday"]');
+ var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ var options={ format: 'yyyy-mm-dd', startView: 2, daysOfWeekHighlighted: "0,6", container: container, todayHighlight: true, autoclose: true, weekStart: 1, };
+ date_input.datepicker(options); })
+</script>
+
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_phone" for="{{ form.phone.id_for_label }}">Tālruņa nummurs:</label>
      {{ form.phone }}
@@ -308,6 +320,12 @@ function blockCard() {
    {{ form.student_until.errors }}
   </div>
  </div>
+<script>
+$(document).ready(function(){ var date_input=$('input[name="student_until"]');
+ var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ var options={ format: 'yyyy-mm-dd', startView: 2, container: container, todayHighlight: true, autoclose: true, weekStart: 1, daysOfWeekHighlighted: "0,6" };
+ date_input.datepicker(options); })
+</script>
 
  <div class="col-sm-1 col-md-1 col-lg-1 text-center" style="margin-top: 5px; border-left: solid #ccc 1px;">
   <div class="form-group" style="margin-bottom: 5px;">
@@ -323,6 +341,12 @@ function blockCard() {
    {{ form.disabled_until.errors }}
   </div>
  </div>
+<script>
+$(document).ready(function(){ var date_input=$('input[name="disabled_until"]');
+ var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ var options={ format: 'yyyy-mm-dd', startView: 2, container: container, todayHighlight: true, autoclose: true, weekStart: 1, daysOfWeekHighlighted: "0,6" };
+ date_input.datepicker(options); })
+</script>
 
  <div class="col-sm-2 col-md-2 col-lg-2 text-center" style="margin-top: 5px; border-left: solid #ccc 1px;">
   <div class="form-group" style="margin-bottom: 5px;">
@@ -350,7 +374,7 @@ function blockCard() {
      </a>
     </div>
     <div class="col-sm-2 col-md-2 col-lg-2">
-     <a href="/subscription/edit/"><button type="button" class="btn btn-success" style="min-width: 100px; max-width: 100px;">Pirkt</button></a>
+     <a href="/subscription/edit/"><button type="button" class="btn btn-success" style="min-width: 100px; max-width: 100px;" {% if client.frozen %}disabled{% endif %}>Pirkt</button></a>
     </div>
     <div class="col-sm-6 col-md-6 col-lg-6">
      <a href="/subscription_freeze/"><button id="freeze_button" type="button" class="btn btn-success pull-right" {% if freeze_disable %}disabled{% endif %}>Abonemeta iesaldēšana</button></a>

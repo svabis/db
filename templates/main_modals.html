@@ -25,6 +25,11 @@ function timerIncrement() {
 }
 {% endif %}
 
+// focus on ID
+function focusID() {
+  $("#id").focus();
+}
+
 // clearID
 function clearID() { window.location.href = "/clear_id/"; }
 
@@ -125,7 +130,7 @@ $(document).keypress(function (e) {
   // SPACEBAR
     if ( e.keyCode == 32 ) {
   {% if client %}
-  {% if message_code_1 or message_code_2 or message_code_3 %}
+  {% if message_code_1 or message_code_2 or message_code_3 or message_code_5 %}
 
 // ERROR MESAGE PREVENTS "ENTER" BUTTON
 // Allow only check-out
@@ -222,7 +227,10 @@ $(document).keypress(function (e) {
 
 {% if message_code_4 %}<h4>Klienta status ir izmainīts uz <b>{{ client.status }}</b> !</h4>{% endif %}
 
-{% if message_code_5 %}<h2>Aktīva iesalde !</h2>{% endif %}
+{% if message_code_5 %}
+ <h2>Aktīva iesalde !</h2>
+ <h3>no {{ client.frozen_from|date:"Y-m-d" }} līdz {{ client.frozen_until|date:"Y-m-d" }}</h3>
+{% endif %}
 </center>
 </div>
 <div class="modal-footer">

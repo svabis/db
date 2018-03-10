@@ -78,6 +78,7 @@ def edit_client(request):
             return response
         else:
             args['form'] = form
+            args['client'] = client
             return render_to_response ( 'clients_edit_client.html', args )
 
    # LOAD ACTIVE CLIENT FROM COOKIES

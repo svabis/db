@@ -26,8 +26,6 @@ class KlientsForm(ModelForm):
             'status': forms.Select(attrs={'class': 'form-control'}),
             'society': forms.CheckboxInput(attrs={'class': 'form-control'}),
 
-# works            'birthday': forms.DateTimeInput(attrs={'class': 'form-control'}),
-# nope           'birthday': forms.SelectDateWidget(attrs={'class': 'form-control'}),
             'birthday': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'GGGG-MM-DD'}),
 
             'reg_date': forms.DateInput(attrs={'class': 'form-control', 'readonly':'readonly'}),
@@ -38,8 +36,6 @@ class KlientsForm(ModelForm):
             'student': forms.CheckboxInput(attrs={'class': 'form-control', 'onclick': 'selectOnlyThis(this.id)'}),
             'student_until': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'GGGG-MM-DD'}),
             'elderly': forms.CheckboxInput(attrs={'class': 'form-control', 'onclick': 'selectOnlyThis(this.id)'})
-
-# INSURANCE ?
 
             }
 

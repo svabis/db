@@ -1,10 +1,24 @@
 {% extends 'main_head.html' %}
 {% load staticfiles %}
 
+{% block javascript %}
+<script type="text/javascript" src="{% static 'bootstrap/js/datepicker.js' %}"></script>
+<link rel="stylesheet" href="{% static 'bootstrap/css/datepicker.css' %}"/>
+{% endblock %}
+
 {% block new_client %}
 <div id="hider"></div>
 
 <script>
+// CALENDAR PICKER
+//$(".datepicker").datepicker({
+//    format: "yyyy-mm-dd", //"dd/mm/yyyy",
+//    startView: 2,
+//    language: "lv",
+//    orientation: "bottom auto",
+//    daysOfWeekHighlighted: "0,6"
+//});
+
 // select only one checkbox
 function selectOnlyThis(id) {
   var chk_id_list = ['id_student', 'id_disabled', 'id_elderly']
@@ -107,11 +121,19 @@ $(document).keypress(function (e) {
      {{ form.surname }}
      {{ form.surname.errors }}
    </div>
+
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_birthday" for="{{ form.birthday.id_for_label }}">Dzimšanas datums:</label>
      {{ form.birthday }}
      {{ form.birthday.errors }}
    </div>
+<script>
+$(document).ready(function(){ var date_input=$('input[name="birthday"]');
+ var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ var options={ format: 'yyyy-mm-dd', startView: 2, daysOfWeekHighlighted: "0,6", container: container, todayHighlight: true, autoclose: true, weekStart: 1, };
+ date_input.datepicker(options); })
+</script>
+
    <div class="form-group" style="margin-bottom: 5px;">
     <label id="id_phone" for="{{ form.phone.id_for_label }}">Tālruņa nummurs:</label>
      {{ form.phone }}
@@ -174,12 +196,18 @@ $(document).keypress(function (e) {
   </div>
  </div>
  <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 5px;">
-  <div class="form-group" style="margin-bottom: 5px;">
+  <div class="form-group sandbox-container" style="margin-bottom: 5px;">
    <label for="{{ form.student_until.id_for_label }}">Derīgs līdz:</label>
    {{ form.student_until }}
    {{ form.student_until.errors }}
   </div>
  </div>
+<script>
+$(document).ready(function(){ var date_input=$('input[name="student_until"]');
+ var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ var options={ format: 'yyyy-mm-dd', startView: 2, daysOfWeekHighlighted: "0,6", container: container, todayHighlight: true, autoclose: true, weekStart: 1, };
+ date_input.datepicker(options); })
+</script>
 
  <div class="col-sm-1 col-md-1 col-lg-1 text-center" style="margin-top: 5px; border-left: solid #ccc 1px;">
   <div class="form-group" style="margin-bottom: 5px;">
@@ -189,12 +217,18 @@ $(document).keypress(function (e) {
   </div>
  </div>
  <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 5px;">
-  <div class="form-group" style="margin-bottom: 5px;">
+  <div class="form-group sandbox-container" style="margin-bottom: 5px;">
    <label for="{{ form.disabled_until.id_for_label }}">Derīgs līdz:</label>
    {{ form.disabled_until }}
    {{ form.disabled_until.errors }}
   </div>
  </div>
+<script>
+$(document).ready(function(){ var date_input=$('input[name="disabled_until"]');
+ var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ var options={ format: 'yyyy-mm-dd', startView: 2, daysOfWeekHighlighted: "0,6", container: container, todayHighlight: true, autoclose: true, weekStart: 1, };
+ date_input.datepicker(options); })
+</script>
 
  <div class="col-sm-2 col-md-2 col-lg-2 text-center" style="margin-top: 5px; border-left: solid #ccc 1px;">
   <div class="form-group" style="margin-bottom: 5px;">

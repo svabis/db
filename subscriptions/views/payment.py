@@ -6,7 +6,7 @@ from django.core.context_processors import csrf
 from database.args import create_args
 
 # Django useri
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 
 from setup.models import Settings, Apdrosinataji
 
@@ -125,6 +125,7 @@ def subscription_purchase(request):
                 final = float( request.POST.get('id_total_price').split(" ")[1] )
 
                 insurance_comp = request.POST.get('insurance_comp', '')
+
                 insurance_cash = float( request.POST.get('id_insurance_ammount').split(" ")[1] )
 
                # find last client deposit amount
