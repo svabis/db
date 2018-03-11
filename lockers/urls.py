@@ -9,11 +9,16 @@ urlpatterns = [
 # Skapīšu izvēles skats
     url(r'^/(?P<abon_id>\d+)/$', 'lockers.views.locker'),
 
+# Skapīšu maiņas skats
+    url(r'^/change/$', 'lockers.views.locker_change'),
+    url(r'^/changer/(?P<gender>\w+)/(?P<locker_nr>\d+)/$', 'lockers.views.locker_changer'),
 
 # ===============================================================
 # Eksports
     url(r'^/history/csv/$', 'lockers.views.history_csv'),
     url(r'^/history/xls/$', 'lockers.views.history_xls'),
+
+# ===============================================================
 # Vēsture
     url(r'^/history/(?P<pageid>\d+)/$', 'lockers.views.history'),
     url(r'^/history/$', 'lockers.views.history'),
