@@ -5,7 +5,7 @@
 
 <h3>Abonementu vēsture</h3>
 
-<a href="/"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> &nbsp;Atpakaļ</button></a>
+<a href="{{ back }}"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-backward" aria-hidden="true"> </span> &nbsp;Atpakaļ</button></a>
 
 <script>
 jQuery(document).ready(function($) {
@@ -13,16 +13,16 @@ jQuery(document).ready(function($) {
  $(document).keyup(function (e) {
   // ESC 27
   if ( e.keyCode === 27 ) {
-    window.location.href = "/";
+    window.location.href = "{{ back }}";
   }
  });
 });
 </script>
 
 {% if admin %}
-<a href="/subscriptions/history/csv/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
+<a href="/subscription/history/csv/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
  <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus CSV</button></a>
-<a href="/subscriptions/history/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
+<a href="/subscription/history/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
  <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button></a>
 {% endif %}
 <br><br>
@@ -37,17 +37,17 @@ ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 
 <center><ul class="pagination">
 {% if paginator.big %}{% if paginator.active_page == 1 %}
-<li class="disabled"><a href="#">&laquo;&laquo;</a></li>{% else %}<li><a href="/subscriptions/history/1/">&laquo;&laquo;</a></li>{% endif %}{% endif %}
+<li class="disabled"><a href="#">&laquo;&laquo;</a></li>{% else %}<li><a href="/subscription/history/1/{{ back_nr }}/">&laquo;&laquo;</a></li>{% endif %}{% endif %}
 {% if paginator.active_page == 1 %}<li class="disabled"><a href="#">&laquo;</a></li>{% else %}
-<li><a href="/subscriptions/history/{{ paginator.active_page|add:"-1" }}/">&laquo;</a></li>{% endif %}
+<li><a href="/subscription/history/{{ paginator.active_page|add:"-1" }}/{{ back_nr }}/">&laquo;</a></li>{% endif %}
  {% for page in paginator.pages %}
  {% if page == 0 %}<li class="disabled"><a href="#">...</a></li>
  {% elif paginator.active_page == page %}<li class="active"><a href="#">{{ page }}</a></li>
- {% else %}<li><a href="/subscriptions/history/{{ page }}/">{{ page }}</a></li>{% endif %}{% endfor %}
+ {% else %}<li><a href="/subscription/history/{{ page }}/{{ back_nr }}/">{{ page }}</a></li>{% endif %}{% endfor %}
 {% if paginator.active_page == paginator.pagecount %}<li class="disabled"><a href="#">&raquo;</a></li>{% else %}
-<li><a href="/subscriptions/history/{{ paginator.active_page|add:"1" }}/">&raquo;</a></li>{% endif %}
+<li><a href="/subscription/history/{{ paginator.active_page|add:"1" }}/{{ back_nr }}/">&raquo;</a></li>{% endif %}
 {% if paginator.big %}{% if paginator.active_page == paginator.pagecount %}<li class="disabled"><a href="#">&raquo;&raquo;</a></li>{% else %}
-<li><a href="/subscriptions/history/{{ paginator.pagecount }}/">&raquo;&raquo;</a></li>{% endif %}{% endif %}
+<li><a href="/subscription/history/{{ paginator.pagecount }}/{{ back_nr }}/">&raquo;&raquo;</a></li>{% endif %}{% endif %}
 </ul></center>
 {% endif %}
 

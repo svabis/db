@@ -114,18 +114,12 @@ def subscription_purchase(request):
                 chosen_subscr = AbonementType.objects.get( id = subscr_nr )
 
                 discount_price = request.POST.get('id_price_to_pay', '').split(" ")[1]
-
                 new_deposit_remain = float( request.POST.get('deposit_remain', '').split(" ")[1] )
                 from_deposit = float( request.POST.get('deposit_used', '').split(" ")[1] )
-
                 gift_card = float( request.POST.get('id_gift_card_ammount', '').split(" ")[1] )
-
                 transfer_chk = request.POST.get('transfer_chk', '')
-
                 final = float( request.POST.get('id_total_price').split(" ")[1] )
-
                 insurance_comp = request.POST.get('insurance_comp', '')
-
                 insurance_cash = float( request.POST.get('id_insurance_ammount').split(" ")[1] )
 
                # find last client deposit amount
@@ -135,15 +129,19 @@ def subscription_purchase(request):
                     old_deposit_remain = float( 0 )
 
                # deposit remain is diferent
+                save_deposit = False
                 if new_deposit_remain != old_deposit_remain:
                    # depozīta atlikums
                     if new_deposit_remain > 0:
                        if insurance_cash > 0 and gift_card > 0:
                             new_deposit = Deposit( d_user = args['username'], d_client = cli, d_reason="Dāvanu karte + Apdrošināšana", d_added = new_deposit_remain, d_remain = new_deposit_remain )
+                            save_deposit = True
                        elif insurance_cash > 0:
                             new_deposit = Deposit( d_user = args['username'], d_client = cli, d_reason="Apdrošināšana", d_added = new_deposit_remain, d_remain = new_deposit_remain )
+                            save_deposit = True
                        elif gift_card > 0:
                             new_deposit = Deposit( d_user = args['username'], d_client = cli, d_reason="Dāvanu karte", d_added = new_deposit_remain, d_remain = new_deposit_remain )
+                            save_deposit = True
                       # depozīts izmantots
                        else:
                             new_deposit = Deposit( d_user = args['username'], d_client = cli, d_reason="Izmantots pirkumam", d_added = 0, d_remain = new_deposit_remain )
@@ -177,16 +175,25 @@ def subscription_purchase(request):
                # save new Abonementi object
                 new_subscr.save()
 
-
                # ===================================
                # PREPARING TO CREATE PURCHASE OBJECT
                 if insurance_comp == "":
-                    new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
+                    if save_deposit:
+                        new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
+                                                   from_deposit=from_deposit, from_gift_card=gift_card, insurance_cash=insurance_cash,
+                                                   transfer=transfer_chk, final_price=final, deposit=new_deposit )
+                    else:
+                        new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
                                                    from_deposit=from_deposit, from_gift_card=gift_card, insurance_cash=insurance_cash,
                                                    transfer=transfer_chk, final_price=final )
                 else:
                     insurance_comp = Apdrosinataji.objects.get( id = int(insurance_comp) )
-                    new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
+                    if save_deposit:
+                        new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
+                                                   from_deposit=from_deposit, from_gift_card=gift_card, insurance=insurance_comp, insurance_cash=insurance_cash,
+                                                   transfer=transfer_chk, final_price=final, deposit=new_deposit )
+                    else:
+                        new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
                                                    from_deposit=from_deposit, from_gift_card=gift_card, insurance=insurance_comp, insurance_cash=insurance_cash,
                                                    transfer=transfer_chk, final_price=final )
                 new_purchase.save()

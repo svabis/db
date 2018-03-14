@@ -23,11 +23,21 @@ $(function(){
         }
     });
 });
+
+// disable drag
+$(document).ready(function () {
+  document.getElementById("topNavbar").ondragstart = function() { return false; };
+  document.getElementById("topNavbar").onselectstart = function() { return false; };
+  document.getElementById("topNavbar").onmousedown = function() { return false; };
+});
+
 </script>
 
   <style>
-  .navbar-xs .navbar-default .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu { background-color: #ccc; }
   .navbar-default { background-color: #ccc; border-bottom: 1px solid #ddd !important; }
+  .navbar-xs .navbar-default .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu { background-color: #ccc; }
+  .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus { background-color: #999; }
+
   .divider-vertical { height: 50px; border-right: 2px solid #ccc; }
 
   .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {  background-color: #9b9da0; }
@@ -62,10 +72,7 @@ $(function(){
 <nav class="navbar-xs navbar-default">
 
 <div class="collapse navbar-collapse" id="topNavbar">
-<!-- <div class="navbar-xs navbar-default" id="topNavbar"> -->
  <ul class="nav navbar-nav navbar-xs">
-
-
 
   {% if active_tab_1 %}<li class="active">{% else %}<li>{% endif %}<a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true">
 </span></a></li><li class="divider-vertical"></li>
@@ -80,7 +87,7 @@ $(function(){
 <span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp;Kas klubā</a></li><li class="divider-vertical"></li>
 
 {% if admin %}
-  {% if active_tab_5 %}<li class="active">{% else %}<li>{% endif %}<a href="#"><span class="glyphicon glyphicon-folder-open" aria-hidden="true">
+  {% if active_tab_5 %}<li class="active">{% else %}<li>{% endif %}<a href="#" onclick="focusID();"><span class="glyphicon glyphicon-folder-open" aria-hidden="true">
 </span> &nbsp;Atskaites</a></li><li class="divider-vertical"></li>
 {% endif%}
 

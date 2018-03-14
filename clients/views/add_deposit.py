@@ -10,10 +10,15 @@ from database.args import create_args
 
 #==================================================================
 # !!!!! Deposit Add !!!!!
-def add_deposit(request):
+def add_deposit(request, back):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    if int(back) == 0:
+        response = redirect("/client/edit/")
+    else:
+        response = redirect("/")
 
    # Get Active client from COOKIE
     if "active_client" in request.COOKIES:
@@ -33,4 +38,5 @@ def add_deposit(request):
                 temp.save()
         except:
             pass
-    return redirect("/client/edit/")
+    return response
+#redirect("/client/edit/")

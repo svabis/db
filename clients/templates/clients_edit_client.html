@@ -100,16 +100,16 @@ function deposit() {
   document.getElementById("deposit_add").value = "\u20AC " + deposit_cash_amount.toFixed(2);
 
   if ( deposit_cash_amount != "" && deposit_reason.length > 4 ) {
-    $("#deposit_ok").show();
+    $("#deposit_ok").removeAttr('disabled');
   } else {
-    $("#deposit_ok").hide();
+    $("#deposit_ok").prop('disabled', 'disabled');
   }
 }
 </script>
 
 <!-- Deposit Modal START -->
 <div class="modal fade" id="DepositModal" tabindex="-1" role="dialog" aria-hidden="true">
- <form action="/client/deposit/add/" method=POST>{% csrf_token %}
+ <form action="/client/deposit/add/0/" method=POST>{% csrf_token %}
 <div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
 <div class="modal-header">
  <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>&nbsp;Pievienot klientam depozītu</h3>
@@ -124,7 +124,7 @@ function deposit() {
  </center>
 </div>
 <div class="modal-footer">
- <input class="btn btn-danger" id="deposit_ok" type="submit" value="Pievienot depozītu" style="display: none;">
+ <input class="btn btn-danger" id="deposit_ok" type="submit" value="Pievienot depozītu" disabled>
  <button id="deposit_cancel" type="button" class="btn btn-success" data-dismiss="modal">Atcelt</button>
 </div></div></div>
  </form>
@@ -369,7 +369,7 @@ $(document).ready(function(){ var date_input=$('input[name="disabled_until"]');
 <!-- KOLONA 2 RINDA 1 -->
    <div class="row">
     <div class="col-sm-4 col-md-4 col-lg-4">
-     <a href="/subscription/history/">
+     <a href="/subscription/history/0/">
       <button type="button" class="btn btn-info" style="min-width: 200px; max-width: 200px;">Abonementu vēsture</button>
      </a>
     </div>

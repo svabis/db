@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 from datetime import datetime
 
-from clients.models import Klienti # abonementa īpašnieks
+from clients.models import Klienti, Deposit # abonementa īpašnieks
 
 from setup.models import Apdrosinataji
 
@@ -131,17 +131,15 @@ class Abonementu_Apmaksa(models.Model):
     discount_price = models.DecimalField( max_digits = 5, decimal_places = 2 ) # cena ar atlaidi
 #---
     from_deposit = models.DecimalField( max_digits = 5, decimal_places = 2 ) # summa no depozīta
+    deposit = models.ForeignKey( Deposit, blank=True, null=True ) # depozīta objekts
 #---
     from_gift_card = models.DecimalField( max_digits = 5, decimal_places = 2 ) # summa no dāvanu kartes
 #---
     insurance = models.ForeignKey( Apdrosinataji, blank=True, null=True ) # apdrošinātājs
     insurance_cash = models.DecimalField( max_digits = 5, decimal_places = 2 ) # sedz apdrošinātājs
 #---
-#    cash = models.BooleanField( default = False ) # skaidra nauda
-#    card = models.BooleanField( default = False ) # kredītkarte
     transfer = models.BooleanField( default = False ) # pārskaitījums
 #---
-#    additonal_discount = models.BooleanField( default = False ) # papildus atlaide
     final_price = models.DecimalField( max_digits = 5, decimal_places = 2 ) # gala cena
 
     def __unicode__(self):
@@ -162,4 +160,6 @@ class Abonementu_Iesalde(models.Model):
 #---
     activate_before = models.DateTimeField( blank = True, null = True ) # derīgs aktivācijai līdz
     best_before = models.DateTimeField( blank = True, null = True ) # derīgs līdz
-
+#---
+    freeze_from = models.DateField( blank = True, null = True )
+    freeze_until = models.DateField( blank = True, null = True )

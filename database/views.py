@@ -8,7 +8,7 @@ from database.args import create_args
 from setup.models import Settings
 
 # Klienta modelis
-from clients.models import Klienti
+from clients.models import Klienti, Deposit
 
 # Skapīši modelis
 from lockers.models import Skapji, Skapji_history
@@ -44,13 +44,14 @@ def main(request):
     if args['loged_in'] == False:
         return redirect("/login/")
 
+    card_scanned = False
+
     args.update(csrf(request))      # ADD CSRF TOKEN
 
    # SETTINGS
     args['woman_locker_color'] = Settings.objects.get( key = "woman locker color" ).value
     args['man_locker_color'] = Settings.objects.get( key = "man locker color" ).value
     args['card_string'] = Settings.objects.get( key = "card string" ).value
-
 
     args['active_tab_1'] = True
 
@@ -92,6 +93,8 @@ def main(request):
             args['message_code_1'] = True
             client = False
 
+       # Data received from card scanner
+        card_scanned = True
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # !!!!!    "mesages displayed"    !!!!!
@@ -133,6 +136,12 @@ def main(request):
     if client != False:
         args['client'] = client
 
+       # dpozīts
+        try:
+            args['deposit_amount'] = Deposit.objects.filter( d_client = client ).order_by('-d_date')[0]
+        except:
+            args['deposit_amount'] = 0
+
        # Skapīša info
         try:
            # Skapītis piešķirts
@@ -169,6 +178,10 @@ def main(request):
 
 
     response = render_to_response ( 'main_content.html', args )
+
+    if card_scanned:
+        response.delete_cookie('search_client')
+
     try:
         response.set_cookie( key='active_client', value=client.id )
     except:

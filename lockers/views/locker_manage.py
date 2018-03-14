@@ -123,7 +123,10 @@ def locker_checkin(request, gender, locker_nr, abon_id):
 
                     SubscriptionUse( check.active.id )
 
-                    new_checkin = Skapji( number = locker_nr, locker_type = gender, client = client )
+                    if "search_client" in request.COOKIES:
+                        new_checkin = Skapji( number = locker_nr, locker_type = gender, client = client, no_card = True )
+                    else:
+                        new_checkin = Skapji( number = locker_nr, locker_type = gender, client = client, no_card = False )
                     new_checkin.save()
 
     return redirect ('/')

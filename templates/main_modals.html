@@ -3,6 +3,14 @@
 {% block main_view %}
 
 <script>
+// disable drag
+$(document).ready(function () {
+  document.getElementById("info").ondragstart = function() { return false; };
+  document.getElementById("info").onselectstart = function() { return false; };
+  document.getElementById("info").onmousedown = function() { return false; };
+});
+
+
 {% if client %}
 // detect idle state keyboard & mouse
 var idleTime = 0;
@@ -30,6 +38,13 @@ function focusID() {
   $("#id").focus();
 }
 
+// Cancel Freeze Modal
+function cancelFreeze() {
+ $("#FreezeCancelModal").modal('show');
+ $("#FreezeCancelModal").on('shown.bs.modal', function(event) { $("#unfreeze_button").focus(); });
+}
+function unFreeze() { window.location.href = "/subscription_unfreeze/"; }
+
 // clearID
 function clearID() { window.location.href = "/clear_id/"; }
 
@@ -39,29 +54,28 @@ function checkOut() { window.location.href = "/lockers/checkout/"; }
 $(document).ready(function(){
 {% if message %}
  $("#MesageModal").modal('show');
- document.getElementById("closeMesageModal").focus();
-
+ $("#MesageModal").on('shown.bs.modal', function(event) { $("#closeMesageModal").focus(); });
  {% if message_code_5 %}{% else %}
  setTimeout(function(){ $("#MesageModal").modal('hide'); } , 2000);{% endif %}{% endif %}
 
 {% if notes_updated %}
  $("#ClientModal").modal('show');
- document.getElementById("closeClientModal").focus();
+ $("#ClientModal").on('shown.bs.modal', function(event) { $("#closeClientModal").focus(); });
  setTimeout(function(){ $("#ClientModal").modal('hide'); } , 1000); {% endif %}
 
 {% if subscription_purchased %}
  $("#ClientModal").modal('show');
- document.getElementById("closeClientModal").focus();
+ $("#ClientModal").on('shown.bs.modal', function(event) { $("#closeClientModal").focus(); });
  setTimeout(function(){ $("#ClientModal").modal('hide'); } , 1000); {% endif %}
 
 {% if new_client %}
  $("#ClientModal").modal('show');
- document.getElementById("closeClientModal").focus();
+ $("#ClientModal").on('shown.bs.modal', function(event) { $("#closeClientModal").focus(); });
  setTimeout(function(){ $("#ClientModal").modal('hide'); } , 1000); {% endif %}
 
 {% if edit_client %}
  $("#ClientModal").modal('show');
- document.getElementById("closeClientModal").focus();
+ $("#ClientModal").on('shown.bs.modal', function(event) { $("#closeClientModal").focus(); });
  setTimeout(function(){ $("#ClientModal").modal('hide'); } , 1000); {% endif %}
 
 
@@ -71,7 +85,6 @@ $(document).ready(function(){
 
 {% if message_code_5 %}
 document.getElementById("avatar").style.borderColor = "#0480be";
-//document.getElementById("klienta-dati").style.background = "#dff0d8";
 {% else %}
 
 // ja: aktīvs abonements, nav iečekots, kļūdu kartiņā nav -->
@@ -136,9 +149,7 @@ $(document).keypress(function (e) {
 // Allow only check-out
   {% if checked == True %}
      $("#CheckoutModal").modal('show');
-     $("#CheckoutModal").on('shown.bs.modal', function(event) {
-       $("#checkout_button").focus();
-     });
+     $("#CheckoutModal").on('shown.bs.modal', function(event) { $("#checkout_button").focus(); });
   {% endif %}
   {% else %}
 
@@ -146,9 +157,7 @@ $(document).keypress(function (e) {
 // if no message errors -->
   {% if checked == True %}
        $("#CheckoutModal").modal('show');
-       $("#CheckoutModal").on('shown.bs.modal', function(event) {
-         $("#checkout_button").focus();
-       });
+       $("#CheckoutModal").on('shown.bs.modal', function(event) { $("#checkout_button").focus(); });
   {% elif abon_active != True %}
        window.location.href = "/subscription/";
   {% elif abon_active == True %}
@@ -166,7 +175,52 @@ $(document).keypress(function (e) {
       e.preventDefault(); char_count++;
     } else { char_count = 0; temp_string = ""; } } 
 });
+
+
+// Deposit
+function deposit_money() { $("#DepositModal").modal('show'); }
+var deposit_cash_amount;
+var deposit_reason;
+function deposit() {
+  deposit_reason = document.getElementById("deposit_reason").value
+  deposit_cash_amount = document.getElementById("deposit_add").value;
+  deposit_cash_amount = deposit_cash_amount.replace(",", ".");
+  deposit_cash_amount = deposit_cash_amount.replace(/[^\d.-]/g, '');
+  deposit_cash_amount = Number( Number( deposit_cash_amount ).toFixed(2) );
+  document.getElementById("deposit_add").value = "\u20AC " + deposit_cash_amount.toFixed(2);
+
+  if ( deposit_cash_amount != "" && deposit_reason.length > 4 ) {
+    $("#deposit_ok").removeAttr('disabled');
+  } else {
+    $("#deposit_ok").prop('disabled', 'disabled');
+  }
+}
 </script>
+
+
+<!-- Deposit Modal START -->
+<div class="modal fade" id="DepositModal" tabindex="-1" role="dialog" aria-hidden="true">
+ <form action="/client/deposit/add/1/" method=POST>{% csrf_token %}
+<div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
+<div class="modal-header">
+ <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span>&nbsp;Pievienot klientam depozītu</h3>
+</div>
+<div class="modal-body">
+<!-- <style>.input-numeral { text-align: right; }</style> -->
+ <center>
+  <label for="deposit_reason" style="text-align: left;">Pamatojums:</label>
+  <input type="text" class="form-control" id="deposit_reason" name="deposit_reason" onchange="deposit();">
+  <label for="deposit_add" style="text-align: left;">Summa:</label>
+  <input type="text" class="form-control input-numeral" id="deposit_add" name="deposit_add" onchange="deposit();">
+ </center>
+</div>
+<div class="modal-footer">
+ <input class="btn btn-danger" id="deposit_ok" type="submit" value="Pievienot depozītu" disabled>
+ <button id="deposit_cancel" type="button" class="btn btn-success" data-dismiss="modal">Atcelt</button>
+</div></div></div>
+ </form>
+</div>
+<!-- Deposit Modal END -->
 
 
 <!-- ClientModal Modal START -->
@@ -197,12 +251,23 @@ $(document).keypress(function (e) {
  <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Izčekot klientu ?</h3>
 </div>
 <div class="modal-footer">
-<!-- <a id="checkout_link" href="/lockers/checkout/"> -->
   <button id="checkout_button" type="button" class="btn btn-success" style="min-width: 100px; max-width: 100px;" onclick="checkOut();">Jā</button>
-<!-- </a> -->
   <button id="checkot_cancel" type="button" class="btn btn-danger" data-dismiss="modal" style="min-width: 100px; max-width: 100px;">Atcelt</button>
 </div></div></div></div>
 <!-- Checkout Modal END -->
+
+
+<!-- FreezeCancel Modal START -->
+<div class="modal fade" id="FreezeCancelModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog" style="margin-top: 100px"><div class="modal-content">
+<div class="modal-header" style="padding:9px 15px; border-bottom:1px solid #eee; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #0480be;">
+ <h3 style="margin-top:5px; margin-bottom:5px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Atcelt Iesaldi ?</h3>
+</div>
+<div class="modal-footer">
+  <button id="unfreeze_button" type="button" class="btn btn-success" style="min-width: 200px; max-width: 200px;" onclick="unFreeze();">Atcelt iesaldi</button>
+  <button id="unfreeze_cancel" type="button" class="btn btn-danger" data-dismiss="modal" style="min-width: 100px; max-width: 100px;">Atpakaļ</button>
+</div></div></div></div>
+<!-- FreezeCancel Modal END -->
 
 
 {% if message %}

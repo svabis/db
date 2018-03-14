@@ -27,33 +27,10 @@ class Command(BaseCommand):
        clients = Klienti.objects.all()
 
        frozen = []
+       freeze_cancel = 0
        counter = 0
 
        for c in clients:
-           changes = 0
-
            if c.frozen:
-               frozen.append( c )
-
-           if isinstance( c.frozen_from, date ) == True:
-#               if c.frozen_from >= date.today():
-                   changes = 1
-
-           if isinstance( c.frozen_until, date ) == True:
-#               if c.frozen_until < date.today():
-                   changes += 1
-
-           if changes != 0:
                print c
-               print changes
-               counter += 1
-
-
-       print
-       print "COUNTER\t" + str(counter)
-
-       print
-       print
-       for f in frozen:
-           print f
 

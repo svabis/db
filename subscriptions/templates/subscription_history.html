@@ -20,15 +20,13 @@
   {% if d.active == True and d.ended == False %}<tr class="warning">{% endif %}
   {% if d.ended == True %}<tr class="danger">{% endif %}
    <td>{{ d }}</td>
-   <td>{{ d.purchase_date|date:"d/m/Y H:i" }}</td>
-   <td {% if d.active == False %}style="text-align: center;"{% endif %}>
-    {% if d.active %}{{ d.activation_date|date:"d/m/Y H:i" }}{% else %}<b>Nav aktivizēts</b>{% endif %}
-   </td>
+   <td>{{ d.purchase_date|date:"Y-m-d H:i" }}</td>
+   <td>{% if d.active %}{{ d.activation_date|date:"Y-m-d H:i" }}{% else %}<b>&nbsp;&nbsp;Nav aktivizēts</b>{% endif %}</td>
    <td>
-    {% if d.active and d.ended == False %}{{ d.best_before|date:"d/m/Y H:i" }}
-    {% elif d.active == False and d.ended == False %}{{ d.activate_before|date:"d/m/Y H:i" }}
-    {% elif d.active and d.ended %}<b style="color:red">{{ d.best_before|date:"d/m/Y H:i" }}</b>
-    {% elif d.active == False and d.ended %}<b style="color:red">{{ d.activate_before|date:"d/m/Y H:i" }}</b>{% endif %}
+    {% if d.active and d.ended == False %}{{ d.best_before|date:"Y-m-d H:i" }}
+    {% elif d.active == False and d.ended == False %}{{ d.activate_before|date:"Y-m-d H:i" }}
+    {% elif d.active and d.ended %}<b style="color:red">{{ d.best_before|date:"Y-m-d H:i" }}</b>
+    {% elif d.active == False and d.ended %}<b style="color:red">{{ d.activate_before|date:"Y-m-d H:i" }}</b>{% endif %}
    </td>
    <td style="text-align: center;">{% if d.times_count %}{{ d.times_count }}{% else %}-{% endif %}</td>
    <td>&euro; {{ d.price|floatformat:2 }}</td>

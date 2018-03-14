@@ -21,13 +21,19 @@ import math
 
 #============================================================
 # !!!!! SUBSCRIPTION HISTORY !!!!!
-def subscription_history(request, pageid = 1):
+def subscription_history(request, pageid = 1, back = 0):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
 
     if args['loged_in'] == False:
         return redirect("/login/")
+
+    args['back_nr'] = int(back)
+    if int(back) == 0:
+        args['back'] = "/client/edit/"
+    else:
+        args['back'] = "/"
 
     results_per_page = int(Settings.objects.get( key = "search results on page" ).value)
 

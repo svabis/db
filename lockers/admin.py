@@ -4,7 +4,7 @@ from lockers.models import *
 
 # !!!!! Skapji !!!!!
 class SkapjiAdmin(admin.ModelAdmin):
-    list_display = ['number', 'locker_type', 'checkin_time', 'client']
+    list_display = ['number', 'locker_type', 'no_card', 'checkin_time', 'client']
     list_filter = ['locker_type']
 
 

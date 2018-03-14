@@ -16,8 +16,12 @@ class Skapji(models.Model):
 
     number = models.CharField( max_length = 3 )
     locker_type = models.CharField( max_length = 1, choices = GENDER_CHOISE )
-    checkin_time = models.DateTimeField( default = timezone.now )
+
+    no_card = models.BooleanField( default=False )
+
     client = models.ForeignKey( Klienti , related_name='locker_client' )
+
+    checkin_time = models.DateTimeField( default = timezone.now )
 
     def __unicode__(self):
         return u'%s' % (self.number)

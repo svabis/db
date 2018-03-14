@@ -25,7 +25,9 @@ def persons_in_club(request):
     args['man_locker_color'] = Settings.objects.get( key = "man locker color" ).value
 
     args['active_tab_4'] = True
-    args['data'] = Skapji.objects.all().order_by( 'checkin_time' )
+
+    args['data_no_card'] = Skapji.objects.filter( no_card = True ).order_by( 'checkin_time' )
+    args['data'] = Skapji.objects.filter( no_card = False ).order_by( 'checkin_time' )
 
     return render_to_response ( 'in_club.html', args )
 

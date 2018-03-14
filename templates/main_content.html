@@ -89,12 +89,6 @@
 
 <!-- Klienta info MODULIS START  -->
 
-<!--
-zils #d2dff4
-sarkans #f2dede
-zalš #dff0d8
--->
-
    <div class="col-sm-6 col-md-6 col-lg-6">
     <div id="klienta-dati" class="container-fluid" style="background: #d2dff4; border: solid #ccc 1px; margin-bottom: 10px;">
      Informācija par klientu:<br><br>
@@ -105,8 +99,12 @@ zalš #dff0d8
 
 {% if client %}
  {% if active_subscription %}Pašlaik pieejamais abonements:<br>
- {% else %}Nav abonementa!<br>{% endif %}
+ {% elif client.frozen %}{% else%}Nav abonementa!<br>{% endif %}
 <b>{{ active_subscription }}</b>{% endif %}<br><br>
+
+{% if client.frozen %}
+ <center><button type="button" class="btn btn-info" onclick="cancelFreeze();">Atcelt Iesaldi</button></center>
+{% endif %}
 
 {% if client %}
  {% if active_subscription.active == False %}Abonements jāaktivizē līdz:
@@ -144,7 +142,7 @@ zalš #dff0d8
      </div>
      <div class="col-sm-6 col-md-6 col-lg-6">
       <center>
-       <a href="/subscription/history/">
+       <a href="/subscription/history/1/">
         <button type="button" class="btn btn-warning" style="min-width: 200px; max-width: 200px;">Abonementu vēsture <span class="badge"> {{ sub_count }}</span></button>
        </a>
       </center>
@@ -179,16 +177,45 @@ zalš #dff0d8
 
 
 <!-- KOLONA 2 START -->
- <div class="col-sm-5 col-md-5 col-lg-5" style="border: solid #ccc 1px;">
+ <div id="info" class="col-sm-5 col-md-5 col-lg-5" style="border: solid #ccc 1px;">
 
 {% if client %}
   <a href="/subscription/">
    <button type="button" class="btn btn-success" style="margin-top: 8px;" {% if client %}{% if client.frozen %}disabled{% endif %}{% else %}disabled{% endif %}>Pirkt abonementu</button>
   </a>
+
+  <hr style="border-top: 1px solid green; margin-top: 8px;">
+
+  <div class="row">
+   <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 18px;">
+    <div class="form-group text-right" style="margin-bottom: 0px;">
+     <label id="id_deposit_label">Depozīts:</label>
+    </div>
+   </div>
+   <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 12px;">
+    <div class="input-group">
+     <input class="form-control" id="id_deposit" name="deposit" readonly="readonly" type="text" value="{{ deposit_amount.d_remain|floatformat:2 }}">
+     <span class="input-group-btn">
+      <button class="btn btn-warning" type="button" onclick="deposit_money();">
+       <span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
+      </button>
+     </span>
+    </div>
+   </div>
+  </div>
+
+  <hr style="border-top: 1px solid green; margin-top: 8px;">
 {% endif %}
 
   <div class="alert alert-success" role="alert" style="padding-top: 0px; padding-botom: 0px;  margin-top: 18px;">
-   <h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> &nbsp;&nbsp;&nbsp;Iesalde - sadaļā "Rediģēt" !</h3>
+   <h4 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> &nbsp;&nbsp;&nbsp;
+   Sadaļā <strong>"Kas klubā"</strong> virs sarkanās svītras ir tie klienti, kuri klubā ienākuši bez kartiņas!</h4>
+   <h4 style="margin-top: 3px; margin-bottom: 5px;"><center><small>(atrasti caur "Meklētāju")</small></center></h4>
+  </div>
+
+  <div class="alert alert-warning" role="alert" style="padding-top: 0px; padding-botom: 0px; margin-top: 20px; border-color: #ccc;">
+   <h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+   <strong>&nbsp;&nbsp;&nbsp;Iespējams nomainīt skapīti "neizčekojot" - klikškis uz skapīša (zem attēla)</strong></h3>
   </div>
 
   <div class="alert alert-info" role="alert" style="padding-top: 0px; padding-botom: 0px; margin-top: 18px;">
@@ -201,75 +228,13 @@ zalš #dff0d8
    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9658;&nbsp;telefons</strong></h5>
   </div>
 
-  <div class="alert alert-success" role="alert" style="padding-top: 0px; padding-botom: 0px; margin-top: 20px;">
-   <h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-   <strong>&nbsp;&nbsp;&nbsp;Liekam Klientiem statusus !<br><center>no jaunās un vecās sistēmas piezīmēm !</center></strong></h3>
-  </div>
-
-  <div class="alert alert-warning" role="alert" style="padding-top: 0px; padding-botom: 0px; border-color: #ccc;">
-   <h3 style="margin-top: 14px; margin-bottom: 2px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></h3>
-   <h5><strong>&nbsp;&nbsp;&nbsp;1. Pārbaudam klienta abonementu, ja ir tad ok...</strong></h5>
-   <h5><strong>&nbsp;&nbsp;&nbsp;2. Skatamies "Abonementu vēsture", varbūt ir abonements, bet cilvēks ieradies nelaikā.</strong></h5>
-   <h5><strong>&nbsp;&nbsp;&nbsp;3. Pārbaudam klientu vecajā sistēmā. Ja ir abonements, tad čekojam TUR.</strong></h5>
-  </div>
-
-  <div style="margin-top: 60px;"></div>
-
-<!--
-<h3>message: {{ message }}</h3>
-<h3>message type: {{ message_type }}</h3>
-<h3>message_code_1: {{ message_code_1 }}</h3>
-<h3>message_code_2: {{ message_code_2 }}</h3>
-<h3>message_code_3: {{ message_code_3 }}</h3>
-<h3>message_code_4: {{ message_code_4 }}</h3>
--->
+  <div style="margin-top: 192px;"></div>
 
 <!--
   <a href="#">
    <button type="button" class="btn btn-warning pull-right" style="margin-top: 8px;" {% if client %}{% else %}disabled{% endif %}>Pirkt klienta karti</button>
   </a>
 -->
-
- <!-- EDIJA KIOSKS START -->
-<!--
- <div ng-app="kiosks" ng-controller="main_ctrl">
-  <div class="row solarijs" style="border: solid red 1px;">
-   <h4 class="text-center" style="margin-bottom: 0px;">Vertikālais Solarijs</h4>
-   <div id="precu-cont">
-    <div id="vSolarijaBloks" ng-repeat="x in vSolarijs">
-     <p ng-click="izveletaisSolarijs(x)"></p>
-     <h6 style="margin-left:2px; text-align:left">Min: {% verbatim %} {{x.minutes}} {% endverbatim %}</h6>
-     <h6 style="margin-left:2px; text-align:left">Cena: {% verbatim %} {{x.cena}} {% endverbatim %} &euro;</h6>
-    </div>
-   </div>
-  </div>
-  <div class="row solarijs"  style="border: solid red 1px;">
-   <h4 class="text-center" style="margin-bottom: 0px;">Horizontālais Solarijs</h4>
-   <div id="precu-cont">
-    <div id="vSolarijaBloks" ng-repeat="y in hSolarijs">
-     <p ng-click="izveletaisSolarijs(y)"></p>
-     <h6 style="margin-left:2px; text-align:left">Min: {% verbatim %} {{y.minutes}} {% endverbatim %}</h6>
-     <h6 style="margin-left:2px; text-align:left">Cena: {% verbatim %} {{y.cena}} {% endverbatim %} &euro;</h6>
-    </div>
-   </div>
-  </div>
- </div>
--->
- <!-- EDIJA KIOSKS START -->
-<!--
-  <div style="border: solid red 1px;">
-   <h4>Preces</h4>
-  </div>
-
-  <div class="text-right" style="border: solid red 1px;">
-   <h4>summa</h4>
-  </div>
-
-  <a href="#">
-   <button type="button" class="btn btn-success pull-right">Apmaksāt</button>
-  </a>
--->
-
  </div>
 <!-- KOLONA 2 END -->
 

@@ -14,7 +14,7 @@ urlpatterns = [
 #==============================================================================
 
 # Add Deposit
-    url(r'^deposit/add/$', 'clients.views.add_deposit'),
+    url(r'^deposit/add/(?P<back>\d+)/$', 'clients.views.add_deposit'),
 
 # Blacklist
     url(r'^blacklist/add/$', 'clients.views.add_to_blacklist'),

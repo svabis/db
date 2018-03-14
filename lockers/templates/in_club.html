@@ -20,7 +20,7 @@ $(document).ready(function () {
 function timerIncrement() {
     idleTime = idleTime + 1;
     if (idleTime > 1) { // 1 minutes
-       clearID();
+       window.location.href = "/lockers/taken/";
     }
 }
 
@@ -49,6 +49,22 @@ jQuery(document).ready(function($) {
   </tr>
  </thead>
  <tbody>
+{% for d in data_no_card %}
+  <tr class="clickable-row">
+   <td style="display:none;">{{ d.client.id }}</td>
+   <td>{{ d.client.name }}</td>
+   <td>{{ d.client.surname }}</td>
+   <td {% if d.locker_type == "V" %}style="background: {{ man_locker_color }};"{% else %}style="background: {{ woman_locker_color }};"{% endif %}>
+    <center>{{ d.locker_type }} {{ d.number }}</center>
+   </td>
+   <td>{{ d.checkin_time }}</td>
+  </tr>
+{% endfor %}
+
+{% if data_no_card %}
+  <tr><td colspan="4"><hr style="border-top: 3px solid red; margin: 0px;"></td></tr>
+{% endif %}
+
 {% for d in data %}
   <tr class="clickable-row">
    <td style="display:none;">{{ d.client.id }}</td>
