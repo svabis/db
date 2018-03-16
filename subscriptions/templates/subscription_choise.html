@@ -21,9 +21,6 @@ function isSelected() {
 
 jQuery(document).ready(function($) {
   $(document).keyup(function (e) {
-
-    isSelected()
-
     // ESC 27
     if ( e.keyCode === 27 ) {
       window.location.href = "{{ back }}";
@@ -125,8 +122,22 @@ jQuery(document).ready(function($) {
  </div>
 </div>
 
+<script>
+var multiplyer = Number(1);
+function multiply() {
+  multiplyer = multiplyer + Number(1);
+  if ( multiplyer > 5 ) { multiplyer = Number(1); }
+  document.getElementById("multiply_input").value = multiplyer;
+  document.getElementById("multiply_button").innerHTML = "x" + multiplyer;
+}
+</script>
+
+<input id="multiply_input" type="hidden" name="multiplicator" value="1">
+
 <!-- RINDA 3 -->
 <div class="row text-right" style="margin-top: 10px;">
+ <button id="multiply_button" type="button" class="btn btn-success" style="margin-right: 30px;" onclick="multiply();">x1</button>
+
  <input id="submit_buton" type="submit" class="btn btn-success" style="min-width: 150px; max-width: 150px;" value="Pirkt" disabled>
  <a href="{{ back }}"><button type="button" class="btn btn-danger" style="min-width: 150px; max-width: 150px;">Atcelt</button></a>
 </div>

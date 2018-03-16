@@ -7,15 +7,13 @@
 <script>
 // variables for calculation
  var subscription_discount, deposit_temp, deposit_remain, deposit_used, price_after_deposit_used, price_after_deposit_used_temp;
-
  var gift_card = Number( 0 );
-
  var insurance_amount = Number( 0 ); var insurance_select;
-
  var deposit_total = Number( {{ deposit }} );
  var deposit_total_temp;
  var subscription_initial = Number( {{ subscr_price }} );
  var discount = Number( {{ initial_discount }} );
+ var use_deposit = true;
 
 $(document).ready(function () { calculateAll(); });
 
@@ -34,8 +32,6 @@ function calculateAll() {
   insurance_amount = insurance_amount.replace(/[^\d.-]/g, '');
   insurance_amount = Number( Number( insurance_amount ).toFixed(2) );
 
-// ADD INSURANCE DROPLIST TOGLE
-
   if ( true == {{ discount_available }} ) {
     subscription_discount = Number( (Number( subscription_initial - ( ( subscription_initial / 100 ) * discount ) )).toFixed(2) );
     document.getElementById("id_subscripton_price_status_discount").value = discount + " %";
@@ -44,53 +40,57 @@ function calculateAll() {
     document.getElementById("id_subscripton_price_status_discount").value = "nav";
   }
 
-  deposit_temp = Number( ( deposit_total - subscription_discount ).toFixed(2) );
-  if ( Number(deposit_temp) > Number (0) ) {
-    deposit_remain = deposit_temp;
-    deposit_used = Number( ( deposit_total - deposit_temp ).toFixed(2) );
+  if ( use_deposit == false ) {
+    // Do not use depopit
+    deposit_remain = deposit_total;
+    deposit_used = Number(0);
+    price_after_deposit_used = Number( Number( subscription_discount - gift_card - insurance_amount ).toFixed(2) );
   } else {
-    deposit_remain = Number( 0 );
-    deposit_used = Number( deposit_total );
+
+   deposit_temp = Number( ( deposit_total - subscription_discount ).toFixed(2) );
+   if ( Number(deposit_temp) > Number (0) ) {
+     deposit_remain = deposit_temp;
+     deposit_used = Number( ( deposit_total - deposit_temp ).toFixed(2) );
+   } else {
+     deposit_remain = Number( 0 );
+     deposit_used = Number( deposit_total );
+   }
+
+   price_after_deposit_used = Number( ( subscription_discount - deposit_used ).toFixed(2) );
+
+   if ( price_after_deposit_used - gift_card - insurance_amount == 0 ) {
+     price_after_deposit_used = Number( 0 );
+   } else {
+     if ( price_after_deposit_used - gift_card - insurance_amount > 0 ) {
+       price_after_deposit_used = Number( ( subscription_discount - deposit_used - gift_card - insurance_amount ).toFixed(2) );
+     } else {
+       deposit_total_temp = Number( Math.abs(( subscription_discount - deposit_used - gift_card - insurance_amount )).toFixed(2) );
+       if ( ( subscription_discount == deposit_used ) && ( deposit_remain > Number(0) ) ) {
+          deposit_remain = deposit_remain + deposit_total_temp;
+       } else {
+          if ( ( subscription_discount - deposit_used ) == Number(0) ) {
+            deposit_remain = deposit_remain + deposit_total_temp;
+          } else {
+            deposit_remain = deposit_total - deposit_used + deposit_total_temp;
+          }
+       }
+       price_after_deposit_used = Number( 0 );
+     }
+   }
   }
 
-  price_after_deposit_used = Number( ( subscription_discount - deposit_used ).toFixed(2) );
-
-console.log(deposit_total);
-
-  if ( price_after_deposit_used - gift_card - insurance_amount == 0 ) {
-//    console.log("1. depozīts + D + I nosedz pilnībā");
-    price_after_deposit_used = Number( 0 );
-  } else {
-    if ( price_after_deposit_used - gift_card - insurance_amount > 0 ) {
-//      console.log("2. nepietiek no depozīta");
-      price_after_deposit_used = Number( ( subscription_discount - deposit_used - gift_card - insurance_amount ).toFixed(2) );
-    } else {
-//      console.log("2.3. papildina ar rezervi, rezerve D + I iet klāt depozītam");
-      deposit_total_temp = Number( Math.abs(( subscription_discount - deposit_used - gift_card - insurance_amount )).toFixed(2) );
-
-      if ( ( subscription_discount == deposit_used ) && ( deposit_remain > Number(0) ) ) {
-//         console.log("2.3.1 depozīts nosedz cenu un/vai vēl paliek pāri");
-         deposit_remain = deposit_remain + deposit_total_temp;
-      } else {
-//         console.log("2.3.2 depozīts nenosedz cenu");
-
-         if ( ( subscription_discount - deposit_used ) == Number(0) ) {
-           deposit_remain = deposit_remain + deposit_total_temp;
-         } else {
-           deposit_remain = deposit_total - deposit_used + deposit_total_temp;
-         }
-      }
-      price_after_deposit_used = Number( 0 );
-    }
-  }
-
-  document.getElementById("id_subscripton_price").value = "\u20AC " + subscription_initial.toFixed(2);
   document.getElementById("deposit_remain").value = "\u20AC " + deposit_remain.toFixed(2);
   document.getElementById("deposit_used").value = "\u20AC " + deposit_used.toFixed(2);
-  document.getElementById("id_price_to_pay").value = "\u20AC " + subscription_discount.toFixed(2); // price_after_deposit_used.toFixed(2);
+  document.getElementById("id_subscripton_price").value = "\u20AC " + subscription_initial.toFixed(2);
+  document.getElementById("id_price_to_pay").value = "\u20AC " + subscription_discount.toFixed(2);
   document.getElementById("id_gift_card_ammount").value = "\u20AC " + gift_card.toFixed(2);
   document.getElementById("id_insurance_ammount").value = "\u20AC " + insurance_amount.toFixed(2);
   document.getElementById("id_total_price").value = "\u20AC " + price_after_deposit_used.toFixed(2);
+}
+
+function enableDiasableDeposit() {
+ if ( use_deposit == true ) { use_deposit = false; } else { use_deposit = true; }
+ calculateAll();
 }
 </script>
 
@@ -120,7 +120,14 @@ console.log(deposit_total);
 <input type="hidden" name="subscription" value="{{ chosen_subscr.id }}">
 <!-- <div class="row"> -->
 <!-- RINDA 1 -->
- <div class="col-lg-9 col-md-9 col-sm-9">
+
+ <div class="col-lg-1 col-md-1 col-sm-1">
+  <div class="form-group" style="margin-bottom: 5px;">
+   <input type="text" class="form-control input-lg" name="multiplicator" readonly="readonly" value="{{ multi }}x" style="margin-top: 25px; text-align: center;">
+  </div>
+ </div>
+
+ <div class="col-lg-8 col-md-8 col-sm-8">
   <div class="form-group" style="margin-bottom: 5px;">
    <label>Izvēlētā abonementa nosaukums:</label>
    <input type="text" class="form-control input-lg" id="id_subscripton" readonly="readonly" value="{{ chosen_subscr }}">
@@ -143,7 +150,6 @@ console.log(deposit_total);
    </div>
   </div>
  </div>
-
 
 <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
  <div class="col-lg-7 col-md-7 col-sm-7" style="padding-right: 0px; padding-left: 0px;">
@@ -180,7 +186,14 @@ console.log(deposit_total);
 <hr style="border-top: 1px solid green;">
 
 <div class="row">
- <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;"></div>
+ <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;">
+  <div class="col-lg-3 col-md-3 col-sm-3">
+   <input class="form-control" id="deposit_chk" name="transfer_chk" type="checkbox" onchange="enableDiasableDeposit();" checked>
+  </div>
+  <div class="col-lg-9 col-md-9 col-sm-9">
+   <label for="deposit_chk" style="margin-top: 10px;">Izmantot Depozītu</label>
+  </div>
+ </div>
 
  <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 10px;">
  </div>

@@ -9,7 +9,7 @@ from database.args import create_args
 from clients.models import Statusi
 
 # Setingi
-from setup.models import Settings
+from setup.models import Settings, Apdrosinataji
 
 
 def settings(request):
@@ -21,6 +21,9 @@ def settings(request):
         return redirect("/login/")
 
     args['active_tab_7'] = True
+
+   # Apdrošinātāji
+    args['insurance'] = Apdrosinataji.objects.all()
 
    # Klienti StatusType's
     args['status'] = Statusi.objects.all()

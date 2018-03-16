@@ -50,11 +50,15 @@ def subscription_payment(request):
 
    # Get Subscription Type from "Pirkt Abonementu" choise
     if request.POST:
+
+        multi = int(request.POST.get('multiplicator', ''))
+        args['multi'] = multi
+
         subscr_nr = int(request.POST.get('subscription', ''))
         chosen_sub = AbonementType.objects.get( id = subscr_nr )
         args['chosen_subscr'] = chosen_sub
 
-        args['subscr_price'] = str(chosen_sub.price).replace(",", ".")
+        args['subscr_price'] = str(chosen_sub.price * multi).replace(",", ".")
 
        # Ja nav "speciālais" abonements...
         if chosen_sub.discount == True:
@@ -112,6 +116,7 @@ def subscription_purchase(request):
                # read POST data
                 subscr_nr = int( request.POST.get('subscription', '') )
                 chosen_subscr = AbonementType.objects.get( id = subscr_nr )
+                multi = int( request.POST.get('multiplicator', '')[0] )
 
                 discount_price = request.POST.get('id_price_to_pay', '').split(" ")[1]
                 new_deposit_remain = float( request.POST.get('deposit_remain', '').split(" ")[1] )
