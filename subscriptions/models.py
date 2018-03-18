@@ -126,6 +126,8 @@ class Abonementu_Apmaksa(models.Model):
 #---
     client = models.ForeignKey( Klienti ) # abonementa īpašnieks
     subscr = models.ForeignKey( Abonementi ) # iegādātais abonements
+
+    count = models.IntegerField( default = 1 ) # skaits
 #---
     full_price = models.DecimalField( max_digits = 5, decimal_places = 2 ) # pilnā cena
     discount_price = models.DecimalField( max_digits = 5, decimal_places = 2 ) # cena ar atlaidi

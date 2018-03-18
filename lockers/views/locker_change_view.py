@@ -53,7 +53,17 @@ def locker_change(request):
     args['man_locker_color'] = Settings.objects.get( key = "man locker color" ).value
 
     lockers_filled = []
-    lockers_temp = Skapji.objects.filter( locker_type = client.gender )
+# !!!!!!!!!!!!!!!!
+# !!!!! ZERO !!!!!
+# !!!!!!!!!!!!!!!!
+    lockers_zero = Skapji.objects.filter( locker_type = client.gender, number = 0 ).count()
+    args['zero'] = lockers_zero
+    if lockers_zero > 4:
+        lockers_filled.append( 0 )
+# ----------------
+
+   # get locker numbers in use
+    lockers_temp = Skapji.objects.filter( locker_type = client.gender ).exclude( number = 0 )
     for n in lockers_temp:
         lockers_filled.append( int(n.number) )
 
@@ -66,7 +76,7 @@ def locker_change(request):
     lockers = []
    # MALE LOCKERS
     if client.gender == "V":
-       for i in range(1, int(Settings.objects.get( key = "man locker count" ).value) + 1 ):
+       for i in range(0, int(Settings.objects.get( key = "man locker count" ).value) + 1 ):
            if i not in lockers_filled:
                lockers.append([i,0])
            else:
@@ -74,7 +84,7 @@ def locker_change(request):
 
    # FEMALE LOCKERS
     else:
-       for i in range(1, int(Settings.objects.get( key = "woman locker count" ).value) + 1 ):
+       for i in range(0, int(Settings.objects.get( key = "woman locker count" ).value) + 1 ):
            if i not in lockers_filled:
                lockers.append([i,0])
            else:
@@ -99,13 +109,12 @@ def locker_changer(request, gender, locker_nr):
         c_id = int(request.COOKIES.get(str('active_client')))
         client = Klienti.objects.get( id = c_id )
 
-    if True:
-#    try:
+    try:
        # !!!!! GET Skapji object client is checked in already !!!!!
         locker = Skapji.objects.get( client = client )
         locker.number = locker_nr
         locker.save()
-#    except:
-#        pass
+    except:
+        pass
 
     return redirect ('/')

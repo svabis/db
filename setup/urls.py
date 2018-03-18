@@ -5,31 +5,22 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = [
-# ===============================================================
-# Setting
-#    url(r'^/(?P<abon_id>\d+)/$', 'lockers.views.locker'),
-
-# Skapīšu maiņas skats
-#    url(r'^/change/$', 'lockers.views.locker_change'),
-#    url(r'^/changer/(?P<gender>\w+)/(?P<locker_nr>\d+)/$', 'lockers.views.locker_changer'),
-
-# ===============================================================
-# Eksports
-#    url(r'^/history/csv/$', 'lockers.views.history_csv'),
-#    url(r'^/history/xls/$', 'lockers.views.history_xls'),
-
-# ===============================================================
-# Vēsture
-#    url(r'^/history/(?P<pageid>\d+)/$', 'lockers.views.history'),
-#    url(r'^/history/$', 'lockers.views.history'),
-
-# ===============================================================
-# check-in
 #    url(r'^/checkin/(?P<gender>\w+)/(?P<locker_nr>\d+)/(?P<abon_id>\d+)/$', 'lockers.views.locker_checkin'),
-# check-out
-#    url(r'^/checkout/$', 'lockers.views.locker_checkout'),
 
 
+# ===============================================================
+# Statusi
+    url(r'^status/$', 'setup.views.client_status'),
+
+# ===============================================================
+# Apdrošināšanas
+    url(r'^insurance/$', 'setup.views.insurance'),
+
+# ===============================================================
+# Lietotāji Pievienot
+    url(r'^user_add/$', 'setup.views.add_user'),
+# Lietotāji Skats
+    url(r'^users/$', 'setup.views.system_users'),
 
 # ===============================================================
 # Main Setting

@@ -15,7 +15,7 @@ function locker_choise(val) {
 
   if (val != '') {
     chosen = parseInt(val);
-    if (locker.length >= val && val > 0) {
+    if (locker.length >= val && val >= 0) {
       var chosen_el = document.getElementById( "locker" + parseInt(val) );
       chosen_el.style.border = "thick solid black";
       chosen_el.style.borderStyle = "dashed"; //"dotted";
@@ -25,8 +25,8 @@ function locker_choise(val) {
 
 // checkin skripts
 function checkin() {
-  if (chosen != 0 && locker.length >= chosen) {
-    if ( locker[chosen-1] != 1 ) {
+  if ( chosen >= 0 && locker.length >= chosen) {
+    if ( locker[chosen] != 1 ) {
       window.location.href = "/lockers/checkin/{{ gender }}/" + chosen + "/{{ abon_id }}/";
     }
   }
@@ -95,13 +95,13 @@ jQuery(document).ready(function($) {
 
 {% for l in lockers %}
 {% if l.1 == 1 %}
- <div class="locker_busy" id="locker{{ forloop.counter }}">
+ <div class="locker_busy" id="locker{{ forloop.counter0 }}">
   <h3 class="locker_busy_text">{{ l.0 }}</h3>
  </div>
 
 {% else %}
  <a href="/lockers/checkin/{{ gender }}/{{ l.0 }}/{{ abon_id }}/">
-  <div class="locker" id="locker{{ forloop.counter }}">
+  <div class="locker" id="locker{{ forloop.counter0 }}">
    <h3 class="locker_text">{{ l.0 }}</h3>
   </div>
  </a>

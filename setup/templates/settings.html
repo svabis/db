@@ -1,11 +1,9 @@
-{% extends 'main_head.html' %}
+{% extends 'setup_tabs.html' %}
 {% load staticfiles %}
-{% block settings %}
+{% block settings_data %}
 
-<h1>UZSTĀDĪJUMI...</h1>
-
+{% if status %}
 <!-- Klienti StatusType -->
-
 <table class="table table-hover table-striped table-condensed">
  <thead>
   <tr style="background: #aaa;">
@@ -24,9 +22,11 @@
  </tbody>
 </table>
 <hr >
+{% endif %}
 
+
+{% if insurance %}
 <!-- Apdrosinataji -->
-
 <table class="table table-hover table-striped table-condensed">
  <thead>
   <tr style="background: #aaa;">
@@ -45,9 +45,11 @@
  </tbody>
 </table>
 <hr >
+{% endif %}
 
+
+{% if settings %}
 <!-- MAIN SETTINGS -->
-
 <table class="table table-hover table-striped table-condensed">
  <thead>
   <tr style="background: #aaa;">
@@ -65,7 +67,7 @@
 {% endfor %}
  </tbody>
 </table>
-
+{% endif %}
 
 
 {% endblock %}

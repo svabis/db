@@ -118,12 +118,13 @@ function enableDiasableDeposit() {
 <hr style="border-top: 1px solid green; margin-top: 0px;">
 
 <input type="hidden" name="subscription" value="{{ chosen_subscr.id }}">
+<input type="hidden" name="multiplicator" readonly="readonly" value="{{ multi }}">
 <!-- <div class="row"> -->
 <!-- RINDA 1 -->
 
  <div class="col-lg-1 col-md-1 col-sm-1">
   <div class="form-group" style="margin-bottom: 5px;">
-   <input type="text" class="form-control input-lg" name="multiplicator" readonly="readonly" value="{{ multi }}x" style="margin-top: 25px; text-align: center;">
+   <input type="text" class="form-control input-lg" name="multiplicatorInput" readonly="readonly" value="{{ multi }}x" style="margin-top: 25px; text-align: center;">
   </div>
  </div>
 

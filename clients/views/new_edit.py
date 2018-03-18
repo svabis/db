@@ -36,6 +36,13 @@ def new_client(request):
         form = KlientsForm( request.POST, request.FILES )
 
         if form.is_valid():
+#            card_nr = str( request.POST.get('card_nr', '') )
+#            card_nr_array = Klienti.objects.all().exclude( card_nr = "" ).values('card_nr')
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!! CARD TEST HERE !!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!
+
             new_client = form.save()
             response = redirect("/")
             response.set_cookie( key='active_client', value=new_client.id )

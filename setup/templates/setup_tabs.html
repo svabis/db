@@ -1,0 +1,30 @@
+{% extends 'main_head.html' %}
+{% load staticfiles %}
+{% block settings %}
+<style>
+.nav-tabs > li > a{ color: #000; background-color:#eee; }
+.nav-tabs > li > a:hover{ background-color: #ccc !important; color:#fff; }
+</style>
+
+<h1>UZSTĀDĪJUMI...</h1>
+
+<ul class="nav nav-tabs">
+ <li role="presentation"{% if setup_tab_1 %} class="active"{% endif %}>
+  <a href="/settings/">Uzstādījumi</a>
+ </li>
+ <li role="presentation"{% if setup_tab_2 %} class="active"{% endif %}>
+  <a href="/settings/users/">Lietotāji</a>
+ </li>
+ <li role="presentation"{% if setup_tab_3 %} class="active"{% endif %}>
+  <a href="/settings/insurance/">Apdrošināšanas</a>
+ </li>
+ <li role="presentation"{% if setup_tab_4 %} class="active"{% endif %}>
+  <a href="/settings/status/">Statusi</a>
+ </li>
+</ul>
+
+<div style="height:20px;"></div>
+
+{% block settings_data %}{% endblock %}
+
+{% endblock %}

@@ -116,7 +116,7 @@ def subscription_purchase(request):
                # read POST data
                 subscr_nr = int( request.POST.get('subscription', '') )
                 chosen_subscr = AbonementType.objects.get( id = subscr_nr )
-                multi = int( request.POST.get('multiplicator', '')[0] )
+                multi = int( request.POST.get('multiplicator', '') )
 
                 discount_price = request.POST.get('id_price_to_pay', '').split(" ")[1]
                 new_deposit_remain = float( request.POST.get('deposit_remain', '').split(" ")[1] )
@@ -152,7 +152,6 @@ def subscription_purchase(request):
                             new_deposit = Deposit( d_user = args['username'], d_client = cli, d_reason="Izmantots pirkumam", d_added = 0, d_remain = new_deposit_remain )
                     if new_deposit_remain == 0:
                        new_deposit = Deposit( d_user = args['username'], d_client = cli, d_reason="Izmantots pirkumam", d_added = 0, d_remain = new_deposit_remain )
-#                    pause
                     new_deposit.save()
 
                # client notes
@@ -167,38 +166,41 @@ def subscription_purchase(request):
                     cli.first = True
                     cli.save()
 
-               # activation time for purchased subscription
-                temp_date = datetime.now() + timedelta( days=30*chosen_subscr.activate_before )
+               # activation time for purchased subscription (including multiple)
+                temp_date = datetime.now() + timedelta( days = 30 * chosen_subscr.activate_before * multi )
 
-               # create Abonementi object
-                if chosen_subscr.times:
-                    new_subscr = Abonementi( user=system_user, client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=temp_date,
-                                            times_count=chosen_subscr.times_count)
-                else:
-                    new_subscr = Abonementi( user=system_user, client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=temp_date)
-
-               # save new Abonementi object
-                new_subscr.save()
+# !!!!!!!!!!!!!!!!!!
+                create_count = 0
+                while create_count != multi:
+                   # create Abonementi object
+                    if chosen_subscr.times:
+                        new_subscr = Abonementi( user=system_user, client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=temp_date, times_count=chosen_subscr.times_count)
+                    else:
+                        new_subscr = Abonementi( user=system_user, client=cli, subscr=chosen_subscr, price=chosen_subscr.price, activate_before=temp_date)
+                   # save new Abonementi object
+                    new_subscr.save()
+                    create_count += 1
+# !!!!!!!!!!!!!!!!!!
 
                # ===================================
                # PREPARING TO CREATE PURCHASE OBJECT
                 if insurance_comp == "":
                     if save_deposit:
-                        new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
+                        new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price*multi, discount_price=discount_price, count=multi,
                                                    from_deposit=from_deposit, from_gift_card=gift_card, insurance_cash=insurance_cash,
                                                    transfer=transfer_chk, final_price=final, deposit=new_deposit )
                     else:
-                        new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
+                        new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price*multi, discount_price=discount_price, count=multi,
                                                    from_deposit=from_deposit, from_gift_card=gift_card, insurance_cash=insurance_cash,
                                                    transfer=transfer_chk, final_price=final )
                 else:
                     insurance_comp = Apdrosinataji.objects.get( id = int(insurance_comp) )
                     if save_deposit:
-                        new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
+                        new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price*multi, discount_price=discount_price, count=multi,
                                                    from_deposit=from_deposit, from_gift_card=gift_card, insurance=insurance_comp, insurance_cash=insurance_cash,
                                                    transfer=transfer_chk, final_price=final, deposit=new_deposit )
                     else:
-                        new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price, discount_price=discount_price,
+                        new_purchase = Abonementu_Apmaksa( user=system_user, client=cli, subscr=new_subscr, full_price=chosen_subscr.price*multi, discount_price=discount_price, count=multi,
                                                    from_deposit=from_deposit, from_gift_card=gift_card, insurance=insurance_comp, insurance_cash=insurance_cash,
                                                    transfer=transfer_chk, final_price=final )
                 new_purchase.save()

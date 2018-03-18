@@ -26,7 +26,7 @@ urlpatterns = [
 
 # ===============================================================
 # Uzstādījumi
-    url(r'^settings/$', include('setup.urls')),
+    url(r'^settings/', include('setup.urls')),
 #views.settings'),
 
 # ===============================================================

@@ -59,7 +59,17 @@ def locker(request, abon_id):
     args['man_locker_color'] = Settings.objects.get( key = "man locker color" ).value
 
     lockers_filled = []
-    lockers_temp = Skapji.objects.filter( locker_type = client.gender )
+
+# !!!!!!!!!!!!!!!!
+# !!!!! ZERO !!!!!
+# !!!!!!!!!!!!!!!!
+    lockers_zero = Skapji.objects.filter( locker_type = client.gender, number = 0 ).count()
+    if lockers_zero > 4:
+        lockers_filled.append( 0 )
+# ----------------
+
+   # get locker numbers in use
+    lockers_temp = Skapji.objects.filter( locker_type = client.gender ).exclude( number = 0 )
     for n in lockers_temp:
         lockers_filled.append( int(n.number) )
 
@@ -69,12 +79,10 @@ def locker(request, abon_id):
     else:
         lockers_filled = lockers_filled + dwl
 
-    args['print'] = lockers_filled
-
     lockers = []
    # MALE LOCKERS
     if client.gender == "V":
-       for i in range(1, int(Settings.objects.get( key = "man locker count" ).value) + 1 ):
+       for i in range(0, int(Settings.objects.get( key = "man locker count" ).value) + 1 ):
            if i not in lockers_filled:
                lockers.append([i,0])
            else:
@@ -82,7 +90,7 @@ def locker(request, abon_id):
 
    # FEMALE LOCKERS
     else:
-       for i in range(1, int(Settings.objects.get( key = "woman locker count" ).value) + 1 ):
+       for i in range(0, int(Settings.objects.get( key = "woman locker count" ).value) + 1 ):
            if i not in lockers_filled:
                lockers.append([i,0])
            else:
@@ -99,7 +107,6 @@ def locker_checkin(request, gender, locker_nr, abon_id):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
-
     if args['loged_in'] == False:
         return redirect("/login/")
 
@@ -111,11 +118,20 @@ def locker_checkin(request, gender, locker_nr, abon_id):
        # !!!!! Test if client is not checked in already !!!!!
         locker = Skapji.objects.get( client = client )
     except:
+        test = True
+
         try:
            # !!!!! Test if locker is available !!!!!
             locker = Skapji.objects.get( number = locker_nr, locker_type = str(gender) )
+            test = False
+            if int( locker_nr ) == 0:
+                lockers_zero = Skapji.objects.filter( locker_type = str(gender), number = 0 ).count()
+                if lockers_zero < 5:
+                    test = True
         except:
+            test = True
 
+        if test:
            # !!!!! ABONEMENTA Atkārtots TESTS !!!!!
             check = ActiveSubscription( client )
             if check.exists:

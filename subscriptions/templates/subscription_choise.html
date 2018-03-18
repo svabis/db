@@ -126,7 +126,7 @@ jQuery(document).ready(function($) {
 var multiplyer = Number(1);
 function multiply() {
   multiplyer = multiplyer + Number(1);
-  if ( multiplyer > 5 ) { multiplyer = Number(1); }
+  if ( multiplyer > 12 ) { multiplyer = Number(1); }
   document.getElementById("multiply_input").value = multiplyer;
   document.getElementById("multiply_button").innerHTML = "x" + multiplyer;
 }
@@ -136,7 +136,7 @@ function multiply() {
 
 <!-- RINDA 3 -->
 <div class="row text-right" style="margin-top: 10px;">
- <button id="multiply_button" type="button" class="btn btn-success" style="margin-right: 30px;" onclick="multiply();">x1</button>
+ <button id="multiply_button" type="button" class="btn btn-warning" style="min-width: 100px; max-width: 100px; margin-right: 50px;" onclick="multiply();">x1</button>
 
  <input id="submit_buton" type="submit" class="btn btn-success" style="min-width: 150px; max-width: 150px;" value="Pirkt" disabled>
  <a href="{{ back }}"><button type="button" class="btn btn-danger" style="min-width: 150px; max-width: 150px;">Atcelt</button></a>
