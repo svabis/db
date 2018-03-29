@@ -53,7 +53,7 @@ class Klienti(models.Model):
 
     gender = models.CharField( max_length = 1, choices = GENDER_CHOISE )
 
-    reg_date = models.DateTimeField( default = timezone.now ) # registration
+    reg_date = models.DateField( default = timezone.now ) # registration
 
     disabled = models.BooleanField( default=False ) # invalīds
     disabled_until = models.DateField( blank = True, null = True )

@@ -44,8 +44,10 @@ INSTALLED_APPS = (
     'lockers',
     'setup',
     'subscriptions',
-    'django_cleanup',
-    'loginsys'
+    'loginsys',
+    'reports',
+
+    'django_cleanup'
 )
 
 MIDDLEWARE_CLASSES = (

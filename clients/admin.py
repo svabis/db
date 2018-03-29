@@ -16,8 +16,16 @@ class StatusiAdmin(admin.ModelAdmin):
 
 # !!!!! Klienti !!!!!
 class KlientiAdmin(admin.ModelAdmin):
-    list_display = ['surname', 'name', 'card_nr', 'client_blocked', 'card_blocked', 'birthday', 'phone', 'e_mail', 'status', 'society', 'status_changed', 'gender', 'reg_date',
-       'disabled', 'disabled_until', 'student', 'student_until', 'elderly', 's3_nr', 'notes', 'frozen', 'frozen_from', 'frozen_until']
+
+    def reg_date(self, obj):
+        return obj.reg_date.strftime("%Y-%m-%d")
+#    reg_date.short_description = 'Registration Time'
+#    time_date.admin_order_field = 'birthday'
+
+    list_display = ['surname', 'name', 'card_nr', 'birthday', 'phone', 'e_mail', 'status', 'society', 'gender', 'reg_date',
+       'disabled', 'disabled_until', 'student', 'student_until', 'elderly', 'frozen', 'frozen_from', 'frozen_until']
+#    list_display = ['surname', 'name', 'card_nr', 'client_blocked', 'card_blocked', 'birthday', 'phone', 'e_mail', 'status', 'society', 'status_changed', 'gender', 'reg_date',
+#       'disabled', 'disabled_until', 'student', 'student_until', 'elderly', 's3_nr', 'notes', 'frozen', 'frozen_from', 'frozen_until']
     list_filter = ['client_blocked', 'card_blocked', 'frozen', 'status', 'status_changed', 'society', 'gender', 'reg_date']
     search_fields = ['name', 'surname', 'phone', 'e_mail', 'card_nr', 's3_nr']
 

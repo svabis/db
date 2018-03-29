@@ -79,7 +79,7 @@ class AbonementType(models.Model):
     times = models.BooleanField( default=False ) # reižu limits
     times_count = models.IntegerField( blank = True, null = True ) # reižu skaits
 
-    s3_nr = models.CharField( max_length = 10, default = '' )
+#    s3_nr = models.CharField( max_length = 10, default = '' )
 
     def __unicode__(self):
         return u'%s' % (self.title)

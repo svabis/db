@@ -122,7 +122,13 @@ def subscription_purchase(request):
                 new_deposit_remain = float( request.POST.get('deposit_remain', '').split(" ")[1] )
                 from_deposit = float( request.POST.get('deposit_used', '').split(" ")[1] )
                 gift_card = float( request.POST.get('id_gift_card_ammount', '').split(" ")[1] )
-                transfer_chk = request.POST.get('transfer_chk', '')
+
+                transfer_chk = request.POST.get('transfer_chk')
+                if transfer_chk != "on":
+                     transfer_chk = True
+                else:
+                     transfer_chk = False
+
                 final = float( request.POST.get('id_total_price').split(" ")[1] )
                 insurance_comp = request.POST.get('insurance_comp', '')
                 insurance_cash = float( request.POST.get('id_insurance_ammount').split(" ")[1] )

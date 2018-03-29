@@ -27,11 +27,14 @@ urlpatterns = [
 # ===============================================================
 # Uzstādījumi
     url(r'^settings/', include('setup.urls')),
-#views.settings'),
 
 # ===============================================================
 # Klienti
     url(r'^client/', include('clients.urls')),
+
+# ===============================================================
+# Atskaites
+    url(r'^reports/', include('reports.urls')),
 
 # ===============================================================
 # Abonementi

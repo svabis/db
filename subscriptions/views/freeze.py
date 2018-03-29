@@ -139,7 +139,7 @@ def subscription_freeze(request):
                     except:
                         pass
 
-                d = (f_end_date - f_start_date).days
+                d = (f_end_date - f_start_date).days + 1
                 args['days'] = d
 
          # !!!!! freeze process !!!!!

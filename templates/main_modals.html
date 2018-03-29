@@ -84,21 +84,35 @@ $(document).ready(function(){
 {% if client %}
 
 {% if message_code_5 %}
+<!-- frozen -->
 document.getElementById("avatar").style.borderColor = "#0480be";
 {% else %}
 
 // ja: aktīvs abonements, nav iečekots, kļūdu kartiņā nav -->
 {% if abon_active and checked == False and message_type != "error" %}
+<!-- check-in -->
+document.getElementById("avatar").addEventListener("click", function () {
+  window.location.href = "/lockers/{{ active_subscription.id }}/";
+});
 document.getElementById("avatar").style.borderColor = "green";
 document.getElementById("klienta-dati").style.background = "#dff0d8";
 
 // bet ja: iečekots un kļūdu kartiņā nav -->
 {% elif checked == True and message_type != "error" %}
+<!-- check-out -->
+document.getElementById("avatar").addEventListener("click", function() {
+  $("#CheckoutModal").modal('show');
+  $("#CheckoutModal").on('shown.bs.modal', function(event) { $("#checkout_button").focus(); });
+});
 document.getElementById("avatar").style.borderColor = "green";
 document.getElementById("klienta-dati").style.background = "#dff0d8";
 
 // citā gadījumā (nav aktīvs abonements, klients bloķēts) -->
 {% else %}
+<!-- purchase -->
+document.getElementById("avatar").addEventListener("click", function () {
+  window.location.href = "/subscription/";
+});
 document.getElementById("avatar").style.borderColor = "red";
 document.getElementById("klienta-dati").style.background = "#f2dede";
 {% endif %}
@@ -156,11 +170,14 @@ $(document).keypress(function (e) {
 
 // if no message errors -->
   {% if checked == True %}
+<!-- ceck-out -->
        $("#CheckoutModal").modal('show');
        $("#CheckoutModal").on('shown.bs.modal', function(event) { $("#checkout_button").focus(); });
   {% elif abon_active != True %}
+<!-- purchase -->
        window.location.href = "/subscription/";
   {% elif abon_active == True %}
+<!-- check-in -->
        window.location.href = "/lockers/{{ active_subscription.id }}/";
   {% endif %}
 // endif

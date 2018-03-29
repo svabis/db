@@ -5,7 +5,7 @@ from django.contrib import auth		    # autorisation library
 
 from setup.models import Settings
 
-
+from lockers.models import Skapji
 
 # !!!!! IP GRABBER !!!!!
 def get_client_ip(request):
@@ -54,5 +54,8 @@ def create_args(request):
 
     args['username'] = username
     args['help'] = True
+
+   # In Club count
+    args['in_club_count'] = Skapji.objects.all().count()
     return args
 

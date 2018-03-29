@@ -50,7 +50,7 @@ jQuery(document).ready(function($) {
  </thead>
  <tbody>
 {% for d in data_no_card %}
-  <tr class="clickable-row">
+  <tr class="clickable-row {% if d.number == "0" %}warning{% endif %}">
    <td style="display:none;">{{ d.client.id }}</td>
    <td>{{ d.client.name }}</td>
    <td>{{ d.client.surname }}</td>
@@ -66,7 +66,7 @@ jQuery(document).ready(function($) {
 {% endif %}
 
 {% for d in data %}
-  <tr class="clickable-row">
+  <tr class="clickable-row {% if d.number == "0" %}warning{% endif %}">
    <td style="display:none;">{{ d.client.id }}</td>
    <td>{{ d.client.name }}</td>
    <td>{{ d.client.surname }}</td>

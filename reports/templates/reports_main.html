@@ -1,0 +1,50 @@
+{% extends 'main_head.html' %}
+{% load staticfiles %}
+{% block reports %}
+
+
+<h2>Atskaites</h2>
+
+<div class="row">
+ <hr style="border-top: 1px solid green; margin-top: 8px;">
+ <div class="col-sm-7 col-md-7 col-lg-7"><h4>Klienti</h4></div>
+ <div class="col-sm-5 col-md-5 col-lg-5" style="margin-top: 5px;">
+  <a href="/reports/clients/csv/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
+   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus CSV</button></a>
+  <a href="/reports/clients/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
+   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button></a>
+ </div>
+</div>
+
+<div class="row">
+ <hr style="border-top: 1px solid green; margin-top: 8px;">
+ <div class="col-sm-7 col-md-7 col-lg-7"><h4>Brīvais Special (Abonements)</h4></div>
+ <div class="col-sm-5 col-md-5 col-lg-5" style="margin-top: 5px;">
+  <a href="/reports/bs/csv/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
+   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus CSV</button></a>
+  <a href="/reports/bs/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
+   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button></a>
+ </div>
+</div>
+
+
+<!--
+<div class="row">
+ <hr style="border-top: 1px solid green; margin-top: 8px;">
+ <div class="col-sm-7 col-md-7 col-lg-7"><h4>Brīvais Special (Abonements)</h4></div>
+ <div class="col-sm-5 col-md-5 col-lg-5">
+  <a href="/reports/bs/csv/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
+   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus CSV</button></a>
+  <a href="/reports/bs/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
+   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button></a>
+ </div>
+</div>
+-->
+
+
+<br><br>
+<h4>Būs piektdien(30/03)</h4>
+
+
+
+{% endblock %}
