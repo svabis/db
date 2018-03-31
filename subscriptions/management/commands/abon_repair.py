@@ -1,133 +1,34 @@
 # -*- coding: utf-8 -*-
-import os       # for work with filesystem
-import re       # for regular expresions (regex)
-import datetime # for file create field
-import pytz	# to set timezone
-
-from clients.models import Klienti
 from subscriptions.models import *
-
-import datetime
+from datetime import datetime, timedelta
 
 # progress bar
-from tqdm import tqdm
+#from tqdm import tqdm
 
 from django.core.files import File	# for file opening
 
 # IMPORT DJANGO STUFF
 from django.core.management.base import BaseCommand, CommandError
 
-def laiks(time):
-    men = time.split(".")[1]
-    if len(men) < 2:
-        men = "0" + men
-    dat = (time.split(".")[2]).split(" ")[0]
-    if len(dat) < 2:
-        dat = "0" + dat
-    stu = (time.split(":")[0]).split(" ")[1]
-    if len(stu) < 2:
-        stu = "0" + stu
-    min = time.split(":")[1]
-    if len(min) < 2:
-        min = "0" + min
-    sek = time.split(":")[2]
-    if len(sek) < 2:
-        sek = "0" + sek
-    return time.split(".")[0] + "." + men + "." + dat + " " + stu + ":" + min + ":" + sek
-
-
 class Command(BaseCommand):
     def handle(self, *args, **options):
 
-       db = '/home/svabis/Tabulas/ZNB2.txt'
-       lines = [line.rstrip('\n') for line in open(db)]
-       lines = [line.rstrip('\r\n') for line in open(db)]
+       counter = 0
 
-# 0 id << NAH
-# 2 nosaukums << NAH
-# 3 manipulation << NAH
+       start_date = datetime(2018, 3, 16, 22, 00)
+       end_date = datetime(2018, 3, 29, 11, 00)
 
+       print start_date
+       print end_date
 
-# 1 .split(',')[0] <-- s3_nr Abonementu tips
-# 4 s3_nr (Klients)
+       ab = Abonementu_Apmaksa.objects.filter( date__range=[start_date, end_date])
+       print ab.count()
 
-# 5 activation
-
-# 6 real activation
-# 7 real best_before
-
-       client_error = []
-       abon_error = []
-       error = []
-
-       test = 0
-       active_error = 0
-       neaktiveti = 0
-
-       for i in tqdm( range(len(lines)) ):
-           l = lines[i].split(';')
-
-           if True:
-               try:
-                   temp_client = Klienti.objects.get( s3_nr = l[4].split('"')[1] )
-               except:
-                   client_error.append(l[0])
-
-#               if True:
-               try:
-                   new_abon_tips = AbonementType.objects.get( s3_nr = l[1].split(',')[0] )
-                   test_abon = Abonementi.objects.get( id = i+1 )
-                   if test_abon.subscr == new_abon_tips:
-                       test += 1
-               except:
-                   abon_error.append(l[0])
-
-              # Laiki
-               if l[6] != "":
-                   activate_date = datetime.datetime.strptime( laiks(l[6])[:19], '%Y.%m.%d %H:%M:%S')
-               else:
-                   activate_date = datetime.datetime.strptime( laiks(l[5])[:19], '%Y.%m.%d %H:%M:%S')
-
-               best_before_date = activate_date + datetime.timedelta( days = 30*new_abon_tips.best_before )
-
-               try:
-                   if test_abon.active != True:
-                       neaktiveti += 1
-                   test_abon.active = True
-                   test_abon.activation_date = activate_date
-                   test_abon.activate_before = best_before_date
-                   test_abon.best_before = best_before_date
-                   test_abon.save()
-               except:
-                   active_error += 1
-              # veido abonementu
-#               try:
-#                   new_subscr = Abonementi( client=temp_client,
-#                                        subscr=new_abon_tips,
-#                                        price=new_abon_tips.price,
-
-#                                        purchase_date=activate_date,
-#                                        activation_date=activate_date,
-
-#                                        activate_before=best_before_date,
-#                                        best_before=best_before_date,
-
-#                                        times_count=new_abon_tips.times_count )
-#                   new_subscr.save()
-#                   save += 1
-#               except:
-#                   error.append(l[0])
-
-       print
-       print "klientu error:\t" + str( len(client_error) )
-       print client_error
-       print
-       print "abon error:\t" + str( len(abon_error) )
-       print abon_error
-       print
-       print "error:\t" + str( len(error) )
-       print error
-       print
-       print "test:\t" + str( test )
-       print "active:\t" + str( active_error )
-       print "neaktivēti:\t" + str( neaktiveti )
+#       for i in tqdm( range( ab.count() ) ):
+#       for a in ab:
+#            if a.transfer == True:
+#                 a.transfer = False
+#            else:
+#                 a.transfer = True
+#            print a.transfer
+#            a.save()

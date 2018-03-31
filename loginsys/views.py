@@ -8,6 +8,8 @@ from django.core.context_processors import csrf
 
 from setup.models import Settings
 
+from loginsys.models import Login
+
 from database.args import create_args
 
 # !!!!! LOGIN !!!!!
@@ -26,6 +28,10 @@ def login(request):
 
         if user is not None: # auth return None if this user does not exit, if not then:
             auth.login( request, user ) # authorizate user from Form
+
+            new_login = Login( event='Ienāca', user=user )
+            new_login.save()
+
            # clear COOKIES
             response = redirect ('/')
             try:
@@ -49,6 +55,9 @@ def login(request):
 
 # !!!!! LOG OUT !!!!!
 def logout(request):
+    new_login = Login( event='Izgāja', user=auth.get_user(request) )
+    new_login.save()
+
     auth.logout(request)
     response = redirect ('/login/')
     try:

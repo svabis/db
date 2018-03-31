@@ -1,50 +1,106 @@
 {% extends 'main_head.html' %}
 {% load staticfiles %}
-{% block reports %}
 
+{% block javascript %}
+<script type="text/javascript" src="{% static 'bootstrap/js/datepicker.js' %}"></script>
+<link rel="stylesheet" href="{% static 'bootstrap/css/datepicker.css' %}"/>
+{% endblock %}
+
+
+{% block reports %}
+<script>
+jQuery(document).ready(function($) {
+  $(document).keyup(function (e) {
+    // ESC 27
+    if ( e.keyCode === 27 ) {
+      window.location.href = "/";
+    }
+  });
+});
+
+function client_export() {
+ document.getElementById("client").innerHTML = '<span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Notiek datu exports';
+ setTimeout(function(){
+  document.getElementById("client").innerHTML = '<span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS';
+ }, 10000);
+}
+function bs_export() {
+ document.getElementById("bs").innerHTML = '<span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Notiek datu exports';
+ setTimeout(function(){
+  document.getElementById("bs").innerHTML = '<span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS';
+ }, 10000);
+}
+
+function sales_export() {
+ document.getElementById("sales").innerHTML = '<span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Notiek datu exports';
+ document.getElementById("sales_form").submit()
+ setTimeout(function(){
+  document.getElementById("sales").innerHTML = '<span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS';
+ }, 10000);
+}
+</script>
 
 <h2>Atskaites</h2>
 
 <div class="row">
  <hr style="border-top: 1px solid green; margin-top: 8px;">
- <div class="col-sm-7 col-md-7 col-lg-7"><h4>Klienti</h4></div>
+ <div class="col-sm-7 col-md-7 col-lg-7"><h4>Klienti (nospiežot pogu, tas ir ilgi...)</h4></div>
  <div class="col-sm-5 col-md-5 col-lg-5" style="margin-top: 5px;">
-  <a href="/reports/clients/csv/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
-   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus CSV</button></a>
-  <a href="/reports/clients/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
+  <a href="/reports/clients/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;" id="client" onclick="client_export();">
    <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button></a>
  </div>
 </div>
+
 
 <div class="row">
  <hr style="border-top: 1px solid green; margin-top: 8px;">
  <div class="col-sm-7 col-md-7 col-lg-7"><h4>Brīvais Special (Abonements)</h4></div>
  <div class="col-sm-5 col-md-5 col-lg-5" style="margin-top: 5px;">
-  <a href="/reports/bs/csv/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
-   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus CSV</button></a>
-  <a href="/reports/bs/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
+  <a href="/reports/bs/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;" id="bs" onclick="bs_export();">
    <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button></a>
  </div>
 </div>
 
 
-<!--
+<div class="row">
+ <form id="sales_form" action="/reports/sales_export/" method=POST>{% csrf_token %}
+ <hr style="border-top: 1px solid green; margin-top: 8px;">
+ <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 25px;"><h4>Pārdotie abonementi</h4></div>
+ <div class="col-sm-3 col-md-3 col-lg-3">
+  <label>No: <b class="text-danger">2018-03-05</b></label>
+  <input class="form-control" id="sale_start" maxlength="10" name="sale_start" size="10" type="text" placeholder="GGGG-MM-DD">
+  {% if sale_start_error %}<br><b class="text-danger">Datuma formāts ievadīts nekorekti!</b>{% endif %}
+ </div>
+ <div class="col-sm-3 col-md-3 col-lg-3">
+  <label>Līdz: <b class="text-danger">{{ today|date:"Y-m-d" }}</b></label>
+  <input class="form-control" id="sale_end" maxlength="10" name="sale_end" size="10" type="text" placeholder="GGGG-MM-DD">
+  {% if sale_end_error %}<br><b class="text-danger">Datuma formāts ievadīts nekorekti!</b>{% endif %}
+ </div>
+
+<script>
+$(document).ready(function(){ var date_input=$('input[name="sale_start"]');
+ var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ var options={ format: 'yyyy-mm-dd', container: container, todayHighlight: true, autoclose: true, weekStart: 1, startDate: '2018-03-05', endDate: '{{ max_date|date:"Y-m-d" }}' };
+ date_input.datepicker(options); })
+$(document).ready(function(){ var date_input=$('input[name="sale_end"]');
+ var container=$('.form-group form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ var options={ format: 'yyyy-mm-dd', container: container, todayHighlight: true, autoclose: true, weekStart: 1, startDate: '2018-03-05', endDate: '{{ max_date|date:"Y-m-d" }}' };
+ date_input.datepicker(options); })
+</script>
+
+ <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 25px;">
+  <button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;" id="sales" onclick="sales_export();">
+   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button>
+ </div>
+ </form>
+</div>
+
+
 <div class="row">
  <hr style="border-top: 1px solid green; margin-top: 8px;">
- <div class="col-sm-7 col-md-7 col-lg-7"><h4>Brīvais Special (Abonements)</h4></div>
- <div class="col-sm-5 col-md-5 col-lg-5">
-  <a href="/reports/bs/csv/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
-   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus CSV</button></a>
-  <a href="/reports/bs/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;">
-   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button></a>
- </div>
 </div>
--->
 
-
-<br><br>
-<h4>Būs piektdien(30/03)</h4>
-
+{{sales_data}}
 
 
 {% endblock %}

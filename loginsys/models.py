@@ -5,6 +5,16 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
+# !!!!! Lietotāju autorizācija !!!!!
+class Login(models.Model):
+    class Meta():
+        db_table = "user_autorization"
+
+    date = models.DateTimeField( default = timezone.now )
+    event = models.CharField( max_length = 10 )
+    user = models.ForeignKey( User )
+
+
 # !!!!! Log !!!!!
 class Log(models.Model):
     class Meta():
