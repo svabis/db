@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, redirect
 
+# MultipleObjectsReturned
+from django.core.exceptions import MultipleObjectsReturned
+
 from django.core.context_processors import csrf
 
 from database.args import create_args
@@ -167,6 +170,15 @@ def locker_checkout(request):
         new_hist = Skapji_history( number = locker.number, locker_type = locker.locker_type, client = locker.client, checkin_time = locker.checkin_time )
         new_hist.save()
         locker.delete()
+
+    except MultipleObjectsReturned:
+       # Gļux --> Klients iečekots vairākos skapīšos
+        locker = Skapji.objects.filter( client = client )
+        new_hist = Skapji_history( number = locker[0].number, locker_type = locker[0].locker_type, client = locker[0].client, checkin_time = locker[0].checkin_time )
+        new_hist.save()
+        for l in locker:
+            l.delete()
+
     except:
         pass
 

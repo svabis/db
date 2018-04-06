@@ -10,7 +10,8 @@ class Statusi(models.Model):
         db_table = "status_type"
 
     status_name = models.CharField( max_length = 40, default = '' )
-    status_discount = models.CharField( max_length = 5, default = '' )
+    status_discount = models.IntegerField( default=0 )
+    status_order = models.IntegerField( default=0 )
 
     def __unicode__(self):
         return u'%s' % (self.status_name)

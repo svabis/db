@@ -32,6 +32,8 @@ urlpatterns = [
 # ===============================================================
 # Kas klubā
     url(r'^/taken/$', 'lockers.views.persons_in_club'),
+# Kas klubā
+    url(r'^/taken/count/$', 'lockers.views.in_club_count'),
 # Kas klubā choise
     url(r'^/taken/(?P<c_id>\d+)/$', 'lockers.views.search_by_locker'),
 

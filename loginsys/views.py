@@ -12,6 +12,17 @@ from loginsys.models import Login
 
 from database.args import create_args
 
+
+# !!!!! IP GRABBER !!!!!
+def get_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
 # !!!!! LOGIN !!!!!
 def login(request):
     args = create_args(request)
@@ -29,8 +40,11 @@ def login(request):
         if user is not None: # auth return None if this user does not exit, if not then:
             auth.login( request, user ) # authorizate user from Form
 
-            new_login = Login( event='Ienāca', user=user )
-            new_login.save()
+            try:
+                new_login = Login( event='Ienāca', user=user, ip=get_ip(request) )
+                new_login.save()
+            except:
+                pass
 
            # clear COOKIES
             response = redirect ('/')
@@ -55,8 +69,11 @@ def login(request):
 
 # !!!!! LOG OUT !!!!!
 def logout(request):
-    new_login = Login( event='Izgāja', user=auth.get_user(request) )
-    new_login.save()
+    try:
+        new_login = Login( event='Izgāja', user=auth.get_user(request), ip=get_ip(request) )
+        new_login.save()
+    except:
+        pass
 
     auth.logout(request)
     response = redirect ('/login/')

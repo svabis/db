@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, redirect
 
+# multiple objects returned
+from django.core.exceptions import MultipleObjectsReturned
+
 from django.core.context_processors import csrf
 
 from database.args import create_args
@@ -146,6 +149,10 @@ def main(request):
         try:
            # Skapītis piešķirts
             args['client_locker'] = Skapji.objects.get( client = client )
+            args['checked'] = True
+        except MultipleObjectsReturned:
+           # Gļux --> Klients ir vairākos skapīšos ???
+            args['client_locker'] = Skapji.objects.filter( client = client )[0]
             args['checked'] = True
         except:
            # klients nav iečekojies

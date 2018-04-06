@@ -9,10 +9,13 @@ from django.utils.translation import ugettext_lazy
 
 class KlientsForm(ModelForm):
 
+    status = forms.ModelChoiceField( queryset = Statusi.objects.all().order_by('status_order'),
+         widget = forms.Select(attrs={'class': 'form-control'}))
+
     class Meta():
         model = Klienti
-        fields = ('avatar', 'name', 'surname', 'e_mail', 'phone', 'birthday', 'reg_date', 'card_nr', 'status', 'society', 'gender', 'notes',
-                  'disabled', 'disabled_until', 'student', 'student_until', 'elderly' )
+        fields = ('avatar', 'name', 'surname', 'e_mail', 'phone', 'birthday', 'reg_date', 'card_nr', 'society', 'gender', 'notes',
+                  'disabled', 'disabled_until', 'student', 'student_until', 'elderly', 'status')
 
         widgets = {
             'avatar': forms.FileInput(),
@@ -23,7 +26,7 @@ class KlientsForm(ModelForm):
 
             'card_nr': forms.TextInput(attrs={'class': 'form-control'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
-            'status': forms.Select(attrs={'class': 'form-control'}),
+#            'status': forms.Select(attrs={'class': 'form-control'}),
             'society': forms.CheckboxInput(attrs={'class': 'form-control'}),
 
             'birthday': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'GGGG-MM-DD'}),

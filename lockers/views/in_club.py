@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, redirect
 
+# JSON
+from django.http import JsonResponse
+
 from database.args import create_args
 
 from setup.models import Settings
@@ -30,6 +33,22 @@ def persons_in_club(request):
     args['data'] = Skapji.objects.filter( no_card = False ).order_by( 'checkin_time' )
 
     return render_to_response ( 'in_club.html', args )
+
+
+#============================================================
+# !!!!! Kas Klubā (SKAITS)!!!!!
+def in_club_count(request):
+    args = create_args(request)
+    if args['access'] == False:
+        return redirect (Settings.objects.get( key = "access denied redirect" ).value)
+
+    data = {}
+    data['count'] = Skapji.objects.all().count()
+    if args['loged_in'] == True:
+        return JsonResponse(data)
+
+    data['count'] = 0
+    return JsonResponse(data)
 
 
 #============================================================

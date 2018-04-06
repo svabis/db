@@ -11,7 +11,7 @@ class BlacklistAdmin(admin.ModelAdmin):
 
 # !!!!! Statusi !!!!!
 class StatusiAdmin(admin.ModelAdmin):
-    list_display = ['status_name', 'status_discount']
+    list_display = ['status_name', 'status_discount', 'status_order']
 
 
 # !!!!! Klienti !!!!!

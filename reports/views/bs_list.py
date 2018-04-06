@@ -4,6 +4,9 @@ from database.args import create_args
 # Abonementi
 from subscriptions.models import *
 
+# Reports
+from loginsys.models import Reports
+
 # Setingi
 from setup.models import Settings
 
@@ -11,6 +14,7 @@ from setup.models import Settings
 from django.http import HttpResponse
 # XLS
 import xlwt
+
 
 #============================================================
 # !!!!! BS XLS eksports !!!!!
@@ -24,6 +28,10 @@ def bs_export(request):
         return redirect("/login/")
 
     args['active_tab_5'] = True
+
+   # BS Report log
+    new_report = Reports( event='BS Report', user=args['username'] )
+    new_report.save()
 
     bs = AbonementType.objects.get( title = "Brīvais Special" )
     bs_list = Abonementi.objects.filter( subscr = bs )

@@ -67,7 +67,7 @@ function sales_export() {
  <hr style="border-top: 1px solid green; margin-top: 8px;">
  <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 25px;"><h4>Pārdotie abonementi</h4></div>
  <div class="col-sm-3 col-md-3 col-lg-3">
-  <label>No: <b class="text-danger">2018-03-05</b></label>
+  <label>No: <b class="text-danger">2018-03-07</b></label>
   <input class="form-control" id="sale_start" maxlength="10" name="sale_start" size="10" type="text" placeholder="GGGG-MM-DD">
   {% if sale_start_error %}<br><b class="text-danger">Datuma formāts ievadīts nekorekti!</b>{% endif %}
  </div>
@@ -80,7 +80,7 @@ function sales_export() {
 <script>
 $(document).ready(function(){ var date_input=$('input[name="sale_start"]');
  var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
- var options={ format: 'yyyy-mm-dd', container: container, todayHighlight: true, autoclose: true, weekStart: 1, startDate: '2018-03-05', endDate: '{{ max_date|date:"Y-m-d" }}' };
+ var options={ format: 'yyyy-mm-dd', container: container, todayHighlight: true, autoclose: true, weekStart: 1, startDate: '2018-03-07', endDate: '{{ max_date|date:"Y-m-d" }}' };
  date_input.datepicker(options); })
 $(document).ready(function(){ var date_input=$('input[name="sale_end"]');
  var container=$('.form-group form').length>0 ? $('.bootstrap-iso form').parent() : "body";
@@ -100,7 +100,6 @@ $(document).ready(function(){ var date_input=$('input[name="sale_end"]');
  <hr style="border-top: 1px solid green; margin-top: 8px;">
 </div>
 
-{{sales_data}}
 
 
 {% endblock %}

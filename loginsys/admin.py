@@ -3,6 +3,11 @@ from loginsys.models import *
 
 
 class LoginAdmin(admin.ModelAdmin):
+    list_display = ['date', 'ip', 'event', 'user']
+    list_filter = ['date', 'ip', 'event', 'user']
+
+
+class ReportsAdmin(admin.ModelAdmin):
     list_display = ['date', 'event', 'user']
     list_filter = ['date', 'event', 'user']
 
@@ -15,4 +20,5 @@ class LogAdmin(admin.ModelAdmin):
 
 admin.site.register(Log, LogAdmin)
 admin.site.register(Login, LoginAdmin)
+admin.site.register(Reports, ReportsAdmin)
 

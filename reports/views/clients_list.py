@@ -4,6 +4,9 @@ from database.args import create_args
 # Abonementi
 from clients.models import Klienti
 
+# Reports
+from loginsys.models import Reports
+
 # Setingi
 from setup.models import Settings
 
@@ -24,6 +27,10 @@ def clients_export(request):
         return redirect("/login/")
 
     args['active_tab_5'] = True
+
+   # BS Report log
+    new_report = Reports( event='Full Client Report', user=args['username'] )
+    new_report.save()
 
     data = Klienti.objects.all()
 
