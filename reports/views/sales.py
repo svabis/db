@@ -37,6 +37,7 @@ def sales_export(request):
         return redirect("/login/")
 
     args['active_tab_5'] = True
+    args['ab'] = AbonementType.objects.filter( available=True ).order_by('title')
     args['today'] = datetime.now()
 
     args.update(csrf(request)) # ADD CSRF TOKEN
@@ -74,7 +75,7 @@ def sales_export(request):
         except:
             date_max = datetime.combine(start_date, time.max).replace(tzinfo=tz)
 
-        sales_data = Abonementu_Apmaksa.objects.filter( date__range=[date_min, date_max] )
+        sales_data = Abonementu_Apmaksa.objects.filter( date__range=[date_min, date_max] ).order_by('date')
 
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename="sales.xls"' # DATUMS PIE NOSAUKUMA

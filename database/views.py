@@ -152,7 +152,14 @@ def main(request):
             args['checked'] = True
         except MultipleObjectsReturned:
            # Gļux --> Klients ir vairākos skapīšos ???
-            args['client_locker'] = Skapji.objects.filter( client = client )[0]
+            sk = Skapji.objects.filter( client = client )
+            temp_c = 0
+            for s in sk.count():
+                if temp_c != 0:
+                    s.delete()
+                temp_c += 1
+
+            args['client_locker'] = sk[0]
             args['checked'] = True
         except:
            # klients nav iečekojies
@@ -165,24 +172,16 @@ def main(request):
         except:
             args['no_visit_history'] = True
 
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!!!   ABONEMENTU APSTRĀDES ALGORITMS   !!!!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
         args['sub_count'] = Abonementi.objects.filter( client = client, ended = False ).count()
 
-        # ABONEMENTU ENDED TESTU ŠEIT...
+       # ABONEMENTU ENDED TESTU ŠEIT...
         SubscriptionEnd( client )
 
+       # ABONEMENTU APSTRĀDES ALGORITMS
         check = ActiveSubscription( client )
         args['abon_active'] = check.exists
         if check.exists:
             args['active_subscription'] = check.active
-
-# TEMPORARY
-        args['print_date'] = check.today
-
 
     response = render_to_response ( 'main_content.html', args )
 

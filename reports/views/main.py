@@ -11,7 +11,10 @@ from clients.models import Statusi
 # Setingi
 from setup.models import Settings
 
-from datetime import timedelta, datetime, date, time
+# Abonementi
+from subscriptions.models import AbonementType
+
+from datetime import datetime #, timedelta, date, time
 
 
 # !!!!! Atskaites !!!!!
@@ -27,6 +30,8 @@ def main(request):
     args.update(csrf(request)) # ADD CSRF TOKEN
 
     args['active_tab_5'] = True
+
+    args['ab'] = AbonementType.objects.filter( available=True ).order_by('title')
 
     args['today'] = datetime.now()
 

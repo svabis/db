@@ -22,20 +22,5 @@ class Reports(models.Model):
         db_table = "reports_log"
 
     date = models.DateTimeField( default = timezone.now )
-    event = models.CharField( max_length = 50 )
+    event = models.CharField( max_length = 200 )
     user = models.ForeignKey( User )
-
-
-# !!!!! Log !!!!!
-class Log(models.Model):
-    class Meta():
-        db_table = "log"
-
-    log_user = models.ForeignKey( User )
-    log_date = models.DateTimeField( default = timezone.now )
-    log_event = models.CharField( max_length = 30 )
-
-    log_event_data = models.CharField( max_length = 300 )
-
-    def __unicode__(self):
-        return u'%s' % (self.log_event)
