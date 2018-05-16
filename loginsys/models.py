@@ -22,5 +22,8 @@ class Reports(models.Model):
         db_table = "reports_log"
 
     date = models.DateTimeField( default = timezone.now )
-    event = models.CharField( max_length = 200 )
+
+    event = models.CharField( max_length = 100 )
+    event_data = models.CharField( max_length = 200, default = '' )
+
     user = models.ForeignKey( User )

@@ -47,7 +47,7 @@ def sales_export(request):
         end_str = request.POST.get('sale_end', '')
 
        # BS Report log
-        new_report = Reports( event='Sales Report '+ start_str + ' ' + end_str , user=args['username'] )
+        new_report = Reports( event='Sales Report', event_data=start_str + ' ' + end_str, user=args['username'] )
         new_report.save()
 
        # convert dates from string to datetime
@@ -90,8 +90,8 @@ def sales_export(request):
         font_style.font.bold = True
 
         columns = ['Pārdošanas laiks', 'Klienta ID', 'Vārds', 'Uzvārds', 'Abonements',
-                   'Skaits', 'Pilnā cena', 'Cena ar atlaidi', 'Apmaksa no depozīta', 'Dāvanu karte',
-                   'Apmaksā apdrošināšana', 'Apdrošinātājs', 'Pārskaitījums', 'Gala summa']
+                   'Skaits', 'Pilnā cena', 'Cena ar atlaidi', 'No depozīta', 'Dāvanu karte',
+                   'Sedz apdrošināšana', 'Apdrošinātājs', 'Pārskaitījums', 'Gala summa']
 
         for col_num in range(len(columns)):
             ws.write(row_num, col_num, columns[col_num], font_style)

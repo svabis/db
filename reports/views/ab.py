@@ -100,7 +100,10 @@ def ab_export(request):
             sales_data = Abonementi.objects.filter( subscr=ab, purchase_date__range=[date_min, date_max] ).order_by('purchase_date')
 
        # BS Report log
-        new_report = Reports( event='AB ' + ab.title + ' | ' + start_str + ' ' + end_str , user=args['username'] )
+        if all_dates:
+            new_report = Reports( event='AB', event_data=ab.title, user=args['username'] )
+        else:
+            new_report = Reports( event='AB', event_data=ab.title + ' | ' + start_str + ' ' + end_str, user=args['username'] )
         new_report.save()
 
         response = HttpResponse(content_type='application/ms-excel')
@@ -116,8 +119,9 @@ def ab_export(request):
         font_style.font.bold = True
 
         columns = ['Pārdošanas laiks', 'Klienta ID', 'Vārds', 'Uzvārds', 'Abonements',
-                   'Skaits', 'Pilnā cena', 'Cena ar atlaidi', 'Apmaksa no depozīta', 'Dāvanu karte',
-                   'Apmaksā apdrošināšana', 'Apdrošinātājs', 'Pārskaitījums', 'Gala summa']
+                   'Abonements izlietots']
+#                   'Skaits', 'Pilnā cena', 'Cena ar atlaidi', 'Apmaksa no depozīta', 'Dāvanu karte',
+#                   'Apmaksā apdrošināšana', 'Apdrošinātājs', 'Pārskaitījums', 'Gala summa']
 
         for col_num in range(len(columns)):
             ws.write(row_num, col_num, columns[col_num], font_style)
@@ -134,7 +138,10 @@ def ab_export(request):
             ws.write(row_num, 3, row.client.surname, font_style)
             ws.write(row_num, 4, row.subscr.title, font_style)
 
-            ws.write(row_num, 5, row.ended, font_style)
+            if row.ended != False:
+                ws.write(row_num, 5, 'Izlietots', font_style)
+
+#            ws.write(row_num, 5, row.ended, font_style)
 #            ws.write(row_num, 6, row.full_price, font_style)
 #            ws.write(row_num, 7, row.discount_price, font_style)
 #            ws.write(row_num, 8, row.from_deposit, font_style)

@@ -8,7 +8,7 @@ class LoginAdmin(admin.ModelAdmin):
 
 
 class ReportsAdmin(admin.ModelAdmin):
-    list_display = ['date', 'event', 'user']
+    list_display = ['date', 'event', 'event_data', 'user']
     list_filter = ['date', 'event', 'user']
 
 
