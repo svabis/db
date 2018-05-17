@@ -5,8 +5,11 @@ from database.args import create_args
 
 from django.core.context_processors import csrf
 
-# Abonementi
-from subscriptions.models import *
+# Lockers
+from lockers.models import Skapji_history
+
+# Subscriptions
+from subscriptions.models import AbonementType
 
 # Reports
 from loginsys.models import Reports
@@ -23,12 +26,11 @@ from time_corection import dst
 from datetime import timedelta, datetime, date, time
 
 import pytz
-#tz = pytz.timezone('UTC')
 tz = pytz.timezone('EET')
 
 #============================================================
-# !!!!! BS XLS eksports !!!!!
-def sales_export(request):
+# !!!!! Apmeklejuma eksports !!!!!
+def lockers_export(request):
     args = create_args(request)
     if args['access'] == False:
         return redirect (Settings.objects.get( key = "access denied redirect" ).value)
@@ -44,11 +46,11 @@ def sales_export(request):
     args.update(csrf(request)) # ADD CSRF TOKEN
 
     if request.POST:
-        start_str = request.POST.get('sale_start', '')
-        end_str = request.POST.get('sale_end', '')
+        start_str = request.POST.get('loc_start', '')
+        end_str = request.POST.get('loc_end', '')
 
        # BS Report log
-        new_report = Reports( event='Sales Report', event_data=start_str + ' ' + end_str, user=args['username'] )
+        new_report = Reports( event='Lockers Report', event_data=start_str + ' ' + end_str, user=args['username'] )
         new_report.save()
 
        # convert dates from string to datetime
@@ -56,13 +58,13 @@ def sales_export(request):
         try:
             start_date = datetime.strptime( start_str, '%Y-%m-%d').replace(tzinfo=tz)
         except:
-            args['sale_start_error'] = True
+            args['loc_start_error'] = True
             date_error = True
         try:
            end_date = datetime.strptime( end_str, '%Y-%m-%d').replace(tzinfo=tz)
         except:
            if end_str != "":
-               args['sale_end_error'] = True
+               args['loc_end_error'] = True
                date_error = True
 
        # dates error
@@ -76,13 +78,13 @@ def sales_export(request):
         except:
             date_max = datetime.combine(start_date, time.max).replace(tzinfo=tz)
 
-        sales_data = Abonementu_Apmaksa.objects.filter( date__range=[date_min, date_max] ).order_by('date')
+        lockers_data = Skapji_history.objects.filter( checkin_time__range=[date_min, date_max] ).order_by('checkin_time')
 
         response = HttpResponse(content_type='application/ms-excel')
-        response['Content-Disposition'] = 'attachment; filename="sales.xls"' # DATUMS PIE NOSAUKUMA
+        response['Content-Disposition'] = 'attachment; filename="lockers.xls"' # DATUMS PIE NOSAUKUMA ?
 
         wb = xlwt.Workbook(encoding='utf-8')
-        ws = wb.add_sheet('Pārdotie AB')
+        ws = wb.add_sheet('Apmeklējums')
 
        # Sheet header, first row
         row_num = 0
@@ -90,9 +92,9 @@ def sales_export(request):
         font_style = xlwt.XFStyle()
         font_style.font.bold = True
 
-        columns = ['Pārdošanas laiks', 'Klienta ID', 'Vārds', 'Uzvārds', 'Abonements',
-                   'Skaits', 'Pilnā cena', 'Cena ar atlaidi', 'No depozīta', 'Dāvanu karte',
-                   'Sedz apdrošināšana', 'Apdrošinātājs', 'Pārskaitījums', 'Gala summa']
+        columns = ['Ienākšanas laiks', 'Iziešanas laiks', 'Klienta ID', 'Vārds', 'Uzvārds' ]
+#                   'Skaits', 'Pilnā cena', 'Cena ar atlaidi', 'No depozīta', 'Dāvanu karte',
+#                   'Sedz apdrošināšana', 'Apdrošinātājs', 'Pārskaitījums', 'Gala summa']
 
         for col_num in range(len(columns)):
             ws.write(row_num, col_num, columns[col_num], font_style)
@@ -101,29 +103,18 @@ def sales_export(request):
         font_style = xlwt.XFStyle()
 
        # Export Data
-        for row in sales_data:
+        for row in lockers_data:
             row_num += 1
 
-            new_time = row.date + timedelta( hours=dst( row.date ) )
+            new_time = row.checkin_time + timedelta( hours=dst( row.checkin_time ) )
             ws.write(row_num, 0, new_time.strftime("%Y-%m-%d %H:%M"), font_style)
 
-            ws.write(row_num, 1, row.client.id, font_style)
-            ws.write(row_num, 2, row.client.name, font_style)
-            ws.write(row_num, 3, row.client.surname, font_style)
-            ws.write(row_num, 4, row.subscr.subscr.title, font_style)
+            new_time = row.checkout_time + timedelta( hours=dst( row.checkout_time ) )
+            ws.write(row_num, 1, new_time.strftime("%Y-%m-%d %H:%M"), font_style)
 
-            ws.write(row_num, 5, row.count, font_style)
-            ws.write(row_num, 6, row.full_price, font_style)
-            ws.write(row_num, 7, row.discount_price, font_style)
-            ws.write(row_num, 8, row.from_deposit, font_style)
-            ws.write(row_num, 9, row.from_gift_card, font_style)
-
-            ws.write(row_num, 10, row.insurance_cash, font_style)
-            if row.insurance != None:
-                ws.write(row_num, 11, row.insurance.title, font_style)
-            if row.transfer == True:
-                ws.write(row_num, 12, 'Pārskaitījums', font_style)
-            ws.write(row_num, 13, row.final_price, font_style)
+            ws.write(row_num, 2, row.client.id, font_style)
+            ws.write(row_num, 3, row.client.name, font_style)
+            ws.write(row_num, 4, row.client.surname, font_style)
 
         wb.save(response)
         return response

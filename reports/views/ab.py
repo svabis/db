@@ -19,6 +19,7 @@ from django.http import HttpResponse
 # XLS
 import xlwt
 
+from time_corection import dst
 from datetime import timedelta, datetime, date, time
 
 import pytz
@@ -132,7 +133,10 @@ def ab_export(request):
        # Export Data
         for row in sales_data:
             row_num += 1
-            ws.write(row_num, 0, row.purchase_date.strftime("%Y-%m-%d %H:%M"), font_style)
+
+            new_time = row.purchase_date + timedelta( hours=dst( row.purchase_date ) )
+            ws.write(row_num, 0, new_time.strftime("%Y-%m-%d %H:%M"), font_style)
+
             ws.write(row_num, 1, row.client.id, font_style)
             ws.write(row_num, 2, row.client.name, font_style)
             ws.write(row_num, 3, row.client.surname, font_style)

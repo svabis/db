@@ -41,12 +41,20 @@ function sales_export() {
   document.getElementById("sales").innerHTML = '<span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS';
  }, 10000);
 }
+
+function lockers_export() {
+ document.getElementById("lockers").innerHTML = '<span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Notiek datu exports';
+ document.getElementById("lockers_form").submit()
+ setTimeout(function(){
+  document.getElementById("lockers").innerHTML = '<span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS';
+ }, 10000);
+}
 </script>
 
 <h2>Atskaites</h2>
 
 <div class="row">
- <form id="cli_form" action="/reports/clients/" method=POST>{% csrf_token %}
+ <form id="cli_form" action="/reports/clients/xls/" method=POST>{% csrf_token %}
  <hr style="border-top: 1px solid green; margin-top: 8px;">
  <div class="col-sm-12 col-md-12 col-lg-12"><h4>Klienti (datu eksports var aizņemt ilgu laiku...)</h4></div>
 </div>
@@ -141,11 +149,6 @@ $(document).ready(function(){ var date_input=$('input[name="ab_end"]');
 </div>
 
 
-<!-- <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 5px; border: solid black 1px;">
-  <a href="/reports/bs/xls/"><button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;" id="bs" onclick="bs_export();">
-   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button></a>
- </div> -->
-
 
 <div class="row">
  <form id="sales_form" action="/reports/sales_export/" method=POST>{% csrf_token %}
@@ -175,6 +178,42 @@ $(document).ready(function(){ var date_input=$('input[name="sale_end"]');
 
  <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 30px;">
   <button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;" id="sales" onclick="sales_export();">
+   <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button>
+ </div>
+ </form>
+</div>
+
+
+
+
+<div class="row">
+ <form id="lockers_form" action="/reports/lockers_export/xls/" method=POST>{% csrf_token %}
+ <hr style="border-top: 1px solid green; margin-top: 8px;">
+ <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 30px;"><h4>Kluba apmeklējums</h4></div>
+ <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 5px;">
+  <label>No: <b class="text-danger">2018-03-03</b></label>
+  <input class="form-control" id="loc_start" maxlength="10" name="loc_start" size="10" type="text" placeholder="GGGG-MM-DD">
+  {% if loc_start_error %}<br><b class="text-danger">Datuma formāts ievadīts nekorekti!</b>{% endif %}
+ </div>
+ <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 5px;">
+  <label>Līdz: <b class="text-danger">{{ today|date:"Y-m-d" }}</b></label>
+  <input class="form-control" id="loc_end" maxlength="10" name="loc_end" size="10" type="text" placeholder="GGGG-MM-DD">
+  {% if loc_end_error %}<br><b class="text-danger">Datuma formāts ievadīts nekorekti!</b>{% endif %}
+ </div>
+
+<script>
+$(document).ready(function(){ var date_input=$('input[name="loc_start"]');
+ var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ var options={ format: 'yyyy-mm-dd', container: container, todayHighlight: true, autoclose: true, weekStart: 1, startDate: '2018-03-03', endDate: '{{ today|date:"Y-m-d" }}' };
+ date_input.datepicker(options); })
+$(document).ready(function(){ var date_input=$('input[name="loc_end"]');
+ var container=$('.form-group form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ var options={ format: 'yyyy-mm-dd', container: container, todayHighlight: true, autoclose: true, weekStart: 1, startDate: '2018-03-03', endDate: '{{ today|date:"Y-m-d" }}' };
+ date_input.datepicker(options); })
+</script>
+
+ <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 30px;">
+  <button type="button" class="btn btn-danger pull-right" style="margin-left: 2px;" id="lockers" onclick="lockers_export();">
    <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span> &nbsp;Eksportēt datus XLS</button>
  </div>
  </form>
