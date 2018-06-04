@@ -6,6 +6,9 @@ admin.autodiscover()
 
 urlpatterns = [
 # ===============================================================
+    url(r'^deposit_export/xls/$', 'reports.views.deposit_export'),
+
+# ===============================================================
     url(r'^clients/xls/$', 'reports.views.clients_export'),
 
 # ===============================================================
