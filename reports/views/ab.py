@@ -119,8 +119,9 @@ def ab_export(request):
         font_style = xlwt.XFStyle()
         font_style.font.bold = True
 
-        columns = ['Pārdošanas laiks', 'Klienta ID', 'Vārds', 'Uzvārds', 'Abonements',
-                   'Abonements izlietots']
+        columns = ['Pārdošanas laiks', 'Aktivizēt līdz', 'Derīgs līdz', 'Atlikušo reižu skaits',
+                   'Klienta ID', 'Vārds', 'Uzvārds', 'Abonements',
+                   'Abonements izlietots', 'Piezīmes']
 #                   'Skaits', 'Pilnā cena', 'Cena ar atlaidi', 'Apmaksa no depozīta', 'Dāvanu karte',
 #                   'Apmaksā apdrošināšana', 'Apdrošinātājs', 'Pārskaitījums', 'Gala summa']
 
@@ -137,26 +138,32 @@ def ab_export(request):
             new_time = row.purchase_date + timedelta( hours=dst( row.purchase_date ) )
             ws.write(row_num, 0, new_time.strftime("%Y-%m-%d %H:%M"), font_style)
 
-            ws.write(row_num, 1, row.client.id, font_style)
-            ws.write(row_num, 2, row.client.name, font_style)
-            ws.write(row_num, 3, row.client.surname, font_style)
-            ws.write(row_num, 4, row.subscr.title, font_style)
+            try:
+                new_time = row.activate_before + timedelta( hours=dst( row.activate_before ) )
+                ws.write(row_num, 1, new_time.strftime("%Y-%m-%d %H:%M"), font_style)
+            except:
+                pass
+
+            try:
+                new_time = row.best_before + timedelta( hours=dst( row.best_before ) )
+                ws.write(row_num, 2, new_time.strftime("%Y-%m-%d %H:%M"), font_style)
+            except:
+                pass
+
+            try:
+                ws.write(row_num, 3, row.times_count, font_style)
+            except:
+                pass
+
+            ws.write(row_num, 4, row.client.id, font_style)
+            ws.write(row_num, 5, row.client.name, font_style)
+            ws.write(row_num, 6, row.client.surname, font_style)
+            ws.write(row_num, 7, row.subscr.title, font_style)
 
             if row.ended != False:
-                ws.write(row_num, 5, 'Izlietots', font_style)
+                ws.write(row_num, 8, 'Izlietots', font_style)
 
-#            ws.write(row_num, 5, row.ended, font_style)
-#            ws.write(row_num, 6, row.full_price, font_style)
-#            ws.write(row_num, 7, row.discount_price, font_style)
-#            ws.write(row_num, 8, row.from_deposit, font_style)
-#            ws.write(row_num, 9, row.from_gift_card, font_style)
-
-#            ws.write(row_num, 10, row.insurance_cash, font_style)
-#            if row.insurance != None:
-#                ws.write(row_num, 11, row.insurance.title, font_style)
-#            if row.transfer == True:
-#                ws.write(row_num, 12, 'Pārskaitījums', font_style)
-#            ws.write(row_num, 13, row.final_price, font_style)
+            ws.write(row_num, 9, row.client.notes, font_style)
 
         wb.save(response)
         return response

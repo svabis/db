@@ -5,7 +5,7 @@
 <script>
 jQuery(document).ready(function($) {
   $(".clickable-row").click(function(e) {
-    window.location.href = "/client/search_response/" + $(this).children('td')[1].innerHTML + "/";
+    window.location.href = "/client/search_response/" + $(this).children('td')[0].innerHTML + "/";
   });
 });
 </script>
@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
 <table class="table table-hover table-striped table-condensed">
  <thead>
   <tr style="background: #aaa;">
-   <th class="text-danger" style="vertical-align: top;">VECAIS-ID</th>
+<!--   <th class="text-danger" style="vertical-align: top;">VECAIS-ID</th> -->
    <th style="vertical-align: top;">ID</th>
    <th style="vertical-align: top;">Vārds</th>
    <th style="vertical-align: top;">Uzvārds</th>
@@ -28,7 +28,7 @@ jQuery(document).ready(function($) {
  <tbody>
 {% for c in results %}
   <tr class="clickable-row">
-   <td class="text-danger">{{ c.s3_nr }}</td>
+<!--   <td class="text-danger">{{ c.s3_nr }}</td> -->
    <td>{{ c.id }}</td>
    <td>{{ c.name }}</td>
    <td>{{ c.surname }}</td>
